@@ -48,6 +48,7 @@ require('packer').startup(function()
   use 'neovim/nvim-lspconfig'        -- Collection of configurations for built-in LSP client
   use 'kabouzeid/nvim-lspinstall'    -- Install LSP-Servers in vim
   use 'hrsh7th/nvim-compe'           -- Autocompletion plugin
+  use 'SirVer/ultisnips'
   
   -- Themes
   use 'joshdick/onedark.vim'              -- Theme inspired by Atom
@@ -204,7 +205,7 @@ local on_attach = function(_client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'S', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
@@ -272,6 +273,7 @@ require'compe'.setup {
   source = {
     path = true;
     nvim_lsp = true;
+    ultisnips = true;
   };
 }
 
@@ -359,6 +361,8 @@ autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 
 ]])
 
+-- setup gitsigns
+require('gitsigns').setup()
 
 --Set colorscheme (order is important here)
 vim.o.termguicolors = true
