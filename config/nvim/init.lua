@@ -119,6 +119,11 @@ vim.g.indent_blankline_filetype_exclude = { 'help', 'packer' }
 vim.g.indent_blankline_buftype_exclude = { 'terminal', 'nofile'}
 vim.g.indent_blankline_char_highlight = 'LineNr'
 
+-- ultisnips
+vim.g.UltiSnipsExpandTrigger = "<C-s>"      
+vim.g.UltiSnipsJumpForwardTrigger = "<C-j>" 
+vim.g.UltiSnipsJumpBackwardTrigger = "<C-k>"
+
 -- Toggle to disable mouse mode and indentlines for easier paste
 ToggleMouse = function()
   if vim.o.mouse == 'a' then
@@ -363,6 +368,25 @@ autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 
 -- setup gitsigns
 require('gitsigns').setup()
+
+-- lspinstall start
+local function setup_servers()
+  require'lspinstall'.setup()
+  local servers = require'lspinstall'.installed_servers()
+  for _, server in pairs(servers) do
+    require'lspconfig'[server].setup{}
+  end
+end
+
+setup_servers()
+
+-- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
+require'lspinstall'.post_install_hook = function ()
+  setup_servers() -- reload installed servers
+  vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
+end
+
+-- lspinstall end
 
 --Set colorscheme (order is important here)
 vim.o.termguicolors = true
