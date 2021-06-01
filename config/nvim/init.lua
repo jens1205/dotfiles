@@ -13,6 +13,7 @@ vim.api.nvim_exec([[
     autocmd BufWritePost init.lua PackerCompile
   augroup end
 ]], false)
+-- end install packer
 
 local use = require('packer').use
 require('packer').startup(function()
@@ -42,13 +43,15 @@ require('packer').startup(function()
 
   use 'jiangmiao/auto-pairs'
 
-  use 'fatih/vim-go'                 -- golang
+  -- use 'fatih/vim-go'                 -- golang
 
   -- LSP stuff
   use 'neovim/nvim-lspconfig'        -- Collection of configurations for built-in LSP client
-  use 'kabouzeid/nvim-lspinstall'    -- Install LSP-Servers in vim
+  -- lspinstall is nice - but if a local language server is also installed, this leads to problems
+  -- example: show documentation of golang fields always entered the hover window
+  -- use 'kabouzeid/nvim-lspinstall'    -- Install LSP-Servers in vim
   use 'hrsh7th/nvim-compe'           -- Autocompletion plugin
-  use 'SirVer/ultisnips'
+  --use 'SirVer/ultisnips'
   
   -- Themes
   use 'joshdick/onedark.vim'              -- Theme inspired by Atom
@@ -98,8 +101,8 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 --Remap for dealing with word wrap
-vim.api.nvim_set_keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { noremap=true, expr = true, silent = true})
-vim.api.nvim_set_keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", {noremap= true, expr = true, silent = true})
+vim.api.nvim_set_keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true})
+vim.api.nvim_set_keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { noremap = true, expr = true, silent = true})
 
 --Remap escape to leave terminal mode
 vim.api.nvim_exec([[
@@ -120,9 +123,9 @@ vim.g.indent_blankline_buftype_exclude = { 'terminal', 'nofile'}
 vim.g.indent_blankline_char_highlight = 'LineNr'
 
 -- ultisnips
-vim.g.UltiSnipsExpandTrigger = "<C-s>"      
-vim.g.UltiSnipsJumpForwardTrigger = "<C-j>" 
-vim.g.UltiSnipsJumpBackwardTrigger = "<C-k>"
+-- vim.g.UltiSnipsExpandTrigger = "<C-s>"      
+-- vim.g.UltiSnipsJumpForwardTrigger = "<C-j>" 
+-- vim.g.UltiSnipsJumpBackwardTrigger = "<C-k>"
 
 -- Toggle to disable mouse mode and indentlines for easier paste
 ToggleMouse = function()
@@ -199,6 +202,9 @@ vim.api.nvim_set_keymap('n', '<leader>ff', ':Files <CR>', { noremap = true, sile
 vim.api.nvim_set_keymap('n', '<leader>fb', ':Buffers <CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>fg', ':GFiles <CR>', { noremap = true, silent = true })
 
+-- Quickfix list 
+vim.api.nvim_set_keymap('n', ',', ':cprevious <CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '.', ':cnext <CR>', { noremap = true, silent = true })
 
 -- LSP settings
 local nvim_lsp = require('lspconfig')
@@ -208,7 +214,7 @@ local on_attach = function(_client, bufnr)
   local opts = { noremap=true, silent=true }
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'S', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
@@ -226,32 +232,21 @@ end
 
 -- Enable the following language servers
 local servers = { 'gopls', 'rust_analyzer' }
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup { on_attach = on_attach }
-end
-
-local sumneko_root_path = vim.fn.getenv("HOME").."/.local/bin/sumneko_lua" -- Change to your sumneko root installation
-local sumneko_binary_path = "/bin/linux/lua-language-server" -- Change to your OS specific output folder
-nvim_lsp.sumneko_lua.setup {
-  cmd = {sumneko_root_path .. sumneko_binary_path, "-E", sumneko_root_path.."/main.lua" };
-  on_attach = on_attach,
-  settings = {
-      Lua = {
-          runtime = {
-              version = 'LuaJIT',
-              path = vim.split(package.path, ';'),
-          },
-          diagnostics = {
-              globals = {'vim'},
-          },
-          workspace = {
-              library = {
-                  [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-                  [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-              },
-          },
-      },
-  },
+-- taken from https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-config
+nvim_lsp.gopls.setup {
+	on_attach = on_attach,
+	cmd = {"gopls", "serve"},
+	settings = {
+	      gopls = {
+		analyses = {
+		  unusedparams = true,
+		},
+		staticcheck = true,
+	      },
+         },
+}
+nvim_lsp.rust_analyzer.setup {
+	on_attach = on_attach,
 }
 
 -- Map :Format to vim.lsp.buf.formatting()
@@ -278,7 +273,7 @@ require'compe'.setup {
   source = {
     path = true;
     nvim_lsp = true;
-    ultisnips = true;
+    -- ultisnips = true;
   };
 }
 
@@ -337,58 +332,46 @@ autocmd WinLeave * setlocal nocursorline
 ]])
 
 -- Open the existing NERDTree on each new tab.
-vim.api.nvim_command('autocmd BufWinEnter * silent NERDTreeMirror')
+-- leads to errors with quickfix windows (e.g. gr = :lua vim.lua.buf.hover())
+--vim.api.nvim_command('autocmd BufWinEnter * silent NERDTreeMirror')
 
 -- vim-go
-vim.g.go_fmt_command="goimports" -- automatically format and rewrite imports
-vim.g.go_list_type="quickfix"    -- error lista are of type quickfix
--- function should be script-scoped - but lua reports an error, so we change it to a normal function
-vim.cmd([[
-" run :GoBuild or :GoTestCompile based on the go file
-function! ZZZ_Build_go_files()
-  let l:file = expand('%')
-  if l:file =~# '^\f\+_test\.go$'
-    call go#test#Test(0, 1)
-  elseif l:file =~# '^\f\+\.go$'
-    call go#cmd#Build(0)
-  endif
-endfunction
+-- vim.g.go_fmt_command="goimports" -- automatically format and rewrite imports
+-- vim.g.go_list_type="quickfix"    -- error lista are of type quickfix
+-- -- function should be script-scoped - but lua reports an error, so we change it to a normal function
+-- vim.cmd([[
+-- " run :GoBuild or :GoTestCompile based on the go file
+-- function! ZZZ_Build_go_files()
+--   let l:file = expand('%')
+--   if l:file =~# '^\f\+_test\.go$'
+--     call go#test#Test(0, 1)
+--   elseif l:file =~# '^\f\+\.go$'
+--     call go#cmd#Build(0)
+--   endif
+-- endfunction
 
-autocmd FileType go nmap <leader>b :<C-u>call ZZZ_Build_go_files()<CR>
-autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
-autocmd FileType go nmap <leader>ta <Plug>(go-test)
-autocmd FileType go nmap <leader>tf <Plud>(go-test-func)
+-- autocmd FileType go nmap <leader>b :<C-u>call ZZZ_Build_go_files()<CR>
+-- autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+-- autocmd FileType go nmap <leader>ta <Plug>(go-test)
+-- autocmd FileType go nmap <leader>tf <Plud>(go-test-func)
 
-autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
-autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
-autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
-autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+-- autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+-- autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+-- autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+-- autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 
-]])
+-- ]])
 
 -- setup gitsigns
 require('gitsigns').setup()
 
--- lspinstall start
-local function setup_servers()
-  require'lspinstall'.setup()
-  local servers = require'lspinstall'.installed_servers()
-  for _, server in pairs(servers) do
-    require'lspconfig'[server].setup{}
-  end
-end
 
-setup_servers()
-
--- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-require'lspinstall'.post_install_hook = function ()
-  setup_servers() -- reload installed servers
-  vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
-end
-
--- lspinstall end
+-- Mac OS X clipboard sharing
+vim.api.nvim_set_option('clipboard', 'unnamed')
 
 --Set colorscheme (order is important here)
 vim.o.termguicolors = true
 vim.g.onedark_terminal_italics = 2
 vim.cmd[[colorscheme onedark]]
+
+
