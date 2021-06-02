@@ -256,8 +256,9 @@ nvim_lsp.gopls.setup {
 	cmd = {"gopls", "serve"},
 	settings = {
 	      gopls = {
-		usePlaceholders = true, 
+		usePlaceholders = true,
 		allowImplicitNetworkAccess = true,
+		allowModfileModifications = true,
 		analyses = {
 			unusedparams = true,
 		},
