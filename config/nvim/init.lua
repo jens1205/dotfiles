@@ -51,8 +51,8 @@ require('packer').startup(function()
   -- example: show documentation of golang fields always entered the hover window
   -- use 'kabouzeid/nvim-lspinstall'    -- Install LSP-Servers in vim
   use 'hrsh7th/nvim-compe'           -- Autocompletion plugin
-  --use 'SirVer/ultisnips'
-  
+  use 'SirVer/ultisnips'
+
   -- Themes
   use 'joshdick/onedark.vim'              -- Theme inspired by Atom
 end)
@@ -123,9 +123,9 @@ vim.g.indent_blankline_buftype_exclude = { 'terminal', 'nofile'}
 vim.g.indent_blankline_char_highlight = 'LineNr'
 
 -- ultisnips
--- vim.g.UltiSnipsExpandTrigger = "<C-s>"      
--- vim.g.UltiSnipsJumpForwardTrigger = "<C-j>" 
--- vim.g.UltiSnipsJumpBackwardTrigger = "<C-k>"
+vim.g.UltiSnipsExpandTrigger = "<C-s>"
+vim.g.UltiSnipsJumpForwardTrigger = "<C-j>"
+vim.g.UltiSnipsJumpBackwardTrigger = "<C-k>"
 
 -- Toggle to disable mouse mode and indentlines for easier paste
 ToggleMouse = function()
@@ -230,6 +230,15 @@ local on_attach = function(_client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 end
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = {
+      'documentation',
+      'detail',
+      'additionalTextEdits',
+    }
+}
 ----------------------
 -- Language Server  --
 ----------------------
@@ -243,6 +252,7 @@ nvim_lsp.rust_analyzer.setup {
 -- taken from https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-config
 nvim_lsp.gopls.setup {
 	on_attach = on_attach,
+	capabilities = capabilities,
 	cmd = {"gopls", "serve"},
 	settings = {
 	      gopls = {
@@ -347,7 +357,7 @@ require'compe'.setup {
   source = {
     path = true;
     nvim_lsp = true;
-    -- ultisnips = true;
+    ultisnips = true;
   };
 }
 
