@@ -130,24 +130,24 @@ vim.g.UltiSnipsExpandTrigger = "<C-s>"
 vim.g.UltiSnipsJumpForwardTrigger = "<C-j>"
 vim.g.UltiSnipsJumpBackwardTrigger = "<C-k>"
 
--- Toggle to disable mouse mode and indentlines for easier paste
-ToggleMouse = function()
-  if vim.o.mouse == 'a' then
-    vim.cmd[[IndentBlanklineDisable]]
-    vim.wo.signcolumn='no'
-    vim.o.mouse = 'v'
-    vim.wo.number = false
-    print("Mouse disabled")
-  else
-    vim.cmd[[IndentBlanklineEnable]]
-    vim.wo.signcolumn='yes'
-    vim.o.mouse = 'a'
-    vim.wo.number = true
-    print("Mouse enabled")
-  end
-end
+-- -- Toggle to disable mouse mode and indentlines for easier paste
+-- ToggleMouse = function()
+--   if vim.o.mouse == 'a' then
+--     vim.cmd[[IndentBlanklineDisable]]
+--     vim.wo.signcolumn='no'
+--     vim.o.mouse = 'v'
+--     vim.wo.number = false
+--     print("Mouse disabled")
+--   else
+--     vim.cmd[[IndentBlanklineEnable]]
+--     vim.wo.signcolumn='yes'
+--     vim.o.mouse = 'a'
+--     vim.wo.number = true
+--     print("Mouse enabled")
+--   end
+-- end
 
-vim.api.nvim_set_keymap('n', '<F10>', '<cmd>lua ToggleMouse()<cr>', { noremap = true })
+-- vim.api.nvim_set_keymap('n', '<F10>', '<cmd>lua ToggleMouse()<cr>', { noremap = true })
 
 -- -- Telescope
 -- require('telescope').setup {
