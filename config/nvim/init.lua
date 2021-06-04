@@ -31,7 +31,8 @@ require('packer').startup(function()
   use 'mkitt/tabline.vim'            -- pimp tab labels
   -- UI to select things (files, grep results, open buffers...)
   -- use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
-  use '/usr/local/opt/fzf'      
+  -- use '/usr/local/opt/fzf'      
+  use 'junegunn/fzf'
   use 'junegunn/fzf.vim'
   use 'itchyny/lightline.vim'        -- Fancier statusline
   -- Add indentation guides even on blank lines
@@ -43,7 +44,7 @@ require('packer').startup(function()
 
   use 'jiangmiao/auto-pairs'
 
-  -- use 'fatih/vim-go'                 -- golang
+  use 'fatih/vim-go'                 -- golang
 
   -- LSP stuff
   use 'neovim/nvim-lspconfig'        -- Collection of configurations for built-in LSP client
@@ -261,7 +262,7 @@ nvim_lsp.rust_analyzer.setup {
 nvim_lsp.gopls.setup {
 	on_attach = on_attach,
 	capabilities = capabilities,
-	cmd = {"gopls", "serve"},
+	cmd = {"gopls", "serve" },
 	settings = {
 	      gopls = {
 		usePlaceholders = true,
@@ -313,6 +314,7 @@ function goimports(timeout_ms)
 end
 
 vim.api.nvim_command('autocmd BufWritePre *.go lua goimports(1000)')
+-- vim.api.nvim_command('autocmd BufWritePre *.go lua vim.lsp.buf.formatting()') -- didn't work, file was changed twice
 -- gopls end
 
 -- local sumneko_root_path = vim.fn.getenv("HOME").."/.local/bin/sumneko_lua" -- Change to your sumneko root installation
@@ -442,31 +444,43 @@ autocmd WinLeave * setlocal nocursorline
 --vim.api.nvim_command('autocmd BufWinEnter * silent NERDTreeMirror')
 
 -- vim-go
+vim.g.go_version_warning=1
+vim.g.go_code_completion_enabled=0 -- use nvim-compe instead
+vim.g.go_test_show_name=1
+vim.g.go_fmt_autosave=1
+vim.g.go_imports_autosave=0 -- already used nvim-lsp
+vim.g.go_mod_fmt_autosave=1
+vim.g.go_def_mapping_enabled=0
+vim.g.go_gopls_enabled=1  -- see what happens
+vim.g.go_highlight_string_spellcheck=0
+vim.g.go_highlight_format_strings=0
+vim.g.go_highlight_diagnostic_errors=0
+vim.g.go_highlight_diagnostic_warnings=0
 -- vim.g.go_fmt_command="goimports" -- automatically format and rewrite imports
 -- vim.g.go_list_type="quickfix"    -- error lista are of type quickfix
--- -- function should be script-scoped - but lua reports an error, so we change it to a normal function
--- vim.cmd([[
--- " run :GoBuild or :GoTestCompile based on the go file
--- function! ZZZ_Build_go_files()
---   let l:file = expand('%')
---   if l:file =~# '^\f\+_test\.go$'
---     call go#test#Test(0, 1)
---   elseif l:file =~# '^\f\+\.go$'
---     call go#cmd#Build(0)
---   endif
--- endfunction
+-- function should be script-scoped - but lua reports an error, so we change it to a normal function
+vim.cmd([[
+" run :GoBuild or :GoTestCompile based on the go file
+function! ZZZ_Build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
 
--- autocmd FileType go nmap <leader>b :<C-u>call ZZZ_Build_go_files()<CR>
--- autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
--- autocmd FileType go nmap <leader>ta <Plug>(go-test)
--- autocmd FileType go nmap <leader>tf <Plud>(go-test-func)
+autocmd FileType go nmap <leader>b :<C-u>call ZZZ_Build_go_files()<CR>
+autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+autocmd FileType go nmap <leader>ta <Plug>(go-test)
+autocmd FileType go nmap <leader>tt <Plug>(go-test-func)
 
--- autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
--- autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
--- autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
--- autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 
--- ]])
+]])
 
 -- setup gitsigns
 require('gitsigns').setup()
