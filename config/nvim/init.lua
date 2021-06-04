@@ -53,6 +53,8 @@ require('packer').startup(function()
   use 'hrsh7th/nvim-compe'           -- Autocompletion plugin
   use 'SirVer/ultisnips'
 
+  use 'ThePrimeagen/vim-be-good'
+
   -- Themes
   use 'joshdick/onedark.vim'              -- Theme inspired by Atom
 end)
