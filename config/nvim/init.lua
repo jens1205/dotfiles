@@ -208,6 +208,10 @@ vim.api.nvim_set_keymap('n', '<leader>fg', ':GFiles <CR>', { noremap = true, sil
 vim.api.nvim_set_keymap('n', ',', ':cprevious <CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '.', ':cnext <CR>', { noremap = true, silent = true })
 
+-- Location list 
+vim.api.nvim_set_keymap('n', '<C-,>', ':lprevious <CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-.>', ':lnext <CR>', { noremap = true, silent = true })
+
 -- LSP settings
 local nvim_lsp = require('lspconfig')
 local on_attach = function(_client, bufnr)
@@ -227,9 +231,11 @@ local on_attach = function(_client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'ß', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '´', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist({open_loclist = false})<CR>', opts)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -339,6 +345,19 @@ nvim_lsp.sumneko_lua.setup {
 -- Map :Format to vim.lsp.buf.formatting()
 vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
 
+-- put LSP diagnostics into location list - START
+
+vim.api.nvim_exec([[
+
+augroup Custom_LSP
+    autocmd!
+    autocmd! BufWrite,BufEnter,InsertLeave * :lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
+augroup END
+]], false)
+
+-- put LSP diagnostics into location list - END
+
+-- LSP End
 -- Set completeopt to have a better completion experience
 vim.o.completeopt="menuone,noinsert"
 
