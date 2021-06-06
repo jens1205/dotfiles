@@ -31,13 +31,13 @@ require('packer').startup(function()
   use 'mkitt/tabline.vim'            -- pimp tab labels
   -- UI to select things (files, grep results, open buffers...)
   -- use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
-  -- use '/usr/local/opt/fzf'      
+  -- use '/usr/local/opt/fzf'
   use 'junegunn/fzf'
   use 'junegunn/fzf.vim'
   use 'itchyny/lightline.vim'        -- Fancier statusline
   -- Add indentation guides even on blank lines
   use { 'lukas-reineke/indent-blankline.nvim', branch="lua" }
-  
+
   use 'nvim-treesitter/nvim-treesitter' -- syntax highlighting
 
   use 'preservim/nerdtree'           -- File Explorer
@@ -205,13 +205,13 @@ vim.api.nvim_set_keymap('n', '<leader>ff', ':Files <CR>', { noremap = true, sile
 vim.api.nvim_set_keymap('n', '<leader>fb', ':Buffers <CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>fg', ':GFiles <CR>', { noremap = true, silent = true })
 
--- Quickfix list 
-vim.api.nvim_set_keymap('n', ',', ':cprevious <CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '.', ':cnext <CR>', { noremap = true, silent = true })
+-- Quickfix list
+vim.api.nvim_set_keymap('n', '<leader>j', ':cprevious <CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>k', ':cnext <CR>', { noremap = true, silent = true })
 
--- Location list 
-vim.api.nvim_set_keymap('n', '<C-,>', ':lprevious <CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-.>', ':lnext <CR>', { noremap = true, silent = true })
+-- Location list
+vim.api.nvim_set_keymap('n', '<leader>u', ':lprevious <CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>i', ':lnext <CR>', { noremap = true, silent = true })
 
 -- LSP settings
 local nvim_lsp = require('lspconfig')
@@ -429,7 +429,7 @@ ts.setup {ensure_installed = 'maintained', highlight = {enable = true}}
 
 vim.bo.spelllang="en_us"
 
--- Set cursorline for active split / window. Alternative would be 
+-- Set cursorline for active split / window. Alternative would be
 -- https://github.com/TaDaa/vimade or https://github.com/blueyed/vim-diminactive/
 vim.wo.cursorline=true
 -- lua seems to have no support for autocmd, so we use nvim_command
@@ -439,9 +439,6 @@ autocmd BufEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
 ]])
 
--- Open the existing NERDTree on each new tab.
--- leads to errors with quickfix windows (e.g. gr = :lua vim.lua.buf.hover())
---vim.api.nvim_command('autocmd BufWinEnter * silent NERDTreeMirror')
 
 -- vim-go
 vim.g.go_version_warning=1
@@ -456,8 +453,10 @@ vim.g.go_highlight_string_spellcheck=0
 vim.g.go_highlight_format_strings=0
 vim.g.go_highlight_diagnostic_errors=0
 vim.g.go_highlight_diagnostic_warnings=0
+vim.g.go_metalinter_command="golangci-lint" 
+vim.g.go_metalinter_autosave=1
 -- vim.g.go_fmt_command="goimports" -- automatically format and rewrite imports
--- vim.g.go_list_type="quickfix"    -- error lista are of type quickfix
+vim.g.go_list_type="quickfix"    -- error lista are of type quickfix
 -- function should be script-scoped - but lua reports an error, so we change it to a normal function
 vim.cmd([[
 " run :GoBuild or :GoTestCompile based on the go file
