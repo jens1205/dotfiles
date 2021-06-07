@@ -1,3 +1,8 @@
+vim.o.shiftwidth=4
+vim.o.tabstop=4
+vim.o.softtabstop=4
+vim.o.expandtab=true
+
 -- Install packer
 local execute = vim.api.nvim_command
 
@@ -16,49 +21,52 @@ vim.api.nvim_exec([[
 -- end install packer
 
 local use = require('packer').use
-require('packer').startup(function()
-  use 'wbthomason/packer.nvim'       -- Package manager
+require('packer').startup(
+    function()
+        use 'wbthomason/packer.nvim'       -- Package manager
 
-  use 'tpope/vim-fugitive'           -- Git commands in nvim
-  -- Add git related info in the signs columns and popups
-  use {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'} }
-  -- disabled - we try gitsigns although it is very new
-  -- use 'airblade/vim-gitgutter'       -- show Git diff in the sign column
-  --
-  use 'tpope/vim-commentary'         -- "gc" to comment visual regions/lines
-  -- temporary disable gutentags. Maybe has to be enabled for go-files in vim-go?
-  -- use 'ludovicchabant/vim-gutentags' -- Automatic tags management
-  use 'mkitt/tabline.vim'            -- pimp tab labels
-  -- UI to select things (files, grep results, open buffers...)
-  -- use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
-  -- use '/usr/local/opt/fzf'
-  use 'junegunn/fzf'
-  use 'junegunn/fzf.vim'
-  use 'itchyny/lightline.vim'        -- Fancier statusline
-  -- Add indentation guides even on blank lines
-  use { 'lukas-reineke/indent-blankline.nvim', branch="lua" }
+        use 'tpope/vim-fugitive'           -- Git commands in nvim
+        -- Add git related info in the signs columns and popups
+        use {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'} }
+        -- disabled - we try gitsigns although it is very new
+        -- use 'airblade/vim-gitgutter'       -- show Git diff in the sign column
+        --
+        use 'tpope/vim-commentary'         -- "gc" to comment visual regions/lines
+        -- temporary disable gutentags. Maybe has to be enabled for go-files in vim-go?
+        -- use 'ludovicchabant/vim-gutentags' -- Automatic tags management
+        use 'mkitt/tabline.vim'            -- pimp tab labels
+        -- UI to select things (files, grep results, open buffers...)
+        -- use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
+        -- use '/usr/local/opt/fzf'
+        use 'junegunn/fzf'
+        use 'junegunn/fzf.vim'
+        use 'itchyny/lightline.vim'        -- Fancier statusline
+        -- Add indentation guides even on blank lines
+        use { 'lukas-reineke/indent-blankline.nvim', branch="lua" }
 
-  use 'nvim-treesitter/nvim-treesitter' -- syntax highlighting
+        use 'nvim-treesitter/nvim-treesitter' -- syntax highlighting
 
-  use 'preservim/nerdtree'           -- File Explorer
+        use 'preservim/nerdtree'           -- File Explorer
 
-  use 'jiangmiao/auto-pairs'
+        use 'jiangmiao/auto-pairs'
 
-  use 'fatih/vim-go'                 -- golang
+        use 'fatih/vim-go'                 -- golang
 
-  -- LSP stuff
-  use 'neovim/nvim-lspconfig'        -- Collection of configurations for built-in LSP client
-  -- lspinstall is nice - but if a local language server is also installed, this leads to problems
-  -- example: show documentation of golang fields always entered the hover window
-  -- use 'kabouzeid/nvim-lspinstall'    -- Install LSP-Servers in vim
-  use 'hrsh7th/nvim-compe'           -- Autocompletion plugin
-  use 'SirVer/ultisnips'
+        -- LSP stuff
+        use 'neovim/nvim-lspconfig'        -- Collection of configurations for built-in LSP client
+        -- lspinstall is nice - but if a local language server is also installed, this leads to problems
+        -- example: show documentation of golang fields always entered the hover window
+        -- to fix we would need to configure nvim lsp to use only the path used by lspconfig
+        -- use 'kabouzeid/nvim-lspinstall'    -- Install LSP-Servers in vim
+        use 'hrsh7th/nvim-compe'           -- Autocompletion plugin
+        use 'SirVer/ultisnips'
 
-  use 'ThePrimeagen/vim-be-good'
+        use 'ThePrimeagen/vim-be-good'
 
-  -- Themes
-  use 'joshdick/onedark.vim'              -- Theme inspired by Atom
-end)
+        -- Themes
+        use 'joshdick/onedark.vim'              -- Theme inspired by Atom
+    end
+)
 
 --Incremental live completion
 vim.o.inccommand = "nosplit"
@@ -492,5 +500,4 @@ vim.api.nvim_set_option('clipboard', 'unnamed')
 vim.o.termguicolors = true
 vim.g.onedark_terminal_italics = 2
 vim.cmd[[colorscheme onedark]]
-
 
