@@ -35,12 +35,22 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 
 vim.wo.signcolumn="yes"
+
 vim.wo.cursorline=true
+-- lua seems to have no support for autocmd, so we use nvim_command
+vim.api.nvim_command([[
+autocmd WinEnter * setlocal cursorline
+autocmd BufEnter * setlocal cursorline
+autocmd WinLeave * setlocal nocursorline
+]])
 
 --Remap space as leader key
 -- vim.api.nvim_set_keymap('', '<Space>', '<Nop>', { noremap = true, silent=true})
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+
+-- Change preview window location
+vim.g.splitbelow = true
 
 require('packerInstall')
 
@@ -91,13 +101,8 @@ require('packer').startup(
     end
 )
 
-
---Set statusbar
-vim.g.lightline = { colorscheme = 'onedark';
-      active = { left = { { 'mode', 'paste' }, { 'gitbranch', 'readonly', 'filename', 'modified' } } };
-      component_function = { gitbranch = 'fugitive#head', };
-}
-
+require('indent_blankline_config')
+require('lightline_config')
 
 --Remap for dealing with word wrap
 vim.api.nvim_set_keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true})
@@ -113,22 +118,9 @@ vim.api.nvim_exec([[
 ]], false)
 
 
---Map blankline
-vim.g.indent_blankline_char = "┊"
-vim.g.indent_blankline_filetype_exclude = { 'help', 'packer' }
-vim.g.indent_blankline_buftype_exclude = { 'terminal', 'nofile'}
-vim.g.indent_blankline_char_highlight = 'LineNr'
-
--- ultisnips
-vim.g.UltiSnipsExpandTrigger = "<C-s>"
-vim.g.UltiSnipsJumpForwardTrigger = "<C-j>"
-vim.g.UltiSnipsJumpBackwardTrigger = "<C-k>"
-
 vim.api.nvim_set_keymap('n', '<leader>nt', '::NERDTreeToggle<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>nj', '::NERDTreeFind<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>nf', '::NerdTreeFocus<CR>', { noremap = true, silent = true })
--- Change preview window location
-vim.g.splitbelow = true
 
 -- Highlight on yank
 vim.api.nvim_exec([[
@@ -171,7 +163,7 @@ local on_attach = function(_client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'S', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>s', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
@@ -377,12 +369,6 @@ ts.setup {ensure_installed = 'maintained', highlight = {enable = true}}
 
 vim.bo.spelllang="en_us"
 
--- lua seems to have no support for autocmd, so we use nvim_command
-vim.api.nvim_command([[
-autocmd WinEnter * setlocal cursorline
-autocmd BufEnter * setlocal cursorline
-autocmd WinLeave * setlocal nocursorline
-]])
 
 
 -- vim-go
@@ -398,7 +384,7 @@ vim.g.go_highlight_string_spellcheck=0
 vim.g.go_highlight_format_strings=0
 vim.g.go_highlight_diagnostic_errors=0
 vim.g.go_highlight_diagnostic_warnings=0
-vim.g.go_metalinter_command="golangci-lint" 
+vim.g.go_metalinter_command="golangci-lint"
 vim.g.go_metalinter_autosave=1
 -- vim.g.go_fmt_command="goimports" -- automatically format and rewrite imports
 vim.g.go_list_type="quickfix"    -- error lista are of type quickfix
