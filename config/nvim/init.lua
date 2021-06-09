@@ -1,3 +1,56 @@
+
+require('packerInstall')
+
+local use = require('packer').use
+require('packer').startup(
+    function()
+        use 'wbthomason/packer.nvim'       -- Package manager
+
+        use 'tpope/vim-fugitive'
+        use {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'} }
+
+        -- disabled - we try gitsigns although it is very new
+        -- use 'airblade/vim-gitgutter'       -- show Git diff in the sign column
+
+        use 'tpope/vim-commentary'         -- "gc" to comment visual regions/lines
+        use 'mkitt/tabline.vim'            -- pimp tab labels
+        
+        -- UI to select things (files, grep results, open buffers...)
+        -- use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
+
+        use 'junegunn/fzf'
+        use 'junegunn/fzf.vim'
+
+        use 'itchyny/lightline.vim'        -- Fancier statusline
+        use { 'lukas-reineke/indent-blankline.nvim', branch="lua" } -- Add indentation guides even on blank lines
+
+        use 'nvim-treesitter/nvim-treesitter' -- syntax highlighting
+
+        use 'preservim/nerdtree'           -- File Explorer
+
+        use 'jiangmiao/auto-pairs'
+
+        use 'fatih/vim-go'                 -- golang
+
+        -- LSP stuff
+        use 'neovim/nvim-lspconfig'        -- Collection of configurations for built-in LSP client
+        -- lspinstall is nice - but if a local language server is also installed, this leads to problems
+        -- example: show documentation of golang fields always entered the hover window
+        -- to fix we would need to configure nvim lsp to use only the path used by lspconfig
+        -- use 'kabouzeid/nvim-lspinstall'    -- Install LSP-Servers in vim
+        use 'hrsh7th/nvim-compe'           -- Autocompletion plugin
+        use 'SirVer/ultisnips'
+
+        use 'ThePrimeagen/vim-be-good'
+
+        -- Themes
+        use 'joshdick/onedark.vim'              -- Theme inspired by Atom
+    end
+)
+
+require('indent_blankline_config')
+require('lightline_config')
+
 -- Global settings
 vim.o.shiftwidth=4
 vim.o.tabstop=4
@@ -52,58 +105,6 @@ vim.g.maplocalleader = " "
 -- Change preview window location
 vim.g.splitbelow = true
 
-require('packerInstall')
-
-local use = require('packer').use
-require('packer').startup(
-    function()
-        use 'wbthomason/packer.nvim'       -- Package manager
-
-        use 'tpope/vim-fugitive'
-        use {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'} }
-
-        -- disabled - we try gitsigns although it is very new
-        -- use 'airblade/vim-gitgutter'       -- show Git diff in the sign column
-
-        use 'tpope/vim-commentary'         -- "gc" to comment visual regions/lines
-        use 'mkitt/tabline.vim'            -- pimp tab labels
-        
-        -- UI to select things (files, grep results, open buffers...)
-        -- use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
-
-        use 'junegunn/fzf'
-        use 'junegunn/fzf.vim'
-
-        use 'itchyny/lightline.vim'        -- Fancier statusline
-        use { 'lukas-reineke/indent-blankline.nvim', branch="lua" } -- Add indentation guides even on blank lines
-
-        use 'nvim-treesitter/nvim-treesitter' -- syntax highlighting
-
-        use 'preservim/nerdtree'           -- File Explorer
-
-        use 'jiangmiao/auto-pairs'
-
-        use 'fatih/vim-go'                 -- golang
-
-        -- LSP stuff
-        use 'neovim/nvim-lspconfig'        -- Collection of configurations for built-in LSP client
-        -- lspinstall is nice - but if a local language server is also installed, this leads to problems
-        -- example: show documentation of golang fields always entered the hover window
-        -- to fix we would need to configure nvim lsp to use only the path used by lspconfig
-        -- use 'kabouzeid/nvim-lspinstall'    -- Install LSP-Servers in vim
-        use 'hrsh7th/nvim-compe'           -- Autocompletion plugin
-        use 'SirVer/ultisnips'
-
-        use 'ThePrimeagen/vim-be-good'
-
-        -- Themes
-        use 'joshdick/onedark.vim'              -- Theme inspired by Atom
-    end
-)
-
-require('indent_blankline_config')
-require('lightline_config')
-
 --Remap for dealing with word wrap
 vim.api.nvim_set_keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true})
 vim.api.nvim_set_keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { noremap = true, expr = true, silent = true})
@@ -117,16 +118,19 @@ vim.api.nvim_exec([[
   augroup end
 ]], false)
 
-
-vim.api.nvim_set_keymap('n', '<leader>nt', '::NERDTreeToggle<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>nj', '::NERDTreeFind<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>nf', '::NerdTreeFocus<CR>', { noremap = true, silent = true })
-
 -- Highlight on yank
 vim.api.nvim_exec([[
   augroup YankHighlight
     autocmd!
     autocmd TextYankPost * silent! lua vim.highlight.on_yank()
+  augroup end
+]], false)
+
+vim.api.nvim_exec([[
+  augroup Autoreload
+    autocmd!
+    autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+    autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
   augroup end
 ]], false)
 
@@ -139,12 +143,6 @@ vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', { noremap = true, silent = true 
 vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
 
--- Fzf
-vim.api.nvim_set_keymap('n', '<leader>ft', ':Rg <CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>ff', ':Files <CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>fb', ':Buffers <CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>fg', ':GFiles <CR>', { noremap = true, silent = true })
-
 -- Quickfix list
 vim.api.nvim_set_keymap('n', '<leader>j', ':cprevious <CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>k', ':cnext <CR>', { noremap = true, silent = true })
@@ -152,6 +150,18 @@ vim.api.nvim_set_keymap('n', '<leader>k', ':cnext <CR>', { noremap = true, silen
 -- Location list
 vim.api.nvim_set_keymap('n', '<leader>u', ':lprevious <CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>i', ':lnext <CR>', { noremap = true, silent = true })
+
+-- Plugin related stuff
+vim.api.nvim_set_keymap('n', '<leader>nt', '::NERDTreeToggle<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>nj', '::NERDTreeFind<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>nf', '::NerdTreeFocus<CR>', { noremap = true, silent = true })
+
+-- Fzf
+vim.api.nvim_set_keymap('n', '<leader>ft', ':Rg <CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>ff', ':Files <CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>fb', ':Buffers <CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>fg', ':GFiles <CR>', { noremap = true, silent = true })
+
 
 -- LSP settings
 local nvim_lsp = require('lspconfig')
@@ -385,7 +395,7 @@ vim.g.go_highlight_format_strings=0
 vim.g.go_highlight_diagnostic_errors=0
 vim.g.go_highlight_diagnostic_warnings=0
 vim.g.go_metalinter_command="golangci-lint"
-vim.g.go_metalinter_autosave=1
+vim.g.go_metalinter_autosave=0
 -- vim.g.go_fmt_command="goimports" -- automatically format and rewrite imports
 vim.g.go_list_type="quickfix"    -- error lista are of type quickfix
 -- function should be script-scoped - but lua reports an error, so we change it to a normal function
