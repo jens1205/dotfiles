@@ -50,6 +50,7 @@ require('packer').startup(
 
 require('indent_blankline_config')
 require('lightline_config')
+require('ultisnips_config')
 
 -- Global settings
 vim.o.shiftwidth=4
