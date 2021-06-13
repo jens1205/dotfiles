@@ -43,6 +43,7 @@ require('packer').startup(
 
         use 'ThePrimeagen/vim-be-good'
 
+        use 'jens1205/first-nvim-plugin'
         -- Themes
         use 'joshdick/onedark.vim'              -- Theme inspired by Atom
     end
