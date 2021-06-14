@@ -404,29 +404,40 @@ local is_prior_char_whitespace = function()
   end
 end
 _G.tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return vim.api.nvim_replace_termcodes("<C-n>", true, true, true)
+    print("entered tab_complete")
 
-  elseif vim.fn["UltiSnips#CanExpandSnippet"]() == 1 or vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-    return vim.api.nvim_replace_termcodes("<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>", true, true, true)
+    if vim.fn.pumvisible() == 1 then
+        print("popup menu visible")
+        return vim.api.nvim_replace_termcodes("<C-n>", true, true, true)
 
-  elseif is_prior_char_whitespace() then
-    return vim.api.nvim_replace_termcodes("<Tab>", true, true, true)
+      elseif vim.fn["UltiSnips#CanExpandSnippet"]() == 1 or vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
+        print("ultisnips can expand snippet or can jump forward")
+        return vim.api.nvim_replace_termcodes("<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>", true, true, true)
 
-  else
-    return vim.fn['compe#complete']()
-  end
+      elseif is_prior_char_whitespace() then
+        print("whitespace detected")
+        return vim.api.nvim_replace_termcodes("<Tab>", true, true, true)
+
+      else
+        print("default for tab")
+        return vim.fn['compe#complete']()
+      end
 end
 _G.s_tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return vim.api.nvim_replace_termcodes("<C-p>", true, true, true)
+    print("entered s_tab_complete")
 
-  elseif vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-    return vim.api.nvim_replace_termcodes("<C-R>=UltiSnips#JumpBackwards()<CR>", true, true, true)
+    if vim.fn.pumvisible() == 1 then
+        print("popup menu visible")
+        return vim.api.nvim_replace_termcodes("<C-p>", true, true, true)
 
-  else
-    return vim.api.nvim_replace_termcodes("<S-Tab>", true, true, true)
-  end
+    elseif vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
+        print("Ultisnis can jump backwards")
+        return vim.api.nvim_replace_termcodes("<C-R>=UltiSnips#JumpBackwards()<CR>", true, true, true)
+
+    else
+        print("default for s-tab")
+        return vim.api.nvim_replace_termcodes("<S-Tab>", true, true, true)
+    end
 end
 
 vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true, noremap = true})
