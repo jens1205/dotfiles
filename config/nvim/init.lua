@@ -86,6 +86,10 @@ vim.o.updatetime = 250
 --Add map to enter paste mode
 vim.o.pastetoggle="<F3>"
 
+-- No Backup / Swapfile
+vim.o.backup = false
+vim.o.swapfile = false
+
 --Make line numbers default
 vim.wo.number = true
 vim.wo.relativenumber = true
