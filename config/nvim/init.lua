@@ -1,4 +1,3 @@
-
 require('packerInstall')
 
 local use = require('packer').use
@@ -42,7 +41,8 @@ require('packer').startup(
         use 'ray-x/lsp_signature.nvim'
         use 'SirVer/ultisnips'
 
-        use 'ThePrimeagen/vim-be-good'
+        use 'tpope/vim-dispatch'
+        use 'vim-test/vim-test'
 
         use 'jens1205/first-nvim-plugin'
         -- Themes
@@ -147,8 +147,8 @@ vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', { noremap = true, silent = true 
 vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
 
 -- Quickfix list
-vim.api.nvim_set_keymap('n', '<leader>j', ':cprevious <CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>k', ':cnext <CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>k', ':cprevious <CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>j', ':cnext <CR>', { noremap = true, silent = true })
 
 -- Location list
 vim.api.nvim_set_keymap('n', '<leader>u', ':lprevious <CR>', { noremap = true, silent = true })
@@ -215,25 +215,30 @@ nvim_lsp.rust_analyzer.setup {
 nvim_lsp.gopls.setup {
 	on_attach = on_attach,
 	capabilities = capabilities,
-	cmd = {"gopls", "serve" },
+	--cmd = {"gopls", "serve" },
+    init_options = {
+         codelenses = {
+             test = true,
+        },
+    },
 	settings = {
-	      gopls = {
-		usePlaceholders = true,
-		allowImplicitNetworkAccess = true,
-		allowModfileModifications = true,
-		analyses = {
-			unusedparams = true,
-		},
-		staticcheck = true,
-		codelenses = {
-			tidy = true,
-			upgrade_dependency = true,
-			vendor = true,
-			generate = true,
-			test = true,
-		},
-	      },
-         },
+	    gopls = {
+            usePlaceholders = true,
+            allowImplicitNetworkAccess = true,
+            allowModfileModifications = true,
+            analyses = {
+                unusedparams = true,
+            },
+            staticcheck = true,
+            codelenses = {
+                tidy = true,
+                upgrade_dependency = true,
+                vendor = true,
+                generate = true,
+                test = true,
+            },
+	    },
+    },
 }
 
 function goimports(timeout_ms)
@@ -246,7 +251,7 @@ function goimports(timeout_ms)
     -- See the implementation of the textDocument/codeAction callback
     -- (lua/vim/lsp/handler.lua) for how to do this properly.
     local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
-    if not result or next(result) == nil then return end
+    if result == nil or not result or next(result) == nil then return end
     local actions = result[1].result
     if not actions then return end
     local action = actions[1]
@@ -306,9 +311,10 @@ vim.api.nvim_exec([[
 
 augroup Custom_LSP
     autocmd!
-    autocmd! BufWrite,BufEnter,InsertLeave * :lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
+    autocmd BufWrite,BufEnter,InsertLeave * :lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
 augroup END
 ]], false)
+    -- autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
 
 -- put LSP diagnostics into location list - END
 
@@ -492,15 +498,25 @@ endfunction
 
 autocmd FileType go nmap <leader>b :<C-u>call ZZZ_Build_go_files()<CR>
 autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
-autocmd FileType go nmap <leader>ta <Plug>(go-test)
-autocmd FileType go nmap <leader>tt <Plug>(go-test-func)
 
 autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
 autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
 autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
 autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+autocmd FileType go nmap <leader>ta <Plug>(go-test)
+autocmd FileType go nmap <leader>tt <Plug>(go-test-func)
 
 ]])
+
+-- vim-test
+vim.g['test#strategy']="dispatch"
+vim.api.nvim_set_keymap("n", "<leader>tn", ":TestNearest<CR>", {noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>tf", ":TestFile<CR>", {noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>ts", ":TestSuite<CR>", {noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>tl", ":TestLast<CR>", {noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>tv", ":TestVisit<CR>", {noremap = true, silent = true })
+
+-- end vim-test
 
 -- setup gitsigns
 require('gitsigns').setup()
