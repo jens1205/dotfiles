@@ -8,14 +8,8 @@ require('packer').startup(
         use 'tpope/vim-fugitive'
         use {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'} }
 
-        -- disabled - we try gitsigns although it is very new
-        -- use 'airblade/vim-gitgutter'       -- show Git diff in the sign column
-
         use 'tpope/vim-commentary'         -- "gc" to comment visual regions/lines
         use 'mkitt/tabline.vim'            -- pimp tab labels
-        
-        -- UI to select things (files, grep results, open buffers...)
-        -- use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
 
         use 'junegunn/fzf'
         use 'junegunn/fzf.vim'
@@ -27,7 +21,8 @@ require('packer').startup(
 
         use 'preservim/nerdtree'           -- File Explorer
 
-        use 'jiangmiao/auto-pairs'
+        use 'windwp/nvim-autopairs'
+        -- use 'jiangmiao/auto-pairs'
 
         use 'fatih/vim-go'                 -- golang
 
@@ -53,6 +48,8 @@ require('packer').startup(
 require('indent_blankline_config')
 require('lightline_config')
 require('ultisnips_config')
+require('nvim-compe-config')
+
 
 -- Global settings
 vim.o.shiftwidth=4
@@ -326,139 +323,6 @@ augroup END
 -- Set completeopt to have a better completion experience
 -- vim.o.completeopt="menuone,noinsert"
 vim.o.completeopt="menuone,noselect"
-
--- Compe setup
-require'compe'.setup {
-  enabled = true;
-  autocomplete = true;
-  debug = false;
-  min_length = 1;
-  preselect = 'enable';
-  throttle_time = 80;
-  source_timeout = 200;
-  incomplete_delay = 400;
-  max_abbr_width = 100;
-  max_kind_width = 100;
-  max_menu_width = 100;
-  documentation = true;
-
-  source = {
-    path = true;
-    buffer = true;
-    spell = true;
-    calc = false;
-    omni = false;
-    emoji = true;
-    
-    nvim_lsp = true;
-    nvim_lua = true;
-    ultisnips = true;
-    vsnip = false;
-    nvim_treesitter = true;
-  };
-}
-
-local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
-local check_back_space = function()
-    local col = vim.fn.col('.') - 1
-    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-        return true
-    else
-        return false
-    end
-end
-
--- Use (s-)tab to:
---- move to prev/next item in completion menuone
---- jump to prev/next snippet's placeholder
--- _G.tab_complete = function()
---   if vim.fn.pumvisible() == 1 then
---     return t "<C-n>"
---   -- elseif vim.fn.call("vsnip#available", {1}) == 1 then
---   --   return t "<Plug>(vsnip-expand-or-jump)"
---   -- elseif vim.fn['UltiSnips#CanExpandSnippet']() == 1 or vim.fn['UltiSnips#CanJumpForwards()'] == 1 then
---   elseif vim.fn['UltiSnips#CanJumpForwards']() == 1 then
---     -- vim.fn["UltiSnips#ExpandSnippetOrJump"]()
---     return t "<C-k>"
---   elseif check_back_space() then
---     return t "<Tab>"
---     -- return t "<C-b>"
---   else
---     return vim.fn['compe#complete']()
---   end
--- end
--- _G.s_tab_complete = function()
---   if vim.fn.pumvisible() == 1 then
---     return t "<C-p>"
---   elseif vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
---     -- vim.fn["UltiSnips#JumpBackwards"]()
---     return t "<C-h>"
---   else
---     return t "<S-Tab>"
---   end
--- end
--- Use (shift-)tab to:
---- move to prev/next item in completion menu
---- jump to the prev/next snippet placeholder
---- insert a simple tab
---- start the completion menu
-local is_prior_char_whitespace = function()
-  local col = vim.fn.col('.') - 1
-  if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-    return true
-  else
-    return false
-  end
-end
-_G.tab_complete = function()
-    print("entered tab_complete")
-
-    if vim.fn.pumvisible() == 1 then
-        print("popup menu visible")
-        return vim.api.nvim_replace_termcodes("<C-n>", true, true, true)
-
-      elseif vim.fn["UltiSnips#CanExpandSnippet"]() == 1 or vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-        print("ultisnips can expand snippet or can jump forward")
-        return vim.api.nvim_replace_termcodes("<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>", true, true, true)
-
-      elseif is_prior_char_whitespace() then
-        print("whitespace detected")
-        return vim.api.nvim_replace_termcodes("<Tab>", true, true, true)
-
-      else
-        print("default for tab")
-        return vim.fn['compe#complete']()
-      end
-end
-_G.s_tab_complete = function()
-    print("entered s_tab_complete")
-
-    if vim.fn.pumvisible() == 1 then
-        print("popup menu visible")
-        return vim.api.nvim_replace_termcodes("<C-p>", true, true, true)
-
-    elseif vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-        print("Ultisnis can jump backwards")
-        return vim.api.nvim_replace_termcodes("<C-R>=UltiSnips#JumpBackwards()<CR>", true, true, true)
-
-    else
-        print("default for s-tab")
-        return vim.api.nvim_replace_termcodes("<S-Tab>", true, true, true)
-    end
-end
-
-vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true, noremap = true})
-vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true, noremap = true})
-vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true, noremap = true})
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true, noremap = true})
-vim.api.nvim_set_keymap("i", "<C-Space>", "compe#complete()", {expr = true, noremap = true, silent = true })
-vim.api.nvim_set_keymap("i", "<CR>", "compe#confirm('<CR>')", {expr = true, noremap = true, silent = true })
-vim.api.nvim_set_keymap("i", "<C-e>", "compe#close('<C-e>')", {expr = true, noremap = true, silent = true })
-vim.api.nvim_set_keymap("i", "<C-f>", "compe#scroll({ 'delta': +4 })", {expr = true, noremap = true, silent = true })
-vim.api.nvim_set_keymap("i", "<C-d>", "compe#scroll({ 'delta': -4 })", {expr = true, noremap = true, silent = true })
 
 
 require'lsp_signature'.on_attach()
