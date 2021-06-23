@@ -50,6 +50,7 @@ require('indent_blankline_config')
 require('lightline_config')
 require('ultisnips_config')
 require('gitsigns').setup()
+require('nvim-autopairs').setup()  -- needs to be called before nvim-compe-config!
 require('nvim-compe-config')
 require('lsp-config')
 require('lsp_signature').on_attach()
