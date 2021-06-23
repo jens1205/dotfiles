@@ -35,6 +35,19 @@ require('packer').startup(
         -- use 'kabouzeid/nvim-lspinstall'    -- Install LSP-Servers in vim
         use 'hrsh7th/nvim-compe'           -- Autocompletion plugin
         use 'ray-x/lsp_signature.nvim'
+
+        use { "folke/trouble.nvim",
+            requires = "kyazdani42/nvim-web-devicons",
+            config = function()
+                require("trouble").setup {
+                    action_keys = {
+                        previous = "",
+                        next = "",
+                    },
+                }
+            end
+        }
+
         use 'SirVer/ultisnips'
 
         use 'tpope/vim-dispatch'
@@ -73,4 +86,3 @@ require('mappings')
 vim.o.termguicolors = true
 -- vim.g.onedark_terminal_italics = 2
 vim.cmd[[colorscheme onedark]]
-
