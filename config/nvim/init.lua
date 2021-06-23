@@ -42,7 +42,8 @@ require('packer').startup(
 
         use 'jens1205/first-nvim-plugin'
         -- Themes
-        use 'joshdick/onedark.vim'              -- Theme inspired by Atom
+        -- use 'joshdick/onedark.vim'              -- Theme inspired by Atom
+        use 'navarasu/onedark.nvim'
     end
 )
 
@@ -70,6 +71,6 @@ require('mappings')
 
 --Set colorscheme (order is important here)
 vim.o.termguicolors = true
-vim.g.onedark_terminal_italics = 2
+-- vim.g.onedark_terminal_italics = 2
 vim.cmd[[colorscheme onedark]]
 
