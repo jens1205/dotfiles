@@ -18,6 +18,7 @@ require('packer').startup(
         use { 'lukas-reineke/indent-blankline.nvim', branch="lua" } -- Add indentation guides even on blank lines
 
         use 'nvim-treesitter/nvim-treesitter' -- syntax highlighting
+        use 'p00f/nvim-ts-rainbow'
 
         use 'preservim/nerdtree'           -- File Explorer
 
@@ -54,7 +55,15 @@ require('nvim-autopairs').setup()  -- needs to be called before nvim-compe-confi
 require('nvim-compe-config')
 require('lsp-config')
 require('lsp_signature').on_attach()
-require('nvim-treesitter.configs').setup({ensure_installed = 'maintained', highlight = {enable = true}})
+require('nvim-treesitter.configs').setup({
+    ensure_installed = 'maintained',
+    highlight = {enable = true},
+    rainbow = {
+        enable = true,
+        extended_mode = true, -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
+        max_file_lines = 1000, -- Do not enable for files with more than 1000 lines, int
+    },
+ })
 require('vim-go-config')
 require('vim-test-config')
 require('mappings')
