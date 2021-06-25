@@ -1,12 +1,32 @@
 require('packerInstall')
 
+--- Check if a file or directory exists in this path
+local function require_plugin(plugin)
+    local plugin_prefix = vim.fn.stdpath("data") .. "/site/pack/packer/opt/"
+
+    local plugin_path = plugin_prefix .. plugin .. "/"
+    --	print('test '..plugin_path)
+    local ok, err, code = os.rename(plugin_path, plugin_path)
+    if not ok then
+        if code == 13 then
+            -- Permission denied, but it exists
+            return true
+        end
+    end
+    --	print(ok, err, code)
+    if ok then vim.cmd("packadd " .. plugin) end
+    return ok, err, code
+end
+
+
 local use = require('packer').use
 require('packer').startup(
     function()
         use 'wbthomason/packer.nvim'       -- Package manager
 
         use {'tpope/vim-fugitive', opt = true}
-        use {'lewis6991/gitsigns.nvim', opt = true, requires = {'nvim-lua/plenary.nvim'} }
+        use {'lewis6991/gitsigns.nvim', opt = true }
+        use {"nvim-lua/plenary.nvim", opt = true}
 
         use {'tpope/vim-commentary', opt = true}         -- "gc" to comment visual regions/lines
         use {'mkitt/tabline.vim', opt = true}            -- pimp tab labels
@@ -18,7 +38,6 @@ require('packer').startup(
         use { 'lukas-reineke/indent-blankline.nvim', branch="lua" } -- Add indentation guides even on blank lines
 
         use {'nvim-treesitter/nvim-treesitter', opt = true} -- syntax highlighting
-        use {"ahmedkhalf/lsp-rooter.nvim", opt = true} -- with this nvim-tree will follow you
         use {'p00f/nvim-ts-rainbow', opt = true}
 
         -- use {'preservim/nerdtree', opt = true}           -- File Explorer
@@ -40,7 +59,7 @@ require('packer').startup(
         -- use 'kabouzeid/nvim-lspinstall'    -- Install LSP-Servers in vim
         use {'hrsh7th/nvim-compe', opt = true}           -- Autocompletion plugin
         use {'ray-x/lsp_signature.nvim', opt = true}
-	use { "kyazdani42/nvim-web-devicons", opt = true}
+        use { "kyazdani42/nvim-web-devicons", opt = true}
 
         use { "folke/trouble.nvim", opt = true }
 
@@ -54,30 +73,30 @@ require('packer').startup(
         use {'navarasu/onedark.nvim', opt = true}
 
 
-        require_plugin("tpope/vim-fugitive")
-        require_plugin("lewis6991/gitsigns.nvim")
-        require_plugin("tpope/vim-commentary")
-	require_plugin("tabline.vim")
-	require_plugin("fzf")
-	require_plugin("fzf.vim")
-	require_plugin("lightline.vim")
-	require_plugin("indent-blankline.nvim")
-	require_plugin("nvim-treesitter")
-	require_plugin("lsp-rooter.nvim")
-	require_plugin("nvim-ts-rainbow")
-	require_plugin("nvim-tree.lua")
-	require_plugin("lsp-rooter.nvim")
-	require_plugin("rnvimr")
-	require_plugin("nvim-autopairs")
-	require_plugin("vim-go")
-	require_plugin("nvim-lspconfig")
-	require_plugin("nvim-compe")
-	require_plugin("lsp_signature.nvim")
-	require_plugin("trouble.nvim")
-	require_plugin("ultisnips")
-	-- require_plugin("vim-disptach")
-	-- require_plugin("vim-test")
-	require_plugin("onedark.nvim")
+        require_plugin("plenary.nvim")
+        require_plugin("vim-fugitive")
+        require_plugin("gitsigns.nvim")
+        require_plugin("vim-commentary")
+        require_plugin("tabline.vim")
+        require_plugin("fzf")
+        require_plugin("fzf.vim")
+        require_plugin("lightline.vim")
+        require_plugin("indent-blankline.nvim")
+        require_plugin("nvim-treesitter")
+        require_plugin("nvim-ts-rainbow")
+        require_plugin("nvim-tree.lua")
+        require_plugin("lsp-rooter.nvim")
+        require_plugin("rnvimr")
+        require_plugin("nvim-autopairs")
+        require_plugin("vim-go")
+        require_plugin("nvim-lspconfig")
+        require_plugin("nvim-compe")
+        require_plugin("lsp_signature.nvim")
+        require_plugin("trouble.nvim")
+        require_plugin("ultisnips")
+        -- require_plugin("vim-disptach")
+        -- require_plugin("vim-test")
+        require_plugin("onedark.nvim")
 
     end
 )
