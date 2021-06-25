@@ -4,6 +4,9 @@ vim.o.tabstop=4
 vim.o.softtabstop=4
 vim.o.expandtab=true
 
+vim.o.termguicolors = true -- set term gui colors most terminals support this
+
+
 --Incremental live completion
 vim.o.inccommand = "nosplit"
 
@@ -30,12 +33,18 @@ vim.o.updatetime = 250
 --Add map to enter paste mode
 vim.o.pastetoggle="<F3>"
 
+vim.o.clipboard = "unnamedplus" -- Copy paste between vim and everything else
+vim.o.showmode = false -- We don't need to see things like -- INSERT -- anymore
+
 -- No Backup / Swapfile
 vim.o.backup = false
+vim.o.writebackup = false
 
 -- Set completeopt to have a better completion experience
 -- vim.o.completeopt="menuone,noinsert"
 vim.o.completeopt="menuone,noselect"
+
+vim.o.guifont = "FiraCode Nerd Font:h17"
 
 --Make line numbers default
 vim.wo.number = true

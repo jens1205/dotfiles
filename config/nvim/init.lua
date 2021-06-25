@@ -34,6 +34,12 @@ require('packer').startup(
         use {'junegunn/fzf', opt = true}
         use {'junegunn/fzf.vim', opt = true}
 
+        -- Telescope
+        use {"nvim-lua/popup.nvim", opt = true}
+        use {"nvim-telescope/telescope.nvim", opt = true}
+        use {"nvim-telescope/telescope-fzy-native.nvim", opt = true}
+        use {"nvim-telescope/telescope-project.nvim", opt = true}
+
         use {'itchyny/lightline.vim', opt = true}        -- Fancier statusline
         use { 'lukas-reineke/indent-blankline.nvim', branch="lua" } -- Add indentation guides even on blank lines
 
@@ -73,6 +79,7 @@ require('packer').startup(
         use {'navarasu/onedark.nvim', opt = true}
 
 
+        require_plugin("nvim-web-devicons")
         require_plugin("plenary.nvim")
         require_plugin("vim-fugitive")
         require_plugin("gitsigns.nvim")
@@ -80,6 +87,9 @@ require('packer').startup(
         require_plugin("tabline.vim")
         require_plugin("fzf")
         require_plugin("fzf.vim")
+        require_plugin("popup.nvim")
+        require_plugin("telescope.nvim")
+        require_plugin('telescope-project.nvim')
         require_plugin("lightline.vim")
         require_plugin("indent-blankline.nvim")
         require_plugin("nvim-treesitter")
@@ -105,11 +115,13 @@ require('settings')
 require('indent_blankline_config')
 require('lightline_config')
 require('ultisnips_config')
+require("telescope-config")
 require('gitsigns').setup()
 require('nvim-autopairs').setup()  -- needs to be called before nvim-compe-config!
 require('nvim-compe-config')
 require('lsp-config')
 require('lsp_signature').on_attach()
+require('lsp-rooter').setup()
 require('nvim-treesitter.configs').setup({
     ensure_installed = 'maintained',
     highlight = {enable = true},
