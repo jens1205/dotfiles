@@ -31,8 +31,8 @@ require('packer').startup(
         use {'tpope/vim-commentary', opt = true}         -- "gc" to comment visual regions/lines
         use {'mkitt/tabline.vim', opt = true}            -- pimp tab labels
 
-        use {'junegunn/fzf', opt = true}
-        use {'junegunn/fzf.vim', opt = true}
+        -- use {'junegunn/fzf', opt = true}
+        -- use {'junegunn/fzf.vim', opt = true}
 
         -- Telescope
         use {"nvim-lua/popup.nvim", opt = true}
@@ -78,15 +78,14 @@ require('packer').startup(
         -- use 'joshdick/onedark.vim'              -- Theme inspired by Atom
         use {'navarasu/onedark.nvim', opt = true}
 
-
         require_plugin("nvim-web-devicons")
         require_plugin("plenary.nvim")
         require_plugin("vim-fugitive")
         require_plugin("gitsigns.nvim")
         require_plugin("vim-commentary")
         require_plugin("tabline.vim")
-        require_plugin("fzf")
-        require_plugin("fzf.vim")
+        -- require_plugin("fzf")
+        -- require_plugin("fzf.vim")
         require_plugin("popup.nvim")
         require_plugin("telescope.nvim")
         require_plugin('telescope-project.nvim')
@@ -110,7 +109,6 @@ require('packer').startup(
 
     end
 )
-
 require('settings')
 require('indent_blankline_config')
 require('lightline_config')
