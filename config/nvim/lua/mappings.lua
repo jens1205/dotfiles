@@ -32,9 +32,13 @@ vim.api.nvim_set_keymap('n', '<leader>i', ':lnext <CR>', { noremap = true, silen
 vim.api.nvim_set_keymap('n', '<TAB>', ':bnext<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<S-TAB>', ':bprevious<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '^', ':bdelete<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('i', '<C-^>', '<C-o><C-^><ESC>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('i', '<C-^>', '<ESC><C-^>', {noremap = true, silent = true})
 
--- Plugin related stuff
+--------------------------
+-- Plugin related stuff --
+--------------------------
+
+-- NvimTree
 vim.api.nvim_set_keymap('n', '<leader>nt', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>nj', ':NvimTreeFindFile<CR>', { noremap = true, silent = true })
 
