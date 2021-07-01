@@ -1,8 +1,10 @@
+# zmodload zsh/zprof
+
 # without this tmux is not workding. Don't know why
-export TERM="xterm-256color"
+#export TERM="xterm-256color"
 export GOPRIVATE="gitlab.devops.telekom.de/asf/*"
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/sdk/go1.15.7/bin:$HOME/go/bin
+export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/sdk/go1.16.5/bin:$HOME/go/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/a1167272/.oh-my-zsh"
@@ -13,7 +15,7 @@ export GIT_PAGER=cat
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="powerlevel9k/powerlevel9k"
-#ZSH_THEME="robbyrussell"
+# ZSH_THEME="robbyrussell"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -68,6 +70,8 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+export VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
+export VI_MODE_SET_CURSOR=true
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -75,12 +79,13 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  gradle
   kubectl
-# vi-mode
+  vi-mode
   web-search
   zsh-autosuggestions 
 )
+
+
 
 source $ZSH/oh-my-zsh.sh
 
@@ -121,8 +126,7 @@ alias firefox="open -a firefox"
 #alias adfs="ssh amk-agent01 -t 'cd /home/coinop/adfs-login-amk-agent && ./adfs-login.sh'"
 alias adfs="source /Users/a1167272/asf/teams/team-42/tools/adfs.sh -k"
 # ekstoken is a function now, see .oh-my-zsh/custom/function.zsh
-alias ekstoken_old="aws eks get-token --cluster-name team42-cluster-dev | jq -r .status.token | pbcopy"
-#alias swagger="docker run --rm -it -e GOPATH=$HOME/go:/go -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger"
+
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir rbenv vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
@@ -136,15 +140,10 @@ if [[ $(print -P "%#") =~ "#" ]]; then
 fi
 POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%{%B%F{black}%K{yellow}%} $user_symbol%{%b%f%k%F{yellow}%} %{%f%}"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/Users/a1167272/.sdkman"
-[[ -s "/Users/a1167272/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/a1167272/.sdkman/bin/sdkman-init.sh"
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
+# test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/terraform terraform
@@ -154,3 +153,10 @@ bindkey -v
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 alias luamake=/Users/a1167272/privat/lua-language-server/3rd/luamake/luamake
+eval "$(zoxide init zsh)"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/Users/a1167272/.sdkman"
+[[ -s "/Users/a1167272/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/a1167272/.sdkman/bin/sdkman-init.sh"
+
+# zprof
