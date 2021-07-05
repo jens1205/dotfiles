@@ -22,6 +22,8 @@ local on_attach = function(_client, bufnr)
   -- vim.api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '´', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist({open_loclist = false})<CR>', opts)
+
+  vim.lsp.codelens.refresh()
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -87,6 +89,7 @@ function goimports(timeout_ms)
     local actions = result[1].result
     if not actions then return end
     local action = actions[1]
+    -- print(vim.inspect(action))
 
     -- textDocument/codeAction can return either Command[] or CodeAction[]. If it
     -- is a CodeAction, it can have either an edit, a command or both. Edits
@@ -96,9 +99,11 @@ function goimports(timeout_ms)
         vim.lsp.util.apply_workspace_edit(action.edit)
       end
       if type(action.command) == "table" then
+        if action.command.arguments[1].Fix == "fill_struct" then return end
         vim.lsp.buf.execute_command(action.command)
       end
     else
+      if action.arguments[1].Fix == "fill_struct" then return end
       vim.lsp.buf.execute_command(action)
     end
 end

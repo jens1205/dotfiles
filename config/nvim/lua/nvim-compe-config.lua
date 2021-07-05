@@ -20,7 +20,7 @@ require'compe'.setup {
     calc = false;
     omni = false;
     emoji = true;
-    
+
     nvim_lsp = true;
     nvim_lua = true;
     ultisnips = true;

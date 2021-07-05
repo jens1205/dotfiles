@@ -25,8 +25,10 @@ require('packer').startup(
         use 'wbthomason/packer.nvim'       -- Package manager
 
         use {'tpope/vim-fugitive', opt = true}
-        use {'lewis6991/gitsigns.nvim', opt = true }
+        use {'lewis6991/gitsigns.nvim', opt = true}
         use {"nvim-lua/plenary.nvim", opt = true}
+        use {'TimUntersberger/neogit', opt = true}
+        use {'sindrets/diffview.nvim', opt = true}
 
         use {'tpope/vim-commentary', opt = true}         -- "gc" to comment visual regions/lines
         use {'mkitt/tabline.vim', opt = true}            -- pimp tab labels
@@ -81,6 +83,8 @@ require('packer').startup(
         require_plugin("nvim-web-devicons")
         require_plugin("plenary.nvim")
         require_plugin("vim-fugitive")
+        require_plugin("diffview.nvim")
+        require_plugin("neogit")
         require_plugin("gitsigns.nvim")
         require_plugin("vim-commentary")
         require_plugin("tabline.vim")
@@ -131,6 +135,7 @@ require('nvim-treesitter.configs').setup({
  })
 require('vim-go-config')
 require('vim-test-config')
+require('neogit-config')
 require('mappings')
 
 --Set colorscheme (order is important here)
