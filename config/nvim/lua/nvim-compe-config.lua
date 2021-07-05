@@ -39,38 +39,27 @@ local is_prior_char_whitespace = function()
   end
 end
 _G.tab_complete = function()
-    print("entered tab_complete")
-
     if vim.fn.pumvisible() == 1 then
-        print("popup menu visible")
         return vim.api.nvim_replace_termcodes("<C-n>", true, true, true)
 
       elseif vim.fn["UltiSnips#CanExpandSnippet"]() == 1 or vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-        print("ultisnips can expand snippet or can jump forward")
         return vim.api.nvim_replace_termcodes("<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>", true, true, true)
 
       elseif is_prior_char_whitespace() then
-        print("whitespace detected")
         return vim.api.nvim_replace_termcodes("<Tab>", true, true, true)
 
       else
-        print("default for tab")
         return vim.fn['compe#complete']()
       end
 end
 _G.s_tab_complete = function()
-    print("entered s_tab_complete")
-
     if vim.fn.pumvisible() == 1 then
-        print("popup menu visible")
         return vim.api.nvim_replace_termcodes("<C-p>", true, true, true)
 
     elseif vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-        print("Ultisnis can jump backwards")
         return vim.api.nvim_replace_termcodes("<C-R>=UltiSnips#JumpBackwards()<CR>", true, true, true)
 
     else
-        print("default for s-tab")
         return vim.api.nvim_replace_termcodes("<S-Tab>", true, true, true)
     end
 end
