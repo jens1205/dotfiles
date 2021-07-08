@@ -58,6 +58,16 @@ vim.api.nvim_set_keymap('n', '<leader>ft', [[<cmd>lua require('telescope.builtin
 vim.api.nvim_set_keymap('n', '<leader>fz', [[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<cr>]], { noremap = true, silent = true})
 
 -- Trouble
-vim.api.nvim_set_keymap('n', '<leader>dt', ':TroubleToggle<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>ld', ':TroubleToggle<CR>', { noremap = true, silent = true })
 
+-- DAP
+vim.api.nvim_set_keymap('n', '<Leader>dbb', [[<cmd>lua require'dap'.toggle_breakpoint()<cr>]], {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<Leader>dbc', [[<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>]], {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<Leader>dbl', [[<cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>]], {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<Leader>dc', [[<cmd>lua require'dap'.continue()<CR>]], {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<Leader>dl', [[<cmd>lua require'dap'.step_over()<CR>]], {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<Leader>dk', [[<cmd>lua require'dap'.step_out()<CR>]], {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<Leader>dj', [[<cmd>lua require'dap'.step_into()<CR>]], {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<Leader>dr', [[<cmd>lua require'dap'.repl_open()<CR>]], {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<Leader>dl', [[<cmd>lua require'dap'.run_last()<CR>]], {noremap = true, silent = true})
 

@@ -23,7 +23,6 @@ local on_attach = function(_client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '´', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist({open_loclist = false})<CR>', opts)
 
-  vim.lsp.codelens.refresh()
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -44,10 +43,18 @@ nvim_lsp.rust_analyzer.setup {
 	on_attach = on_attach,
 }
 
+
 -- gopls
 -- taken from https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-config
+local go_on_attach = function(default_attach_func)
+    return function(_client, bufnr)
+        default_attach_func()
+        vim.lsp.codelens.refresh()
+    end
+end
+
 nvim_lsp.gopls.setup {
-	on_attach = on_attach,
+	on_attach = go_on_attach(on_attach),
 	capabilities = capabilities,
 	--cmd = {"gopls", "serve" },
     init_options = {
@@ -85,7 +92,7 @@ function goimports(timeout_ms)
     -- See the implementation of the textDocument/codeAction callback
     -- (lua/vim/lsp/handler.lua) for how to do this properly.
     local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
-    if result == nil or not result or next(result) == nil then return end
+    if result == nil or result[1] == nil or not result or next(result) == nil then return end
     local actions = result[1].result
     if not actions then return end
     local action = actions[1]

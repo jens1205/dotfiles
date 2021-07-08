@@ -55,6 +55,7 @@ require('packer').startup(
 
         use {'tpope/vim-dispatch'}
         -- use {'vim-test/vim-test'}
+        use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
 
         -- Themes
         use {'navarasu/onedark.nvim'}
@@ -85,7 +86,11 @@ require('nvim-treesitter.configs').setup({
 require('vim-go-config')
 -- require('vim-test-config')
 require('neogit-config')
+require('dap-config')
+
 require('mappings')
+
+
 
 --Set colorscheme (order is important here)
 vim.o.termguicolors = true
