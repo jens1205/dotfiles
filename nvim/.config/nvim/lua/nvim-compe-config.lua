@@ -74,6 +74,7 @@ _G.s_tab_complete = function()
     end
 end
 
+-- Use comma to select next parameter if in snippet mode
 _G.comma = function()
     if vim.fn.call("vsnip#available", { 1 }) == 1 then
       return t "<Plug>(vsnip-expand-or-jump)"

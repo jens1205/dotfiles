@@ -1,4 +1,5 @@
 -- vim-go
+vim.g.go_echo_go_info=0
 vim.g.go_version_warning=1
 vim.g.go_code_completion_enabled=0 -- use nvim-compe instead
 vim.g.go_test_show_name=1
@@ -6,7 +7,7 @@ vim.g.go_fmt_autosave=1
 vim.g.go_imports_autosave=0 -- already used nvim-lsp
 vim.g.go_mod_fmt_autosave=1
 vim.g.go_def_mapping_enabled=0
-vim.g.go_gopls_enabled=1  -- see what happens
+vim.g.go_gopls_enabled=0  -- see what happens
 vim.g.go_highlight_string_spellcheck=0
 vim.g.go_highlight_format_strings=0
 vim.g.go_highlight_diagnostic_errors=0
