@@ -23,7 +23,8 @@ require('packer').startup(
         use {"nvim-telescope/telescope-project.nvim"}
 
         use {'itchyny/lightline.vim'}        -- Fancier statusline
-        use { 'lukas-reineke/indent-blankline.nvim'} -- Add indentation guides even on blank lines
+        use {'lukas-reineke/indent-blankline.nvim'} -- Add indentation guides even on blank lines
+        use {'romgrk/barbar.nvim', requires = {"kyazdani42/nvim-web-devicons"}}
 
         use {'nvim-treesitter/nvim-treesitter'} -- syntax highlighting
         use {'p00f/nvim-ts-rainbow'}
@@ -51,7 +52,9 @@ require('packer').startup(
 
         use { "folke/trouble.nvim"}
 
-        use {'SirVer/ultisnips'}
+        -- use {'SirVer/ultisnips'}
+        use { "hrsh7th/vim-vsnip"}
+        use { "rafamadriz/friendly-snippets"}
 
         use {'tpope/vim-dispatch'}
         -- use {'vim-test/vim-test'}
