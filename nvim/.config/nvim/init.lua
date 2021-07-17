@@ -24,7 +24,7 @@ require('packer').startup(
 
         use {'itchyny/lightline.vim'}        -- Fancier statusline
         use {'lukas-reineke/indent-blankline.nvim'} -- Add indentation guides even on blank lines
-        use {'romgrk/barbar.nvim', requires = {"kyazdani42/nvim-web-devicons"}}
+        -- use {'romgrk/barbar.nvim', requires = {"kyazdani42/nvim-web-devicons"}}
 
         use {'nvim-treesitter/nvim-treesitter'} -- syntax highlighting
         use {'p00f/nvim-ts-rainbow'}
