@@ -66,7 +66,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Change preview window location
-vim.g.splitbelow = true
+-- vim.g.splitbelow = true
 
 vim.bo.spelllang="en_us"
 
