@@ -43,6 +43,7 @@ vim.api.nvim_set_keymap('n', '<leader>nt', ':NvimTreeToggle<CR>', { noremap = tr
 vim.api.nvim_set_keymap('n', '<leader>nj', ':NvimTreeFindFile<CR>', { noremap = true, silent = true })
 
 -- Telescope
+vim.api.nvim_set_keymap('n', '<leader>fd', [[<cmd>lua require('telescope.builtin').file_browser()<cr>]], { noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Leader>fb', ':Telescope buffers<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Leader>,', ':Telescope buffers<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Leader>faf', ':Telescope find_files<CR>', {noremap = true, silent = true})
@@ -55,8 +56,11 @@ vim.api.nvim_set_keymap('n', '<Leader>fgc', ':Telescope git_commits<CR>', {norem
 vim.api.nvim_set_keymap('n', '<Leader>fgC', ':Telescope git_bcommits<CR>', {noremap = true, silent = true}) -- current file
 vim.api.nvim_set_keymap('n', '<Leader>fld', ':Telescope lsp_workspace_diagnostics<cr>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Leader>flD', ':Telescope lsp_document_diagnostics<cr>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>flr', [[<cmd>lua require('telescope.builtin').lsp_references<cr>]], { noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<leader>ft', [[<cmd>lua require('telescope.builtin').live_grep()<cr>]], { noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<leader>fz', [[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<cr>]], { noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>f*', [[<cmd>lua require('telescope.builtin').grep_string()<cr>]], { noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>fp', [[<cmd>lua require('telescope').extensions.project.project{}<cr>]], { noremap = true, silent = true})
 
 -- Trouble
 vim.api.nvim_set_keymap('n', '<leader>ld', ':TroubleToggle<CR>', { noremap = true, silent = true })

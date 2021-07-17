@@ -71,7 +71,15 @@ require('telescope').setup {
             }
         }
     },
-    extensions = {fzy_native = {override_generic_sorter = false, override_file_sorter = true}}
+    extensions = {
+        fzy_native = {override_generic_sorter = false, override_file_sorter = true},
+        project = {
+             base_dirs = {
+               '~/privat',
+               {'~/asf', max_depth = 5},
+             }
+         },
+    }
 }
 
 require'telescope'.load_extension('project')
