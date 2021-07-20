@@ -7,14 +7,15 @@ export GOPRIVATE="gitlab.devops.telekom.de/asf/*"
 export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/sdk/go1.16.5/bin:$HOME/go/bin
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/a1167272/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 export GIT_PAGER=cat
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="powerlevel9k/powerlevel9k"
+# ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 # ZSH_THEME="robbyrussell"
 
 # Set list of themes to pick from when loading at random
