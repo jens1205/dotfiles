@@ -1,6 +1,6 @@
 require('packerInstall')
 
--- vim.cmd "autocmd BufWritePost init.lua PackerCompile"
+vim.cmd "autocmd BufWritePost init.lua PackerCompile"
 vim.cmd "au! BufWritePost */<plugins-dir>/*.lua lua require('packer').compile()"
 
 local use = require('packer').use
@@ -89,6 +89,16 @@ require('packer').startup(
         use {'tpope/vim-dispatch'}
         -- use {'vim-test/vim-test', config = function() require('vim-test-config') end}
         use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"}, config = function() require('dap-config') end }
+
+        use {
+            'jens1205/rest.nvim',
+            branch = 'rest-import-file',
+            -- 'NTBBloodbath/rest.nvim',
+            requires = { 'nvim-lua/plenary.nvim' },
+            config = function()
+                require('rest-nvim').setup()
+            end
+        }
 
         -- Themes
         use {'navarasu/onedark.nvim'}

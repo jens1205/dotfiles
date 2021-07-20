@@ -46,7 +46,7 @@ vim.api.nvim_set_keymap('n', '<leader>nj', ':NvimTreeFindFile<CR>', { noremap = 
 vim.api.nvim_set_keymap('n', '<leader>fd', [[<cmd>lua require('telescope.builtin').file_browser()<cr>]], { noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Leader>fb', ':Telescope buffers<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Leader>,', ':Telescope buffers<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', '<Leader>faf', ':Telescope find_files<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<Leader>faf', [[<cmd>lua require('telescope.builtin').find_files({hidden=true})<cr>]], {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Leader>ff', ':Telescope find_files<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Leader>fgf', [[<Cmd>lua require('telescope.builtin').git_files()<CR>]], {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Leader>fof', ':Telescope oldfiles<CR>', {noremap = true, silent = true})
@@ -76,3 +76,6 @@ vim.api.nvim_set_keymap('n', '<Leader>dj', [[<cmd>lua require'dap'.step_into()<C
 vim.api.nvim_set_keymap('n', '<Leader>dr', [[<cmd>lua require'dap'.repl_open()<CR>]], {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Leader>dl', [[<cmd>lua require'dap'.run_last()<CR>]], {noremap = true, silent = true})
 
+-- rest.nvim
+
+vim.api.nvim_set_keymap('n', '<Leader>e', [[<cmd>lua require'rest-nvim'.run()<cr>]], {noremap = true, silent = true})
