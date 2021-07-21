@@ -92,7 +92,7 @@ require('packer').startup(
 
         use {
             'jens1205/rest.nvim',
-            branch = 'rest-import-file',
+            branch = 'improvements',
             -- 'NTBBloodbath/rest.nvim',
             requires = { 'nvim-lua/plenary.nvim' },
             config = function()
