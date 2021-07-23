@@ -91,9 +91,9 @@ require('packer').startup(
         use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"}, config = function() require('dap-config') end }
 
         use {
-            'jens1205/rest.nvim',
-            branch = 'improvements',
-            -- 'NTBBloodbath/rest.nvim',
+            -- 'jens1205/rest.nvim',
+            -- branch = 'non-json-body',
+            'NTBBloodbath/rest.nvim',
             requires = { 'nvim-lua/plenary.nvim' },
             config = function()
                 require('rest-nvim').setup()

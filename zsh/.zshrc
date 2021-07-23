@@ -126,6 +126,7 @@ alias git='LANG=en_GB git'
 alias firefox="open -a firefox"
 #alias adfs="ssh amk-agent01 -t 'cd /home/coinop/adfs-login-amk-agent && ./adfs-login.sh'"
 alias adfs="source /Users/a1167272/asf/teams/team-42/tools/adfs.sh -k"
+alias nvimdev='nvim --cmd "set rtp+=$(pwd)"'
 # ekstoken is a function now, see .oh-my-zsh/custom/function.zsh
 
 
