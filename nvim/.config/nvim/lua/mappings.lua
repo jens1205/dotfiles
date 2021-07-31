@@ -9,7 +9,7 @@ vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true})
 -- keep cursor in place when joining lines
 vim.api.nvim_set_keymap('n', 'J', 'mzJ`z', { noremap = true, silent = true})
 
--- keep cursour centered when searching
+-- keep cursour centered when searching (and open folds)
 vim.api.nvim_set_keymap('n', 'n', 'nzzzv', { noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'N', 'Nzzzv', { noremap = true, silent = true})
 
