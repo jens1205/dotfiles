@@ -6,6 +6,9 @@ vim.api.nvim_set_keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { noremap = true,
 -- Y yank until the end of line
 vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true})
 
+-- keep cursor in place when joining lines
+vim.api.nvim_set_keymap('n', 'J', 'mzJ`z', { noremap = true, silent = true})
+
 -- easier window movement
 vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', { noremap = true, silent = true })
