@@ -1,5 +1,18 @@
 local actions = require('telescope.actions')
 local trouble = require("trouble.providers.telescope")
+
+local base_dirs
+if string.find(vim.fn.stdpath("config"), "/home/jensgersdorf") then
+    base_dirs = {
+      '~/workspace',
+    }
+else
+    base_dirs = {
+      '~/privat',
+      {'~/asf', max_depth = 5},
+    }
+end
+
 -- Global remapping
 ------------------------------
 -- '--color=never',
@@ -74,10 +87,11 @@ require('telescope').setup {
     extensions = {
         fzy_native = {override_generic_sorter = false, override_file_sorter = true},
         project = {
-             base_dirs = {
-               '~/privat',
-               {'~/asf', max_depth = 5},
-             }
+            base_dirs = base_dirs,
+             -- base_dirs = {
+             --   '~/privat',
+             --   {'~/asf', max_depth = 5},
+             -- }
          },
     }
 }
