@@ -9,7 +9,7 @@ vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true})
 -- keep cursor in place when joining lines
 vim.api.nvim_set_keymap('n', 'J', 'mzJ`z', { noremap = true, silent = true})
 
--- keep cursour centered when searching (and open folds)
+-- keep cursor centered when searching (and open folds)
 vim.api.nvim_set_keymap('n', 'n', 'nzzzv', { noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'N', 'Nzzzv', { noremap = true, silent = true})
 
@@ -26,6 +26,15 @@ vim.api.nvim_set_keymap('v', '>', '>gv', {noremap = true, silent = true})
 -- Move selected line / block of text in visual mode
 vim.api.nvim_set_keymap('x', 'K', ':move \'<-2<CR>gv-gv', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('x', 'J', ':move \'>+1<CR>gv-gv', {noremap = true, silent = true})
+
+-- undo breakpoints for certain signal characters
+-- vim.api.nvim_set_keymap('i', ',', ',<c-g>u', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('i', '.', '.<c-g>u', {noremap = true, silent = true})
+
+-- jumplist mutation for large relative jumps
+vim.api.nvim_set_keymap('n','k', '(v:count > 5 ? "m\'" . v:count : "") . \'k\'', {noremap = true, expr = true, silent = true})
+vim.api.nvim_set_keymap('n','j', '(v:count > 5 ? "m\'" . v:count : "") . \'j\'', {noremap = true, expr = true, silent = true})
+
 
 -- Quickfix list
 vim.api.nvim_set_keymap('n', '<leader>k', ':cprevious <CR>', { noremap = true, silent = true })
