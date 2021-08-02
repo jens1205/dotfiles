@@ -1,6 +1,7 @@
 #!/bin/sh
 KITTY_THEME_DIR="$HOME/.local/share/kitty-themes"
 POWERLEVEL_THEME_DIR=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+ZSH_AUTOSUGGESTIONS_DIR=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 FONT_DIR="$HOME/.local/share/fonts"
 
 if [ ! -d "$KITTY_THEME_DIR" ]; then
@@ -13,6 +14,12 @@ if [ ! -d "$POWERLEVEL_THEME_DIR" ]; then
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$POWERLEVEL_THEME_DIR"
 else
     echo "powerlevel10k already installed"
+fi
+
+if [ ! -d "$ZSH_AUTOSUGGESTIONS_DIR" ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_AUTOSUGGESTIONS_DIR"
+else
+    echo "zsh-autosuggestions already installed"
 fi
 
 if [ ! -d "${FONT_DIR}" ]; then
