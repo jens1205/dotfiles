@@ -20,7 +20,7 @@ require('packer').startup(
         use {'TimUntersberger/neogit',
             requires = 'nvim-lua/plenary.nvim',
             config = function()
-                require('neogit-config')
+                require('config.neogit')
             end}
         use {'sindrets/diffview.nvim'}
 
@@ -31,19 +31,19 @@ require('packer').startup(
         use {"nvim-telescope/telescope.nvim",
             requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
             config = function()
-                require("telescope-config")
+                require("config.telescope")
             end}
         use {"nvim-telescope/telescope-fzy-native.nvim"}
         use {"nvim-telescope/telescope-project.nvim"}
 
         use {'itchyny/lightline.vim',  -- Fancier statusline
             config = function()
-                require('lightline_config')
+                require('config.lightline')
             end}
 
         use {'lukas-reineke/indent-blankline.nvim', -- Add indentation guides even on blank lines
             config = function()
-                require('indent_blankline_config')
+                require('config.indent-blankline')
             end}
 
         -- use {'romgrk/barbar.nvim', requires = {"kyazdani42/nvim-web-devicons"}}
@@ -72,23 +72,23 @@ require('packer').startup(
 
         -- LSP stuff
         use {'neovim/nvim-lspconfig', config = function()
-            require('lsp-config') end}        -- Collection of configurations for built-in LSP client
+            require('config.lsp') end}        -- Collection of configurations for built-in LSP client
         -- lspinstall is nice - but if a local language server is also installed, this leads to problems
         -- example: show documentation of golang fields always entered the hover window
         -- to fix we would need to configure nvim lsp to use only the path used by lspconfig
         -- use 'kabouzeid/nvim-lspinstall'    -- Install LSP-Servers in vim
-        use {'hrsh7th/nvim-compe', config = function() require('nvim-compe-config') end }           -- Autocompletion plugin
+        use {'hrsh7th/nvim-compe', config = function() require('config.nvim-compe') end }           -- Autocompletion plugin
         use {'ray-x/lsp_signature.nvim', config = function() require "lsp_signature".setup() end}
 
         use { "folke/trouble.nvim"}
 
-        -- use {'SirVer/ultisnips', config = function() require('ultisnips_config') end}
+        -- use {'SirVer/ultisnips', config = function() require('config.ultisnips') end}
         use { "hrsh7th/vim-vsnip"}
         use { "rafamadriz/friendly-snippets"}
 
         use {'tpope/vim-dispatch'}
-        -- use {'vim-test/vim-test', config = function() require('vim-test-config') end}
-        use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"}, config = function() require('dap-config') end }
+        -- use {'vim-test/vim-test', config = function() require('config.vim-test') end}
+        use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"}, config = function() require('config.dap') end }
 
         use {
             -- 'jens1205/rest.nvim',
