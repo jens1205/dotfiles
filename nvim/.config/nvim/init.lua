@@ -68,7 +68,7 @@ require('packer').startup(
 
         use {'windwp/nvim-autopairs', config = function() require('nvim-autopairs').setup() end }  -- needs to be called before nvim-compe-config!
 
-        use {'fatih/vim-go', ft="go", run = ':GoInstallBinaries', config = function() require('vim-go-config') end }                 -- golang
+        use {'fatih/vim-go', ft="go", run = ':GoInstallBinaries', config = function() require('config.vim-go') end }                 -- golang
 
         -- LSP stuff
         use {'neovim/nvim-lspconfig', config = function()
