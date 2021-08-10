@@ -116,7 +116,8 @@ function goimports(timeout_ms)
 end
 
 vim.api.nvim_command('autocmd BufWritePre *.go lua goimports(1000)')
--- vim.api.nvim_command('autocmd BufWritePre *.go lua vim.lsp.buf.formatting()') -- didn't work, file was changed twice
+vim.api.nvim_command('autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync(nil, 1000)')
+vim.api.nvim_command('autocmd BufWritePre go.mod lua vim.lsp.buf.formatting_sync(nil, 1000)')
 -- gopls end
 
 -- local sumneko_root_path = vim.fn.getenv("HOME").."/.local/bin/sumneko_lua" -- Change to your sumneko root installation
