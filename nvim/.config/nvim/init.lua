@@ -49,6 +49,7 @@ require('packer').startup(
         -- use {'romgrk/barbar.nvim', requires = {"kyazdani42/nvim-web-devicons"}}
 
         use {'nvim-treesitter/nvim-treesitter',
+            requires = {'p00f/nvim-ts-rainbow'},
             run = ':TSUpdate',
             config = function()
                 require('nvim-treesitter.configs').setup({
@@ -61,7 +62,6 @@ require('packer').startup(
                     },
                  })
             end} -- syntax highlighting
-        use {'p00f/nvim-ts-rainbow'}
 
         use {"kyazdani42/nvim-tree.lua", requires = {'kyazdani42/nvim-web-devicons'}}
         use {"ahmedkhalf/lsp-rooter.nvim", config = function() require('lsp-rooter').setup() end} -- with this nvim-tree will follow you
