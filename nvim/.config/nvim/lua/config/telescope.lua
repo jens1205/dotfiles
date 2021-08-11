@@ -97,6 +97,7 @@ require('telescope').setup {
 }
 
 require'telescope'.load_extension('project')
+require'mappings'.telescope()
 
 -- Set wrap for telescope preview window
 vim.api.nvim_exec([[

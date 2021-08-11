@@ -52,18 +52,25 @@ require('packer').startup(
             requires = {'p00f/nvim-ts-rainbow'},
             run = ':TSUpdate',
             config = function()
-                require('nvim-treesitter.configs').setup({
-                    ensure_installed = 'maintained',
-                    highlight = {enable = true},
-                    rainbow = {
-                        enable = true,
-                        extended_mode = true, -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
-                        max_file_lines = 1000, -- Do not enable for files with more than 1000 lines, int
-                    },
-                 })
-            end} -- syntax highlighting
+                        require('nvim-treesitter.configs').setup({
+                            ensure_installed = 'maintained',
+                            highlight = {enable = true},
+                            rainbow = {
+                                enable = true,
+                                extended_mode = true, -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
+                                max_file_lines = 1000, -- Do not enable for files with more than 1000 lines, int
+                            },
+                         })
+                     end
+        }
 
-        use {"kyazdani42/nvim-tree.lua", requires = {'kyazdani42/nvim-web-devicons'}}
+        use {"kyazdani42/nvim-tree.lua",
+            requires = {'kyazdani42/nvim-web-devicons'},
+            config = function()
+                        require'mappings'.nvimtree()
+                     end
+        }
+
         use {"ahmedkhalf/lsp-rooter.nvim", config = function() require('lsp-rooter').setup() end} -- with this nvim-tree will follow you
 
         use {'windwp/nvim-autopairs', config = function() require('nvim-autopairs').setup() end }  -- needs to be called before nvim-compe-config!
@@ -80,15 +87,31 @@ require('packer').startup(
         use {'hrsh7th/nvim-compe', config = function() require('config.nvim-compe') end }           -- Autocompletion plugin
         use {'ray-x/lsp_signature.nvim', config = function() require "lsp_signature".setup() end}
 
-        use { "folke/trouble.nvim"}
+        use { "folke/trouble.nvim",
+             config = function()
+                        require'mappings'.trouble()
+                      end
+        }
 
         -- use {'SirVer/ultisnips', config = function() require('config.ultisnips') end}
         use { "hrsh7th/vim-vsnip"}
         use { "rafamadriz/friendly-snippets"}
 
-        use {'tpope/vim-dispatch'}
+        -- use {'tpope/vim-dispatch'}
         -- use {'vim-test/vim-test', config = function() require('config.vim-test') end}
-        use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"}, config = function() require('config.dap') end }
+         use { "rcarriga/vim-ultest",
+                config = "require('config.ultest')",
+                run = ":UpdateRemotePlugins",
+                requires = {"vim-test/vim-test"}
+        }
+
+        -- DAP
+        use {'mfussenegger/nvim-dap'}
+        use {'nvim-telescope/telescope-dap.nvim'}
+        use {'theHamsta/nvim-dap-virtual-text'}
+        use {'rcarriga/nvim-dap-ui'}
+        -- use {'Pocco81/DAPInstall.nvim'}
+        use {'jbyuki/one-small-step-for-vimkind'}
 
         use {
             -- 'jens1205/rest.nvim',
@@ -106,14 +129,12 @@ require('packer').startup(
 
     end
 )
--- require('vim-go-config')
+
 require('settings')
 
-require('mappings')
-
-
+require('mappings').general()
+require('dbg')
 
 --Set colorscheme (order is important here)
 vim.o.termguicolors = true
--- vim.g.onedark_terminal_italics = 2
 vim.cmd[[colorscheme onedark]]
