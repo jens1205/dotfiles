@@ -54,6 +54,7 @@ require('packer').startup(
             config = function()
                         require('nvim-treesitter.configs').setup({
                             ensure_installed = 'maintained',
+                            indent = {enable = true},
                             highlight = {enable = true},
                             rainbow = {
                                 enable = true,
@@ -73,7 +74,7 @@ require('packer').startup(
 
         use {"ahmedkhalf/lsp-rooter.nvim", config = function() require('lsp-rooter').setup() end} -- with this nvim-tree will follow you
 
-        use {'windwp/nvim-autopairs', config = function() require('nvim-autopairs').setup() end }  -- needs to be called before nvim-compe-config!
+        use {'windwp/nvim-autopairs', config = function() require('config.nvim-autopairs') end }  -- needs to be called before nvim-compe-config!
 
         use {'fatih/vim-go', ft="go", run = ':GoInstallBinaries', config = function() require('config.vim-go') end }                 -- golang
 
