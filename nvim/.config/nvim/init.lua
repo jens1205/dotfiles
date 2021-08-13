@@ -121,6 +121,7 @@ require('packer').startup(
             requires = { 'nvim-lua/plenary.nvim' },
             config = function()
                 require('rest-nvim').setup()
+                require('mappings').restnvim()
             end
         }
 
