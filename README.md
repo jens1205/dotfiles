@@ -1,6 +1,6 @@
 # dotfiles
 
-Needs [stow](https://www.gnu.org/software/stow/) to use the install.sh skript
+Needs [stow](https://www.gnu.org/software/stow/) to use the install.sh skript.
 
 
 ## italics in iterm2
