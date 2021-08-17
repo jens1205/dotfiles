@@ -110,11 +110,13 @@ local function install()
 
             -- use {'tpope/vim-dispatch'}
             -- use {'vim-test/vim-test', config = function() require('config.vim-test') end}
-             use { "rcarriga/vim-ultest",
-                    config = "require('config.ultest')",
-                    run = ":UpdateRemotePlugins",
-                    requires = {"vim-test/vim-test"}
-            }
+             -- use { "rcarriga/vim-ultest",
+             --        config = "require('config.ultest')",
+             --        run = ":UpdateRemotePlugins",
+             --        requires = {"vim-test/vim-test"},
+             --        opt = true,
+             --        cmd = {'Ultest'},
+            -- }
 
             -- DAP
             use {'mfussenegger/nvim-dap'}
