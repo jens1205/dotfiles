@@ -78,6 +78,8 @@ local function install()
             use {"kyazdani42/nvim-tree.lua",
                 requires = {'kyazdani42/nvim-web-devicons'},
                 config = function()
+                            vim.g.nvim_tree_follow = 1
+                            vim.g.nvim_tree_highlight_opened_files = 1
                             require'mappings'.nvimtree()
                          end
             }
