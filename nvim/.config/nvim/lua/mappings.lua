@@ -174,5 +174,10 @@ function mappings.lsp(bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist({open_loclist = false})<CR>', opts)
 end
 
+function mappings.neogit()
+    map('n', '<leader>g', '<cmd>lua require"neogit".open({kind = "split_above"})<CR>')
+end
+
+
 
 return mappings

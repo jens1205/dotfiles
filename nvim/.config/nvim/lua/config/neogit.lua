@@ -26,3 +26,4 @@ neogit.setup {
   }
 }
 
+require'mappings'.neogit()
