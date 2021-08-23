@@ -185,7 +185,7 @@ function mappings.lsp(bufnr)
 end
 
 function mappings.neogit()
-    map('n', '<leader>g', '<cmd>lua require"neogit".open({kind = "split_above"})<CR>')
+    map('n', '<leader>G', '<cmd>lua require"neogit".open({kind = "split_above"})<CR>')
 end
 
 

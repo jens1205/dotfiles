@@ -27,7 +27,6 @@ nvim_lsp.rust_analyzer.setup {
 
 
 -- gopls
--- taken from https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-config
 local go_on_attach = function(default_attach_func)
     return function(_client, bufnr)
         default_attach_func()
@@ -64,6 +63,7 @@ nvim_lsp.gopls.setup {
     },
 }
 
+-- taken from https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-config
 function goimports(timeout_ms)
     local context = { source = { organizeImports = true } }
     vim.validate { context = { context, "t", true } }
