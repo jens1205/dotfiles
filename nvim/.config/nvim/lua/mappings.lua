@@ -74,8 +74,7 @@ function mappings.nvimtree()
 end
 
 function mappings.telescope()
-    vim.api.nvim_set_keymap('n', '<leader>fd', [[<cmd>lua require('telescope.builtin').file_browser()<cr>]], { noremap = true, silent = true})
-    vim.api.nvim_set_keymap('n', '<Leader>fb', ':Telescope buffers<CR>', {noremap = true, silent = true})
+    vim.api.nvim_set_keymap('n', '<leader>fb', [[<cmd>lua require('telescope.builtin').file_browser()<cr>]], { noremap = true, silent = true})
     vim.api.nvim_set_keymap('n', '<Leader>,', ':Telescope buffers<CR>', {noremap = true, silent = true})
     vim.api.nvim_set_keymap('n', '<Leader>faf', [[<cmd>lua require('telescope.builtin').find_files({hidden=true, no_ignore=true})<cr>]], {noremap = true, silent = true})
     vim.api.nvim_set_keymap('n', '<Leader>ff', ':Telescope find_files<CR>', {noremap = true, silent = true})
@@ -146,6 +145,17 @@ function mappings.dap()
 
     -- nvim-dap-ui
     map('n', '<leader>dui', '<cmd>lua require"dapui".toggle()<CR>')
+
+    -- target mapping
+    map('n', '<A-Left>', '<cmd>lua require"dap".continue()<CR>')
+    map('n', '<A-Right>', '<cmd>lua require"dap".step_over()<CR>')
+    map('n', '<A-Down>', '<cmd>lua require"dap".step_into()<CR>')
+    map('n', '<A-Up>', '<cmd>lua require"dap".step_out()<CR>')
+    map('n', '<A-CR>', '<cmd>lua require"dap".toggle_breakpoint()<CR>')
+    map('n', '<leader>fdc', '<cmd>lua require"telescope".extensions.dap.commands{}<CR>')
+    map('n', '<leader>fdb', '<cmd>lua require"telescope".extensions.dap.list_breakpoints{}<CR>')
+
+
 end
 
 function mappings.restnvim()
