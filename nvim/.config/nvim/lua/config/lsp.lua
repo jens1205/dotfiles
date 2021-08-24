@@ -134,15 +134,17 @@ nvim_lsp.sumneko_lua.setup {
 vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
 
 -- put LSP diagnostics into location list - START
+-- WARnING! Does open a non closable window on the bottom with neovim v0.6
+-- I don't need it as I am using trouble...
 
-vim.api.nvim_exec([[
+--vim.api.nvim_exec([[
 
-augroup Custom_LSP
-    autocmd!
-    autocmd BufWrite,BufEnter,InsertLeave * :lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
-augroup END
-]], false)
-    -- autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
+--augroup Custom_LSP
+--    autocmd!
+--    autocmd BufWrite,BufEnter,InsertLeave * :lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
+--augroup END
+--]], false)
+-- autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
 
 -- put LSP diagnostics into location list - END
 

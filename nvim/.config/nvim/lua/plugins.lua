@@ -35,7 +35,7 @@ local function install()
             use {'sindrets/diffview.nvim'}
 
             use {'tpope/vim-commentary'}         -- "gc" to comment visual regions/lines
-            use {'mkitt/tabline.vim'}            -- pimp tab labels
+            -- use {'mkitt/tabline.vim'}            -- pimp tab labels
 
             -- Telescope
             use {"nvim-telescope/telescope.nvim",
@@ -55,8 +55,6 @@ local function install()
                 config = function()
                     require('config.indent-blankline')
                 end}
-
-            -- use {'romgrk/barbar.nvim', requires = {"kyazdani42/nvim-web-devicons"}}
 
             use {'nvim-treesitter/nvim-treesitter',
                 requires = {'p00f/nvim-ts-rainbow'},
@@ -92,11 +90,13 @@ local function install()
 
             -- LSP stuff
             use {'neovim/nvim-lspconfig', config = function()
-                require('config.lsp') end}        -- Collection of configurations for built-in LSP client
+               require('config.lsp') end}        -- Collection of configurations for built-in LSP client
+            --
             -- lspinstall is nice - but if a local language server is also installed, this leads to problems
             -- example: show documentation of golang fields always entered the hover window
             -- to fix we would need to configure nvim lsp to use only the path used by lspconfig
             -- use 'kabouzeid/nvim-lspinstall'    -- Install LSP-Servers in vim
+            --
             use {'hrsh7th/nvim-compe', config = function() require('config.nvim-compe') end }           -- Autocompletion plugin
             use {'ray-x/lsp_signature.nvim', config = function() require "lsp_signature".setup() end}
 
@@ -106,7 +106,6 @@ local function install()
                           end
             }
 
-            -- use {'SirVer/ultisnips', config = function() require('config.ultisnips') end}
             use { "hrsh7th/vim-vsnip"}
             use { "rafamadriz/friendly-snippets"}
 
