@@ -61,6 +61,8 @@ function mappings.general()
     -- vim.api.nvim_set_keymap('n', '<S-TAB>', ':bprevious<CR>', {noremap = true, silent = true})
     -- vim.api.nvim_set_keymap('n', '^', ':bdelete<CR>', {noremap = true, silent = true})
     vim.api.nvim_set_keymap('i', '<C-^>', '<ESC><C-^>', {noremap = true, silent = true})
+    vim.api.nvim_set_keymap('n', '`', '<ESC><C-^>', {noremap = true, silent = true})
+    vim.api.nvim_set_keymap('n', '^', '<ESC><C-^>', {noremap = true, silent = true})
 
 end
 
