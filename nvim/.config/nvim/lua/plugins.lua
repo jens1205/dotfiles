@@ -98,7 +98,7 @@ local function install()
             -- use 'kabouzeid/nvim-lspinstall'    -- Install LSP-Servers in vim
             --
             use {'hrsh7th/nvim-compe', config = function() require('config.nvim-compe') end }           -- Autocompletion plugin
-            use {'ray-x/lsp_signature.nvim', config = function() require "lsp_signature".setup() end}
+            use {'ray-x/lsp_signature.nvim', config = function() require "lsp_signature".setup({floating_window=false}) end}
 
             use { "folke/trouble.nvim",
                  config = function()
