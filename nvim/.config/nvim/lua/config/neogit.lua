@@ -4,6 +4,9 @@ neogit.setup {
   -- disable_signs = false,
   -- disable_context_highlighting = false,
   disable_commit_confirmation = true,
+  commit_popup = {
+      kind = "split_above",
+  },
   -- -- customize displayed signs
   -- signs = {
   --   -- { CLOSED, OPENED }
