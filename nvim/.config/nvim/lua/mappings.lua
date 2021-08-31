@@ -163,6 +163,7 @@ end
 
 function mappings.restnvim()
     vim.api.nvim_set_keymap('n', '<Leader>e', [[<cmd>lua require'rest-nvim'.run()<cr>]], {noremap = true, silent = true})
+    vim.api.nvim_set_keymap('n', '<Leader>E', [[<cmd>lua require'rest-nvim'.run(true)<cr>]], {noremap = true, silent = true})
 end
 
 function mappings.lsp(bufnr)

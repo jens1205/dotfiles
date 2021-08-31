@@ -129,7 +129,7 @@ local function install()
 
             use {
                 -- 'jens1205/rest.nvim',
-                -- branch = 'non-json-body',
+                -- branch = 'highlight-request',
                 'NTBBloodbath/rest.nvim',
                 requires = { 'nvim-lua/plenary.nvim' },
                 config = function()
@@ -146,6 +146,7 @@ local function install()
     )
 
 end
+
 
 packersetup()
 install()
