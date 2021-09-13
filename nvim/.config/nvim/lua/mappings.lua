@@ -60,10 +60,13 @@ function mappings.general()
     vim.api.nvim_set_keymap('n', 'H', ':bprevious<CR>', {noremap = true, silent = true})
     vim.api.nvim_set_keymap('n', 'L', ':bnext<CR>', {noremap = true, silent = true})
     vim.api.nvim_set_keymap('n', 'X', ':bdelete<CR>', {noremap = true, silent = true})
+    vim.api.nvim_set_keymap('n', 'W', ':tabc<CR>', {noremap = true, silent = true})
     -- vim.api.nvim_set_keymap('n', '^', ':bdelete<CR>', {noremap = true, silent = true})
     vim.api.nvim_set_keymap('i', '<C-^>', '<ESC><C-^>', {noremap = true, silent = true})
     vim.api.nvim_set_keymap('n', '`', '<ESC><C-^>', {noremap = true, silent = true})
     vim.api.nvim_set_keymap('n', '^', '<ESC><C-^>', {noremap = true, silent = true})
+
+    
 
 end
 
