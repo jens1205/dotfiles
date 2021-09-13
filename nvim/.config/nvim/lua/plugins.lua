@@ -84,7 +84,6 @@ local function install()
 
             use {"ahmedkhalf/lsp-rooter.nvim", config = function() require('lsp-rooter').setup() end} -- with this nvim-tree will follow you
 
-            use {'windwp/nvim-autopairs', config = function() require('config.nvim-autopairs') end }  -- needs to be called before nvim-compe-config!
 
             use {'fatih/vim-go', ft="go", run = ':GoInstallBinaries', config = function() require('config.vim-go') end }                 -- golang
 
@@ -97,7 +96,24 @@ local function install()
             -- to fix we would need to configure nvim lsp to use only the path used by lspconfig
             -- use 'kabouzeid/nvim-lspinstall'    -- Install LSP-Servers in vim
             --
-            use {'hrsh7th/nvim-compe', config = function() require('config.nvim-compe') end }           -- Autocompletion plugin
+            use { "rafamadriz/friendly-snippets"}
+            use {
+                  "hrsh7th/nvim-cmp",
+                config = function() require('config.nvim-cmp') end,
+                  requires = {
+                    "L3MON4D3/LuaSnip",
+                    "saadparwaiz1/cmp_luasnip",
+                    "hrsh7th/cmp-buffer",
+                    "hrsh7th/cmp-nvim-lsp",
+                    "hrsh7th/cmp-path",
+                    "hrsh7th/cmp-nvim-lua",
+                    "hrsh7th/cmp-emoji",
+                  }
+            }
+
+            use {'windwp/nvim-autopairs', config = function() require('config.nvim-autopairs') end }  -- should be after cmp.setup
+            -- use {'hrsh7th/nvim-compe', config = function() require('config.nvim-compe') end }           -- Autocompletion plugin
+            -- use { "hrsh7th/vim-vsnip"}
             use {'ray-x/lsp_signature.nvim', config = function() require "lsp_signature".setup({floating_window=false}) end}
 
             use { "folke/trouble.nvim",
@@ -105,11 +121,6 @@ local function install()
                             require'mappings'.trouble()
                           end
             }
-
-            use { "hrsh7th/vim-vsnip"}
-            use { "rafamadriz/friendly-snippets"}
-
-            -- use {'tpope/vim-dispatch'}
             -- use {'vim-test/vim-test', config = function() require('config.vim-test') end}
              -- use { "rcarriga/vim-ultest",
              --        config = "require('config.ultest')",
