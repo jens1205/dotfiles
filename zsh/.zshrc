@@ -20,7 +20,10 @@ export MANWIDTH=999
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 # ZSH_THEME="powerlevel9k/powerlevel9k"
-ZSH_THEME="powerlevel10k/powerlevel10k"
+# ZSH_THEME="powerlevel10k/powerlevel10k"
+ZSH_THEME="spaceship"
+SPACESHIP_GOLANG_SYMBOL=" "
+SPACESHIP_GCLOUD_SHOW=false
 # ZSH_THEME="robbyrussell"
 
 # Set list of themes to pick from when loading at random
