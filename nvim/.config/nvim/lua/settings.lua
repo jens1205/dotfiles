@@ -44,7 +44,7 @@ vim.o.writebackup = false
 
 -- Set completeopt to have a better completion experience
 -- vim.o.completeopt="menuone,noinsert"
-vim.o.completeopt="menuone,noselect"
+vim.o.completeopt="menu,menuone,noselect"
 
 vim.o.guifont = "FiraCode Nerd Font:h17"
 
