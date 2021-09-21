@@ -78,6 +78,7 @@ local function install()
                 config = function()
                             vim.g.nvim_tree_follow = 1
                             vim.g.nvim_tree_highlight_opened_files = 1
+                            vim.g.nvim_tree_lsp_diagnostics = 1
                             require'mappings'.nvimtree()
                          end
             }
