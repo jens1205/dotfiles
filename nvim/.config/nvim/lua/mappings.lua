@@ -92,11 +92,16 @@ function mappings.telescope()
     vim.api.nvim_set_keymap('n', '<Leader>fgC', ':Telescope git_bcommits<CR>', {noremap = true, silent = true}) -- current file
     vim.api.nvim_set_keymap('n', '<Leader>fld', ':Telescope lsp_workspace_diagnostics<cr>', {noremap = true, silent = true})
     vim.api.nvim_set_keymap('n', '<Leader>flD', ':Telescope lsp_document_diagnostics<cr>', {noremap = true, silent = true})
-    vim.api.nvim_set_keymap('n', '<leader>flr', [[<cmd>lua require('telescope.builtin').lsp_references<cr>]], { noremap = true, silent = true})
     vim.api.nvim_set_keymap('n', '<leader>ft', [[<cmd>lua require('telescope.builtin').live_grep()<cr>]], { noremap = true, silent = true})
     vim.api.nvim_set_keymap('n', '<leader>fz', [[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<cr>]], { noremap = true, silent = true})
     vim.api.nvim_set_keymap('n', '<leader>f*', [[<cmd>lua require('telescope.builtin').grep_string()<cr>]], { noremap = true, silent = true})
     vim.api.nvim_set_keymap('n', '<leader>fp', [[<cmd>lua require('telescope').extensions.project.project{}<cr>]], { noremap = true, silent = true})
+
+    vim.api.nvim_set_keymap('n', '<leader>fk', [[<cmd>lua require('telescope.builtin').keymaps()<cr>]], { noremap = true, silent = true})
+
+    vim.api.nvim_set_keymap('n', 'gr', [[<cmd>lua require('telescope.builtin').lsp_references()<cr>]], { noremap = true, silent = true})
+    vim.api.nvim_set_keymap('n', 'gi', [[<cmd>lua require('telescope.builtin').lsp_implementations()<cr>]], { noremap = true, silent = true})
+    vim.api.nvim_set_keymap('n', 'gd', [[<cmd>lua require('telescope.builtin').lsp_definitions()<cr>]], { noremap = true, silent = true})
 end
 
 function mappings.trouble()
@@ -172,16 +177,16 @@ end
 function mappings.lsp(bufnr)
   local opts = { noremap=true, silent=true }
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>s', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua vim.lsp.buf.list_workspace_folders()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>cl', '<cmd>lua vim.lsp.codelens.run()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>d', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
