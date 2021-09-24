@@ -1,46 +1,52 @@
-local dap = require "dap"
+local dap = require("dap")
 
 dap.adapters.go = function(callback, config)
-    local handle, pid_or_err, port = nil, nil, 12346
+	local handle, pid_or_err, port = nil, nil, 12346
 
-    handle, pid_or_err = vim.loop.spawn("dlv", {
-        args = {"dap", "-l", "127.0.0.1:" .. port},
-        detached = true,
-        cwd = vim.loop.cwd()
-    }, vim.schedule_wrap(function(code)
-        handle:close()
-        if code ~= 0 then
-          print("Delve has exited with: " .. code)
-        end
-    end))
+	handle, pid_or_err = vim.loop.spawn(
+		"dlv",
+		{
+			args = { "dap", "-l", "127.0.0.1:" .. port },
+			detached = true,
+			cwd = vim.loop.cwd(),
+		},
+		vim.schedule_wrap(function(code)
+			handle:close()
+			if code ~= 0 then
+				print("Delve has exited with: " .. code)
+			end
+		end)
+	)
 
+	if not handle then
+		error("FAILED:", pid_or_err)
+	end
 
-    if not handle then error("FAILED:", pid_or_err) end
-
-    vim.defer_fn(function()
-        callback {type = "server", host = "127.0.0.1", port = port}
-    end, 100)
+	vim.defer_fn(function()
+		callback({ type = "server", host = "127.0.0.1", port = port })
+	end, 100)
 end
 
 dap.configurations.go = {
-    {
-        type = "go",
-        name = "Debug",
-        request = "launch",
-        showLog = true,
-        program = "${file}",
-        -- console = "externalTerminal",
-        dlvToolPath = vim.fn.exepath "dlv"
-    }, {
-        type = "go",
-        name = "Test-debug current package",
-        request = "launch",
-        showLog = true,
-        mode = "test",
-        -- program = ".",
-        program = "${fileDirname}",
-        dlvToolPath = vim.fn.exepath "dlv"
-    }
+	{
+		type = "go",
+		name = "Debug",
+		request = "launch",
+		showLog = true,
+		program = "${file}",
+		-- console = "externalTerminal",
+		dlvToolPath = vim.fn.exepath("dlv"),
+	},
+	{
+		type = "go",
+		name = "Test-debug current package",
+		request = "launch",
+		showLog = true,
+		mode = "test",
+		-- program = ".",
+		program = "${fileDirname}",
+		dlvToolPath = vim.fn.exepath("dlv"),
+	},
 }
 
 --[[

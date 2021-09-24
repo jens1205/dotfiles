@@ -1,23 +1,23 @@
 -- vim-go
-vim.g.go_doc_keywordprg_enabled=0
-vim.g.go_def_mapping_enabled=0
-vim.g.go_echo_go_info=0
-vim.g.go_version_warning=1
-vim.g.go_code_completion_enabled=0 -- use nvim-compe instead
-vim.g.go_test_show_name=1
-vim.g.go_fmt_autosave=0 -- using nvim-lsp
-vim.g.go_imports_autosave=0 -- already used nvim-lsp
-vim.g.go_mod_fmt_autosave=0 -- use nvim-lsp instead
-vim.g.go_def_mapping_enabled=0
-vim.g.go_gopls_enabled=0
-vim.g.go_highlight_string_spellcheck=0
-vim.g.go_highlight_format_strings=0
-vim.g.go_highlight_diagnostic_errors=0
-vim.g.go_highlight_diagnostic_warnings=0
-vim.g.go_metalinter_command="golangci-lint"
-vim.g.go_metalinter_autosave=0
+vim.g.go_doc_keywordprg_enabled = 0
+vim.g.go_def_mapping_enabled = 0
+vim.g.go_echo_go_info = 0
+vim.g.go_version_warning = 1
+vim.g.go_code_completion_enabled = 0 -- use nvim-compe instead
+vim.g.go_test_show_name = 1
+vim.g.go_fmt_autosave = 0 -- using nvim-lsp
+vim.g.go_imports_autosave = 0 -- already used nvim-lsp
+vim.g.go_mod_fmt_autosave = 0 -- use nvim-lsp instead
+vim.g.go_def_mapping_enabled = 0
+vim.g.go_gopls_enabled = 0
+vim.g.go_highlight_string_spellcheck = 0
+vim.g.go_highlight_format_strings = 0
+vim.g.go_highlight_diagnostic_errors = 0
+vim.g.go_highlight_diagnostic_warnings = 0
+vim.g.go_metalinter_command = "golangci-lint"
+vim.g.go_metalinter_autosave = 0
 -- vim.g.go_fmt_command="goimports" -- automatically format and rewrite imports
-vim.g.go_list_type="quickfix"    -- error lista are of type quickfix
+vim.g.go_list_type = "quickfix" -- error lista are of type quickfix
 -- function should be script-scoped - but lua reports an error, so we change it to a normal function
 vim.cmd([[
 " run :GoBuild or :GoTestCompile based on the go file
@@ -41,5 +41,3 @@ autocmd FileType go nmap <leader>ta <Plug>(go-test)
 autocmd FileType go nmap <leader>tt <Plug>(go-test-func)
 
 ]])
-
-

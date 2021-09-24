@@ -24,7 +24,7 @@ require("lspconfig").html.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
-vim.api.nvim_command("autocmd BufWritePre *.html lua vim.lsp.buf.formatting_sync(nil, 1000)")
+-- vim.api.nvim_command("autocmd BufWritePre *.html lua vim.lsp.buf.formatting_sync(nil, 1000)")
 
 -- javascript & typescript
 require("lspconfig").tsserver.setup({
