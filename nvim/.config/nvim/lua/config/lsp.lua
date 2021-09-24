@@ -24,6 +24,7 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 nvim_lsp.rust_analyzer.setup {
 	on_attach = on_attach,
 }
+vim.api.nvim_command('autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)')
 
 
 -- gopls
