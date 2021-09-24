@@ -82,11 +82,7 @@ local function install()
                             require'mappings'.nvimtree()
                          end
             }
-
             use {"ahmedkhalf/lsp-rooter.nvim", config = function() require('lsp-rooter').setup() end} -- with this nvim-tree will follow you
-
-
-            use {'fatih/vim-go', ft="go", run = ':GoInstallBinaries', config = function() require('config.vim-go') end }                 -- golang
 
             -- LSP stuff
             use {'neovim/nvim-lspconfig', config = function()
@@ -101,7 +97,7 @@ local function install()
             use {
                   "hrsh7th/nvim-cmp",
                 config = function() require('config.nvim-cmp') end,
-                  requires = {
+                requires = {
                     "L3MON4D3/LuaSnip",
                     "saadparwaiz1/cmp_luasnip",
                     "hrsh7th/cmp-buffer",
@@ -110,12 +106,10 @@ local function install()
                     "hrsh7th/cmp-nvim-lua",
                     "hrsh7th/cmp-emoji",
                     "onsails/lspkind-nvim",
-                  }
+                },
             }
 
             use {'windwp/nvim-autopairs', config = function() require('config.nvim-autopairs') end }  -- should be after cmp.setup
-            -- use {'hrsh7th/nvim-compe', config = function() require('config.nvim-compe') end }           -- Autocompletion plugin
-            -- use { "hrsh7th/vim-vsnip"}
             use {'ray-x/lsp_signature.nvim', config = function() require "lsp_signature".setup({floating_window=false}) end}
 
             use { "folke/trouble.nvim",
@@ -149,6 +143,19 @@ local function install()
                     require('rest-nvim').setup()
                     require('mappings').restnvim()
                 end
+            }
+
+            -- language specific things
+            use {'fatih/vim-go', ft="go", run = ':GoInstallBinaries', config = function() require('config.vim-go') end }                 -- golang
+            use {'simrat39/rust-tools.nvim',
+                requires = {
+                    'nvim-lua/popup.nvim',
+                    'nvim-lua/plenary.nvim',
+                    'nvim-telescope/telescope.nvim',
+                },
+                config = function()
+			       require('rust-tools').setup({})
+                end,
             }
 
             -- Themes
