@@ -85,6 +85,12 @@ function mappings.general()
 	)
 	vim.api.nvim_set_keymap(
 		"n",
+		"oe",
+		":exe ':silent !open -a /Applications/Microsoft\\ Edge.app %'<CR>",
+		{ noremap = true, silent = true }
+	)
+	vim.api.nvim_set_keymap(
+		"n",
 		"oc",
 		":exe ':silent !open -a /Applications/Google\\ Chrome.app %'<CR>",
 		{ noremap = true, silent = true }
