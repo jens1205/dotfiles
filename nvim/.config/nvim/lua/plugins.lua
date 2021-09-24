@@ -109,6 +109,7 @@ local function install()
                     "hrsh7th/cmp-path",
                     "hrsh7th/cmp-nvim-lua",
                     "hrsh7th/cmp-emoji",
+                    "onsails/lspkind-nvim",
                   }
             }
 
