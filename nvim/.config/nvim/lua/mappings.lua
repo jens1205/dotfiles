@@ -158,6 +158,12 @@ function mappings.telescope()
 	)
 	vim.api.nvim_set_keymap(
 		"n",
+		"<leader>fT",
+		[[<cmd>lua require('telescope.builtin').search_history()<cr>]],
+		{ noremap = true, silent = true }
+	)
+	vim.api.nvim_set_keymap(
+		"n",
 		"<leader>fz",
 		[[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<cr>]],
 		{ noremap = true, silent = true }
