@@ -359,6 +359,12 @@ function mappings.lsp(bufnr)
 	)
 end
 
+function mappings.fugitive()
+	map("n", "<leader>gs", ":Git<CR>")
+	map("n", "<leader>ga", ":diffget //2<CR>")
+	map("n", "<leader>g;", ":diffget //3<CR>")
+end
+
 function mappings.neogit()
 	map("n", "<leader>G", '<cmd>lua require"neogit".open({kind = "split_above"})<CR>')
 end

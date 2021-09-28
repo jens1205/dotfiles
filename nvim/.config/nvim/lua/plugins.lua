@@ -23,7 +23,18 @@ local function install()
 	require("packer").startup(function()
 		use("wbthomason/packer.nvim") -- Package manager
 
-		use({ "tpope/vim-fugitive" })
+		use({
+			"tpope/vim-fugitive",
+			config = function()
+				require("mappings").fugitive()
+			end,
+		})
+		use({
+			"shumphrey/fugitive-gitlab.vim",
+			config = function()
+				vim.g.fugitive_gitlab_domains = { "https://gitlab.devops.telekom.de/" }
+			end,
+		})
 		use({
 			"lewis6991/gitsigns.nvim",
 			requires = { "nvim-lua/plenary.nvim" },
