@@ -370,4 +370,8 @@ function mappings.neogit()
 	map("n", "<leader>G", '<cmd>lua require"neogit".open({kind = "split_above"})<CR>')
 end
 
+function mappings.maximizer()
+	map("n", "<leader>m", ":MaximizerToggle!<CR>")
+end
+
 return mappings

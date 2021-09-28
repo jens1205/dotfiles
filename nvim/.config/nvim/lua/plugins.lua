@@ -49,7 +49,13 @@ local function install()
 				require("config.neogit")
 			end,
 		})
-		use({ "sindrets/diffview.nvim" })
+		-- use({ "sindrets/diffview.nvim" })
+		use({
+			"szw/vim-maximizer",
+			config = function()
+				require("mappings").maximizer()
+			end,
+		})
 
 		use({ "tpope/vim-commentary" }) -- "gc" to comment visual regions/lines
 		-- use {'mkitt/tabline.vim'}            -- pimp tab labels
