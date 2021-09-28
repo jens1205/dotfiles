@@ -46,6 +46,7 @@ function mappings.general()
 	vim.api.nvim_set_keymap("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
+	vim.api.nvim_set_keymap("n", "O", "<C-w>o", { noremap = true, silent = true })
 
 	-- better indenting
 	vim.api.nvim_set_keymap("v", "<", "<gv", { noremap = true, silent = true })
@@ -79,25 +80,25 @@ function mappings.general()
 
 	vim.api.nvim_set_keymap(
 		"n",
-		"of",
+		"<leader>of",
 		":exe ':silent !open -a /Applications/Firefox.app %'<CR>",
 		{ noremap = true, silent = true }
 	)
 	vim.api.nvim_set_keymap(
 		"n",
-		"oe",
+		"<leader>oe",
 		":exe ':silent !open -a /Applications/Microsoft\\ Edge.app %'<CR>",
 		{ noremap = true, silent = true }
 	)
 	vim.api.nvim_set_keymap(
 		"n",
-		"oc",
+		"<leader>oc",
 		":exe ':silent !open -a /Applications/Google\\ Chrome.app %'<CR>",
 		{ noremap = true, silent = true }
 	)
 	vim.api.nvim_set_keymap(
 		"n",
-		"os",
+		"<leader>os",
 		":exe ':silent !open -a /Applications/Safari.app %'<CR>",
 		{ noremap = true, silent = true }
 	)
