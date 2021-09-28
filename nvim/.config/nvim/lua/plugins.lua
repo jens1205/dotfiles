@@ -101,10 +101,12 @@ local function install()
 			"kyazdani42/nvim-tree.lua",
 			requires = { "kyazdani42/nvim-web-devicons" },
 			config = function()
-				vim.g.nvim_tree_follow = 1
 				vim.g.nvim_tree_highlight_opened_files = 1
-				vim.g.nvim_tree_lsp_diagnostics = 1
 				require("mappings").nvimtree()
+				require("nvim-tree").setup({
+					disable_netrw = false,
+					lsp_diagnostics = true,
+				})
 			end,
 		})
 		use({
