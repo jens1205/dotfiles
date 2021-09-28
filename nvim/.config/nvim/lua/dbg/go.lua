@@ -44,7 +44,10 @@ dap.configurations.go = {
 		showLog = true,
 		mode = "test",
 		-- program = ".",
-		program = "${fileDirname}",
+		-- program = "${file}",
+		-- program = "${fileDirname}",
+		program = "./${relativeFileDirname}",
+
 		dlvToolPath = vim.fn.exepath("dlv"),
 	},
 }
