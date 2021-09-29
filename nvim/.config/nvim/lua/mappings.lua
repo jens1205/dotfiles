@@ -46,7 +46,6 @@ function mappings.general()
 	vim.api.nvim_set_keymap("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
-	vim.api.nvim_set_keymap("n", "O", "<C-w>o", { noremap = true, silent = true })
 
 	-- better indenting
 	vim.api.nvim_set_keymap("v", "<", "<gv", { noremap = true, silent = true })
