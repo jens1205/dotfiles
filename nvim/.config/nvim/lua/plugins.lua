@@ -222,6 +222,7 @@ local function install()
 		}) -- golang
 		use({
 			"simrat39/rust-tools.nvim",
+			ft = "http",
 			requires = {
 				"nvim-lua/popup.nvim",
 				"nvim-lua/plenary.nvim",
