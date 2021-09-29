@@ -107,21 +107,25 @@ local function install()
 			"kyazdani42/nvim-tree.lua",
 			requires = { "kyazdani42/nvim-web-devicons" },
 			config = function()
-				vim.g.nvim_tree_highlight_opened_files = 1
+				vim.g.nvim_tree_respect_buf_cwd = 1
 				require("mappings").nvimtree()
 				require("nvim-tree").setup({
 					disable_netrw = false,
 					lsp_diagnostics = true,
+					update_cwd = true,
+					update_focused_file = {
+						-- enables the feature
+						enable = true,
+						-- update the root directory of the tree to the one of the folder containing the file if the file is not under the current root directory
+						-- only relevant when `update_focused_file.enable` is true
+						update_cwd = false,
+						-- list of buffer names / filetypes that will not update the cwd if the file isn't found under the current root directory
+						-- only relevant when `update_focused_file.update_cwd` is true and `update_focused_file.enable` is true
+						ignore_list = {},
+					},
 				})
 			end,
 		})
-		use({
-			"ahmedkhalf/lsp-rooter.nvim",
-			config = function()
-				require("lsp-rooter").setup()
-			end,
-		}) -- with this nvim-tree will follow you
-
 		-- LSP stuff
 		use({
 			"neovim/nvim-lspconfig",
