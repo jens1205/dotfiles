@@ -200,18 +200,18 @@ local function install()
 		-- use {'Pocco81/DAPInstall.nvim'}
 		use({ "jbyuki/one-small-step-for-vimkind" })
 
+		-- language specific things
 		use({
 			-- 'jens1205/rest.nvim',
 			-- branch = 'highlight-request',
 			"NTBBloodbath/rest.nvim",
+			ft = "http",
 			requires = { "nvim-lua/plenary.nvim" },
 			config = function()
 				require("rest-nvim").setup()
 				require("mappings").restnvim()
 			end,
 		})
-
-		-- language specific things
 		use({
 			"fatih/vim-go",
 			ft = "go",
@@ -222,7 +222,7 @@ local function install()
 		}) -- golang
 		use({
 			"simrat39/rust-tools.nvim",
-			ft = "http",
+			ft = "rs",
 			requires = {
 				"nvim-lua/popup.nvim",
 				"nvim-lua/plenary.nvim",
