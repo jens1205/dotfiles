@@ -16,6 +16,7 @@ vim.g.go_highlight_diagnostic_errors = 0
 vim.g.go_highlight_diagnostic_warnings = 0
 vim.g.go_metalinter_command = "golangci-lint"
 vim.g.go_metalinter_autosave = 0
+vim.g.go_implements_mode = "guru"
 -- vim.g.go_fmt_command="goimports" -- automatically format and rewrite imports
 vim.g.go_list_type = "quickfix" -- error lista are of type quickfix
 -- function should be script-scoped - but lua reports an error, so we change it to a normal function
