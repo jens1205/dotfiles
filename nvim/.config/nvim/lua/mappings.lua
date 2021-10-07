@@ -363,6 +363,7 @@ end
 
 function mappings.fugitive()
 	map("n", "<leader>gs", ":Git<CR>")
+	map("n", "<leader>gm", ":Gvdiffsplit!<CR>")
 	map("n", "<leader>ga", ":diffget //2<CR>")
 	map("n", "<leader>g;", ":diffget //3<CR>")
 end
