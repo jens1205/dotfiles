@@ -230,18 +230,26 @@ local function install()
 				require("config.vim-go")
 			end,
 		}) -- golang
-		use({
-			"simrat39/rust-tools.nvim",
-			ft = "rs",
-			requires = {
-				"nvim-lua/popup.nvim",
-				"nvim-lua/plenary.nvim",
-				"nvim-telescope/telescope.nvim",
-			},
-			config = function()
-				require("rust-tools").setup({})
-			end,
-		})
+
+		-- use({
+		-- 	"ray-x/go.nvim",
+		-- 	ft = "go",
+		-- 	config = function()
+		-- 		require("go").setup()
+		-- 	end,
+		-- })
+		-- use({
+		-- 	"simrat39/rust-tools.nvim",
+		-- 	ft = "rs",
+		-- 	requires = {
+		-- 		"nvim-lua/popup.nvim",
+		-- 		"nvim-lua/plenary.nvim",
+		-- 		"nvim-telescope/telescope.nvim",
+		-- 	},
+		-- 	config = function()
+		-- 		require("rust-tools").setup({})
+		-- 	end,
+		-- })
 
 		-- Themes
 		use({ "navarasu/onedark.nvim" })
