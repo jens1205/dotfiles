@@ -57,7 +57,12 @@ local function install()
 			end,
 		})
 
-		use({ "tpope/vim-commentary" }) -- "gc" to comment visual regions/lines
+		use({
+			"tpope/vim-commentary",
+			config = function()
+				vim.api.nvim_command("autocmd FileType toml setlocal commentstring=#\\ %s")
+			end,
+		}) -- "gc" to comment visual regions/lines
 		-- use {'mkitt/tabline.vim'}            -- pimp tab labels
 
 		-- Telescope
