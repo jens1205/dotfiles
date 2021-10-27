@@ -1,26 +1,34 @@
 local cmp = require("cmp")
 local luasnip = require("luasnip")
 
+require("luasnip.loaders.from_vscode").lazy_load()
+
 local function T(str)
 	return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
-
-local check_backspace = function()
-	local col = vim.fn.col(".") - 1
-	return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
-end
-
-local next = function(key)
-	if vim.fn.pumvisible() == 1 then
-		vim.fn.feedkeys(T("<C-n>"), "n")
+local select_next = cmp.mapping(function(fallback)
+	if cmp.visible() then
+		cmp.select_next_item()
 	elseif luasnip.expand_or_jumpable() then
 		vim.fn.feedkeys(T("<Plug>luasnip-expand-or-jump"), "")
 	else
-		vim.fn.feedkeys(T(key), "n")
+		fallback()
 	end
-end
+end, {
+	"i",
+	"s",
+})
+local select_prev = cmp.mapping(function(fallback)
+	if cmp.visible() then
+		cmp.select_prev_item()
+	else
+		fallback()
+	end
+end, {
+	"i",
+	"s",
+})
 
-require("luasnip.loaders.from_vscode").lazy_load()
 cmp.setup({
 	formatting = {
 		format = function(entry, vim_item)
@@ -54,52 +62,13 @@ cmp.setup({
 		-- { name = "crates" },
 	},
 	mapping = {
-		["<C-d>"] = cmp.mapping.scroll_docs(-4),
-		["<C-f>"] = cmp.mapping.scroll_docs(4),
-		["<C-j>"] = cmp.mapping(function()
-			if vim.fn.pumvisible() == 1 then
-				vim.fn.feedkeys(T("<C-n>"), "n")
-			end
-		end, {
-			"i",
-			"s",
-		}),
-		["<C-k>"] = cmp.mapping(function()
-			if vim.fn.pumvisible() == 1 then
-				vim.fn.feedkeys(T("<C-p>"), "n")
-			end
-		end, {
-			"i",
-			"s",
-		}),
-		["<Tab>"] = cmp.mapping(function()
-			if vim.fn.pumvisible() == 1 then
-				vim.fn.feedkeys(T("<C-n>"), "n")
-			elseif luasnip.expand_or_jumpable() then
-				vim.fn.feedkeys(T("<Plug>luasnip-expand-or-jump"), "")
-			elseif check_backspace() then
-				vim.fn.feedkeys(T("<Tab>"), "n")
-			else
-				vim.fn.feedkeys(T("<Tab>"), "n")
-			end
-		end, {
-			"i",
-			"s",
-		}),
-		["<S-Tab>"] = cmp.mapping(function(fallback)
-			if vim.fn.pumvisible() == 1 then
-				vim.fn.feedkeys(T("<C-p>"), "n")
-			elseif luasnip.jumpable(-1) then
-				vim.fn.feedkeys(T("<Plug>luasnip-jump-prev"), "")
-			else
-				fallback()
-			end
-		end, {
-			"i",
-			"s",
-		}),
-
-		["<C-Space>"] = cmp.mapping.complete(),
+		["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
+		["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
+		["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+		["<Tab>"] = select_next,
+		["<C-j>"] = select_next,
+		["<S-Tab>"] = select_prev,
+		["<C-k>"] = select_prev,
 		["<C-e>"] = cmp.mapping.close(),
 		["<CR>"] = cmp.mapping.confirm({
 			behavior = cmp.ConfirmBehavior.Replace,
