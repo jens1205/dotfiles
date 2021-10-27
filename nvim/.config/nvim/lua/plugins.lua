@@ -117,7 +117,9 @@ local function install()
 				require("mappings").nvimtree()
 				require("nvim-tree").setup({
 					disable_netrw = false,
-					lsp_diagnostics = true,
+					diagnostics = {
+						enable = true,
+					},
 					update_cwd = true,
 					update_focused_file = {
 						-- enables the feature
