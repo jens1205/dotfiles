@@ -240,18 +240,28 @@ local function install()
 		-- 		require("go").setup()
 		-- 	end,
 		-- })
-		-- use({
-		-- 	"simrat39/rust-tools.nvim",
-		-- 	ft = "rs",
-		-- 	requires = {
-		-- 		"nvim-lua/popup.nvim",
-		-- 		"nvim-lua/plenary.nvim",
-		-- 		"nvim-telescope/telescope.nvim",
-		-- 	},
-		-- 	config = function()
-		-- 		require("rust-tools").setup({})
-		-- 	end,
-		-- })
+		use({
+			"simrat39/rust-tools.nvim",
+			-- ft = "rs",
+			requires = {
+				"nvim-lua/popup.nvim",
+				"nvim-lua/plenary.nvim",
+				"nvim-telescope/telescope.nvim",
+			},
+			config = function()
+				local on_attach = function(_client, bufnr)
+					vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+
+					require("mappings").lsp(bufnr)
+				end
+				local opts = {
+					server = {
+						on_attach = on_attach,
+					},
+				}
+				require("rust-tools").setup(opts)
+			end,
+		})
 
 		-- Themes
 		use({ "navarasu/onedark.nvim" })
