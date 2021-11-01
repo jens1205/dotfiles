@@ -37,30 +37,30 @@ vim.api.nvim_command("autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(n
 -- nvim_lsp.rust_analyzer.setup({
 -- 	on_attach = on_attach,
 -- })
-nvim_lsp.rust_analyzer.setup({
-	on_attach = on_attach,
-	settings = {
-		["rust-analyzer"] = {
-			assist = {
-				importMergeBehavior = "last",
-				importPrefix = "by_self",
-			},
-			diagnostics = {
-				disabled = { "unresolved-import" },
-			},
-			cargo = {
-				loadOutDirsFromCheck = true,
-			},
-			procMacro = {
-				enable = true,
-			},
-			checkOnSave = {
-				command = "clippy",
-			},
-		},
-	},
-})
-vim.api.nvim_command("autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)")
+-- nvim_lsp.rust_analyzer.setup({
+-- 	on_attach = on_attach,
+-- 	settings = {
+-- 		["rust-analyzer"] = {
+-- 			assist = {
+-- 				importMergeBehavior = "last",
+-- 				importPrefix = "by_self",
+-- 			},
+-- 			diagnostics = {
+-- 				disabled = { "unresolved-import" },
+-- 			},
+-- 			cargo = {
+-- 				loadOutDirsFromCheck = true,
+-- 			},
+-- 			procMacro = {
+-- 				enable = true,
+-- 			},
+-- 			checkOnSave = {
+-- 				command = "clippy",
+-- 			},
+-- 		},
+-- 	},
+-- })
+-- vim.api.nvim_command("autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)")
 
 -- gopls
 local go_on_attach = function(default_attach_func)
