@@ -260,6 +260,7 @@ local function install()
 					},
 				}
 				require("rust-tools").setup(opts)
+				vim.api.nvim_command("autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)")
 			end,
 		})
 
