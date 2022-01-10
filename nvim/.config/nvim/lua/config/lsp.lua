@@ -65,7 +65,7 @@ vim.api.nvim_command("autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(n
 -- gopls
 local go_on_attach = function(default_attach_func)
 	return function(_client, bufnr)
-		default_attach_func()
+		default_attach_func(_client, bufnr)
 		vim.lsp.codelens.refresh()
 	end
 end
