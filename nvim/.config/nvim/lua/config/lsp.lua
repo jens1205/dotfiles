@@ -86,6 +86,7 @@ nvim_lsp.gopls.setup({
 			allowModfileModifications = true,
 			analyses = {
 				unusedparams = true,
+				fieldalignment = true,
 			},
 			staticcheck = true,
 			codelenses = {
