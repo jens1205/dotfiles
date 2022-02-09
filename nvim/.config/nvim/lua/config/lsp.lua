@@ -148,6 +148,12 @@ vim.api.nvim_command("autocmd BufWritePre go.mod lua vim.lsp.buf.formatting_sync
 vim.api.nvim_command("autocmd BufWritePost *.go lua vim.lsp.codelens.refresh()")
 -- gopls end
 
+-- golangci_lint_ls
+require("lspconfig").golangci_lint_ls.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
 -- local sumneko_root_path = vim.fn.getenv("HOME").."/.local/bin/sumneko_lua" -- Change to your sumneko root installation
 local sumneko_root_path = vim.fn.getenv("HOME") .. "/bin/lua-language-server" -- Change to your sumneko root installation
 -- local sumneko_binary_path = vim.fn.getenv("HOME").."/bin/lua-language-server" -- Change to your OS specific output folder
