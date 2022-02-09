@@ -55,7 +55,27 @@ SPACESHIP_GCLOUD_SHOW=false
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
+
+function precmd () {
+  # window_title="\033]0;${PWD##*/}\007"
+  current_dir=$(print -P %~)
+  window_title="\033]0;${current_dir}\007"
+  echo -ne "$window_title"
+}
+
+function preexec () {
+  current_cmd=$1
+  current_cmd=${current_cmd%% *}
+  if [[ $current_cmd = "nvim" ]]; then
+      title="nvim ${PWD##*/}"
+  else
+      title="$current_cmd"
+  fi
+  window_title="\033]0;${title}\007"
+  echo -ne "$window_title"
+
+}
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
