@@ -120,7 +120,7 @@ local function install()
 					diagnostics = {
 						enable = true,
 					},
-					update_cwd = true,
+					update_cwd = false,
 					update_focused_file = {
 						-- enables the feature
 						enable = true,
