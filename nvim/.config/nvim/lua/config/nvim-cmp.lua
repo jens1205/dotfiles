@@ -3,9 +3,9 @@ local luasnip = require("luasnip")
 
 require("luasnip.loaders.from_vscode").lazy_load()
 
-local function T(str)
-	return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
+-- local function T(str)
+-- 	return vim.api.nvim_replace_termcodes(str, true, true, true)
+-- end
 local has_words_before = function()
 	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
 	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
@@ -16,8 +16,8 @@ local select_next = cmp.mapping(function(fallback)
 	elseif luasnip.expand_or_jumpable() then
 		luasnip.expand_or_jump()
 		-- vim.fn.feedkeys(T("<Plug>luasnip-expand-or-jump"), "")
-	elseif has_words_before() then
-		cmp.complete()
+		-- elseif has_words_before() then
+		-- 	cmp.complete()
 	else
 		fallback()
 	end
@@ -50,7 +50,8 @@ cmp.setup({
 				nvim_lsp = "[LSP]",
 				luasnip = "[LuaSnip]",
 				nvim_lua = "[Lua]",
-				latex_symbols = "[Latex]",
+				emoji = "[Emoji]",
+				path = "[Path]",
 			})[entry.source.name]
 			return vim_item
 		end,
@@ -65,7 +66,7 @@ cmp.setup({
 		{ name = "path" },
 		{ name = "luasnip" },
 		{ name = "nvim_lua" },
-		{ name = "buffer" },
+		{ name = "buffer", keyword_length = 5 },
 		{ name = "emoji" },
 		-- { name = "treesitter" },
 		-- { name = "crates" },
@@ -74,15 +75,26 @@ cmp.setup({
 		["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
 		["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
 		["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-		["<Tab>"] = select_next,
+		-- ["<Tab>"] = select_next,
+		-- ["<S-Tab>"] = select_prev,
+		["<Tab>"] = cmp.config.disable,
+		["<S-Tab>"] = cmp.config.disable,
 		["<C-j>"] = select_next,
-		["<S-Tab>"] = select_prev,
 		["<C-k>"] = select_prev,
 		["<C-e>"] = cmp.mapping.close(),
 		["<CR>"] = cmp.mapping.confirm({
+			behavior = cmp.ConfirmBehavior.Insert,
+			-- behavior = cmp.ConfirmBehavior.Replace,
+			select = false,
+		}),
+		["<S-CR>"] = cmp.mapping.confirm({
 			behavior = cmp.ConfirmBehavior.Replace,
 			select = true,
 		}),
+	},
+	experimental = {
+		native_menu = false,
+		ghost_text = true,
 	},
 })
 
