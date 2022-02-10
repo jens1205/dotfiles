@@ -62,7 +62,7 @@ function pwdx {
 }
 
 function pid_last_job {
-    jobs -p % | grep -v "pwd now:" | tail -1 | awk '{print $3}'
+    jobs -p % 2>/dev/null | grep -v "pwd now:" | tail -1 | awk '{print $3}'
 }
 
 function pwd_last_job {
@@ -71,7 +71,7 @@ function pwd_last_job {
 }
 
 function cmd_last_job {
-    jobs -p % | grep -v "pwd now:" | tail -1 | awk '{print $5}'
+    jobs -p % 2>/dev/null | grep -v "pwd now:" | grep -v "no current job" | tail -1 | awk '{print $5}' 
 }
 
 function set_terminal_title() {
