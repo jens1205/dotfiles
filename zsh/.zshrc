@@ -57,9 +57,33 @@ SPACESHIP_GCLOUD_SHOW=false
 # Uncomment the following line to disable auto-setting terminal title.
 DISABLE_AUTO_TITLE="true"
 
+function pwdx {
+  lsof -a -d cwd -p $1 -n -Fn | awk '/^n/ {print substr($0,2)}'
+}
+
+function pid_last_job {
+    jobs -p % | grep -v "pwd now:" | tail -1 | awk '{print $3}'
+}
+
+function pwd_last_job {
+    pid=$(pid_last_job)
+    pwdx $pid
+}
+
+function cmd_last_job {
+    jobs -p % | grep -v "pwd now:" | tail -1 | awk '{print $5}'
+}
+
+function set_terminal_title() {
+  echo -en "\e]2;$@\a"
+}
+
+
 function precmd () {
   # window_title="\033]0;${PWD##*/}\007"
   current_dir=$(print -P %~)
+  base=$(basename $current_dir)
+  current_dir=$(echo $current_dir | sed -E "s/asf.*$base/asf\/..\/$base/g")
   window_title="\033]0;${current_dir}\007"
   echo -ne "$window_title"
 }
@@ -69,11 +93,22 @@ function preexec () {
   current_cmd=${current_cmd%% *}
   if [[ $current_cmd = "nvim" ]]; then
       title="nvim ${PWD##*/}"
-  else
-      title="$current_cmd"
+  else 
+      if [[ $current_cmd = "fg" ]]; then
+        job_cmd=$(cmd_last_job)
+        if [[ $job_cmd = "nvim" ]]; then
+            job_pwd=$(pwd_last_job)
+            title="nvim ${job_pwd##*/}"
+        else 
+          title="$job_cmd"
+        fi
+      else
+        title="$current_cmd"
+      fi
   fi
-  window_title="\033]0;${title}\007"
-  echo -ne "$window_title"
+  # window_title="\033]0;$title\007"
+  # echo -n "$window_title"
+  set_terminal_title $title
 
 }
 
