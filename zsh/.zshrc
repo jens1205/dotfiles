@@ -92,13 +92,13 @@ function preexec () {
   current_cmd=$1
   current_cmd=${current_cmd%% *}
   if [[ $current_cmd = "nvim" ]]; then
-      title="nvim ${PWD##*/}"
+      title="#${PWD##*/}#"
   else 
       if [[ $current_cmd = "fg" ]]; then
         job_cmd=$(cmd_last_job)
         if [[ $job_cmd = "nvim" ]]; then
             job_pwd=$(pwd_last_job)
-            title="nvim ${job_pwd##*/}"
+            title="#${job_pwd##*/}#"
         else 
           title="$job_cmd"
         fi
