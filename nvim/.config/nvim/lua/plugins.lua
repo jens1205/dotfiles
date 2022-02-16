@@ -39,7 +39,11 @@ local function install()
 			"lewis6991/gitsigns.nvim",
 			requires = { "nvim-lua/plenary.nvim" },
 			config = function()
-				require("gitsigns").setup()
+				require("gitsigns").setup({
+					on_attach = function(bufnr)
+						require("mappings").gitsigns(bufnr)
+					end,
+				})
 			end,
 		})
 		use({

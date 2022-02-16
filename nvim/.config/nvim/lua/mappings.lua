@@ -375,10 +375,45 @@ function mappings.lsp(bufnr)
 end
 
 function mappings.fugitive()
-	map("n", "<leader>gs", ":Git<CR>")
-	map("n", "<leader>gm", ":Gvdiffsplit!<CR>")
+	map("n", "<leader>gs", ":Git<CR>") -- like git status
+	map("n", "<leader>gdd", ":Gvdiffsplit<CR>") -- git diff current file
+	map("n", "<leader>gdl", ":Git difftool<CR>") -- git diff output into quickfix list
+	map("n", "<leader>gm", ":Gvdiffsplit!<CR>") -- git diff and merge current file
 	map("n", "<leader>ga", ":diffget //2<CR>")
 	map("n", "<leader>g;", ":diffget //3<CR>")
+	map("n", "<leader>gc", ":0Gclog<CR>") -- commit history of current file into quickfix list
+end
+
+function mappings.gitsigns(bufnr)
+	local function map_buffer(mode, lhs, rhs, opts)
+		opts = vim.tbl_extend("force", { noremap = true, silent = true }, opts or {})
+		vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
+	end
+	-- Navigation
+	map_buffer("n", "]c", "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", { expr = true })
+	map_buffer("n", "[c", "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", { expr = true })
+
+	map_buffer("n", "<leader>gb", '<cmd>lua require"gitsigns".blame_line()<CR>')
+
+	-- Text object
+	map_buffer("o", "ih", ":<C-U>Gitsigns select_hunk<CR>")
+	map_buffer("x", "ih", ":<C-U>Gitsigns select_hunk<CR>")
+
+	-- Actions
+	-- currently unused mappings
+	map("n", "<leader>hs", ":Gitsigns stage_hunk<CR>")
+	map("v", "<leader>hs", ":Gitsigns stage_hunk<CR>")
+	map("n", "<leader>hr", ":Gitsigns reset_hunk<CR>")
+	map("v", "<leader>hr", ":Gitsigns reset_hunk<CR>")
+	map("n", "<leader>hS", "<cmd>Gitsigns stage_buffer<CR>")
+	map("n", "<leader>hu", "<cmd>Gitsigns undo_stage_hunk<CR>")
+	map("n", "<leader>hR", "<cmd>Gitsigns reset_buffer<CR>")
+	map("n", "<leader>hp", "<cmd>Gitsigns preview_hunk<CR>")
+	map("n", "<leader>hb", '<cmd>lua require"gitsigns".blame_line{full=true}<CR>')
+	map("n", "<leader>tb", "<cmd>Gitsigns toggle_current_line_blame<CR>")
+	map("n", "<leader>hd", "<cmd>Gitsigns diffthis<CR>")
+	map("n", "<leader>hD", '<cmd>lua require"gitsigns".diffthis("~")<CR>')
+	-- map("n", "<leader>td", "<cmd>Gitsigns toggle_deleted<CR>")
 end
 
 function mappings.neogit()
