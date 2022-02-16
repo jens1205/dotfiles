@@ -1,11 +1,23 @@
 local mappings = {}
 
 local function map(mode, lhs, rhs, opts)
-	local options = { noremap = true }
+	local options = { noremap = true, silent = true }
 	if opts then
 		options = vim.tbl_extend("force", options, opts)
 	end
 	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+end
+
+function ToggleQuickfix()
+	local wininfo = vim.fn.getwininfo()
+	for _, window in ipairs(wininfo) do
+		if window["quickfix"] == 1 then
+			vim.cmd("cclose")
+			return
+		end
+	end
+
+	vim.cmd("copen")
 end
 
 function mappings.general()
@@ -62,6 +74,7 @@ function mappings.general()
 	-- Quickfix list
 	vim.api.nvim_set_keymap("n", "<leader>k", ":cprevious <CR>", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap("n", "<leader>j", ":cnext <CR>", { noremap = true, silent = true })
+	vim.api.nvim_set_keymap("n", "<leader>ll", ":lua ToggleQuickfix() <CR>", { noremap = true, silent = true })
 
 	-- Location list
 	vim.api.nvim_set_keymap("n", "<leader>u", ":lprevious <CR>", { noremap = true, silent = true })
