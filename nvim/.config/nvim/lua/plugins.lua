@@ -267,6 +267,7 @@ local function install()
 				vim.api.nvim_command("autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)")
 			end,
 		})
+		use("mfussenegger/nvim-jdtls")
 
 		-- Themes
 		use({ "navarasu/onedark.nvim" })
