@@ -8,7 +8,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/sdk/go1.16.5/bin:$HOME/go/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-export GIT_PAGER=cat
+export GIT_PAGER=delta
 export GIT_EDITOR=nvim
 
 # use nvim to open man pages
