@@ -1,0 +1,16 @@
+#!/bin/bash
+# Include any branches for which you wish to disable this script
+if [ -z "$BRANCHES_TO_SKIP" ]; then
+  BRANCHES_TO_SKIP=(main master develop)
+fi
+# Get the current branch name
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+# Ticket name is retrieved as a string between the first slash and the second hyphen
+TICKET_NAME=$(echo $BRANCH_NAME | sed -e 's/^[^\/]*\/\([^-]*-[^-]*\).*/\1/' | tr "[:lower:]" "[:upper:]")
+
+BRANCH_EXCLUDED=$(printf "%s\n" "${BRANCHES_TO_SKIP[@]}" | grep -c "^$BRANCH_NAME$")
+ALREADY_IN_MSG=$(grep -c "$TICKET_NAME" $1)
+# If it isn't excluded or already in commit message, prepend the ticket name to the given message
+if [ -n "$BRANCH_NAME" ] && ! [[ "$BRANCH_EXCLUDED" -eq 1 ]] && ! [[ "$ALREADY_IN_MSG" -eq 1 ]]; then
+    sed -i.bak -e "1s/^/[$TICKET_NAME] /" "$1"
+fi

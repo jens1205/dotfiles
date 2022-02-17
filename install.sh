@@ -39,4 +39,6 @@ stow -t ~ nvim
 stow -t ~ tmux
 stow -t ~ vim
 stow -t ~ zsh
+stow -t ~ git
 
+git config --global core.hooksPath '~/.git-templates/hooks'
