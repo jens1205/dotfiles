@@ -46,13 +46,14 @@ local function install()
 				})
 			end,
 		})
-		use({
-			"TimUntersberger/neogit",
-			requires = "nvim-lua/plenary.nvim",
-			config = function()
-				require("config.neogit")
-			end,
-		})
+		use("ggandor/lightspeed.nvim")
+		-- use({
+		-- 	"TimUntersberger/neogit",
+		-- 	requires = "nvim-lua/plenary.nvim",
+		-- 	config = function()
+		-- 		require("config.neogit")
+		-- 	end,
+		-- })
 		-- use({ "sindrets/diffview.nvim" })
 		use({
 			"szw/vim-maximizer",

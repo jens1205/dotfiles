@@ -8,7 +8,7 @@ local function map(mode, lhs, rhs, opts)
 	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
-function ToggleQuickfix()
+function mappings.toggleQuickfix()
 	local wininfo = vim.fn.getwininfo()
 	for _, window in ipairs(wininfo) do
 		if window["quickfix"] == 1 then
@@ -20,27 +20,113 @@ function ToggleQuickfix()
 	vim.cmd("copen")
 end
 
+mappings.keycount = {
+	keys = {
+		k = {
+			count = 0,
+			origin_line = nil,
+			origin_col = nil,
+		},
+		j = {
+			count = 0,
+			origin_line = nil,
+			origin_col = nil,
+		},
+	},
+	last_pos = nil,
+}
+
+local function clear_keycounts()
+	for key, _ in pairs(mappings.keycount.keys) do
+		mappings.keycount.keys[key] = {
+			count = 0,
+			origin_line = nil,
+			origin_col = nil,
+		}
+	end
+end
+
+function mappings.limitKeystroke(keypressed)
+	local count = vim.v.count
+	local buftype = vim.api.nvim_buf_get_option(0, "buftype")
+	local pos = vim.fn.getcurpos()
+	local line = pos[2]
+	local col = pos[3]
+
+	if mappings.keycount.last_pos ~= nil then
+		local last_pos = mappings.keycount.last_pos
+		if last_pos.line ~= line or last_pos.col ~= col then
+			clear_keycounts()
+		end
+	end
+
+	if count == 0 and buftype ~= "nofile" then
+		if mappings.keycount.keys[keypressed].count > 4 then
+			vim.api.nvim_err_writeln("too many keystrokes for " .. keypressed .. ". Use Lightspeed!")
+			local orig_line = mappings.keycount.keys[keypressed].origin_line
+			local orig_col = mappings.keycount.keys[keypressed].origin_col
+			vim.fn.cursor(orig_line, orig_col)
+			mappings.keycount.keys[keypressed].count = 0
+			mappings.keycount.keys[keypressed].origin_line = nil
+			mappings.keycount.keys[keypressed].origin_col = nil
+			return
+		end
+
+		if mappings.keycount.keys[keypressed].count == 0 then
+			mappings.keycount.keys[keypressed].origin_line = line
+			mappings.keycount.keys[keypressed].origin_col = col
+		end
+
+		for key, value in pairs(mappings.keycount.keys) do
+			if key == keypressed then
+				mappings.keycount.keys[key].count = value.count + 1
+			else
+				mappings.keycount.keys[key].count = 0
+			end
+		end
+	end
+
+	if keypressed == "k" then
+		line = line - (count + 1)
+	elseif keypressed == "j" then
+		line = line + (count + 1)
+	end
+
+	mappings.keycount.last_pos = {
+		line = line,
+		col = col,
+	}
+	vim.api.nvim_echo({}, false, {})
+	vim.fn.cursor(line, col)
+end
+
 function mappings.general()
-	--Remap for dealing with wrap
-	-- vim.api.nvim_set_keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true})
-	-- vim.api.nvim_set_keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { noremap = true, expr = true, silent = true})
-
-	-- jumplist mutation for large relative jumps
-	-- vim.api.nvim_set_keymap('n','k', '(v:count > 5 ? "m\'" . v:count : "") . \'k\'', {noremap = true, expr = true, silent = true})
-	-- vim.api.nvim_set_keymap('n','j', '(v:count > 5 ? "m\'" . v:count : "") . \'j\'', {noremap = true, expr = true, silent = true})
-
 	-- Remap k and j to deal with wraps and with large jumps (which mutate the jumplist)
+	-- vim.api.nvim_set_keymap(
+	-- 	"n",
+	-- 	"k",
+	-- 	'v:count == 0 ? "gk" : (v:count > 5 ? "m\'" . v:count : "") . \'k\'',
+	-- 	{ noremap = true, expr = true, silent = true }
+	-- )
+	-- vim.api.nvim_set_keymap(
+	-- 	"n",
+	-- 	"j",
+	-- 	'v:count == 0 ? "gj" : (v:count > 5 ? "m\'" . v:count : "") . \'j\'',
+	-- 	{ noremap = true, expr = true, silent = true }
+	-- )
+
+	-- limit usage of j and k
 	vim.api.nvim_set_keymap(
 		"n",
 		"k",
-		'v:count == 0 ? "gk" : (v:count > 5 ? "m\'" . v:count : "") . \'k\'',
-		{ noremap = true, expr = true, silent = true }
+		":lua require('mappings').limitKeystroke('k')<CR>",
+		{ noremap = true, silent = true }
 	)
 	vim.api.nvim_set_keymap(
 		"n",
 		"j",
-		'v:count == 0 ? "gj" : (v:count > 5 ? "m\'" . v:count : "") . \'j\'',
-		{ noremap = true, expr = true, silent = true }
+		":lua require('mappings').limitKeystroke('j')<CR>",
+		{ noremap = true, silent = true }
 	)
 
 	-- Y yank until the end of line
@@ -74,7 +160,12 @@ function mappings.general()
 	-- Quickfix list
 	vim.api.nvim_set_keymap("n", "<leader>k", ":cprevious <CR>", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap("n", "<leader>j", ":cnext <CR>", { noremap = true, silent = true })
-	vim.api.nvim_set_keymap("n", "<leader>ll", ":lua ToggleQuickfix() <CR>", { noremap = true, silent = true })
+	vim.api.nvim_set_keymap(
+		"n",
+		"<leader>ll",
+		":lua require('mappings').toggleQuickfix() <CR>",
+		{ noremap = true, silent = true }
+	)
 
 	-- Location list
 	vim.api.nvim_set_keymap("n", "<leader>u", ":lprevious <CR>", { noremap = true, silent = true })
