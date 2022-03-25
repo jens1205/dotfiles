@@ -24,16 +24,13 @@ mappings.keycount = {
 	keys = {
 		k = {
 			count = 0,
-			origin_line = nil,
-			origin_col = nil,
 		},
 		j = {
 			count = 0,
-			origin_line = nil,
-			origin_col = nil,
 		},
 	},
 	last_pos = nil,
+	last_time = nil,
 }
 
 local function clear_keycounts()
@@ -47,34 +44,32 @@ local function clear_keycounts()
 end
 
 function mappings.limitKeystroke(keypressed)
+	local allowtime = 1.0
+	local allowrepeats = 10
+
 	local count = vim.v.count
+	local time = tonumber(vim.fn.reltimestr(vim.fn.reltime()))
 	local buftype = vim.api.nvim_buf_get_option(0, "buftype")
 	local pos = vim.fn.getcurpos()
 	local line = pos[2]
 	local col = pos[3]
+	local first_line = vim.fn.line("w0")
+	local last_line = vim.fn.line("w$")
 
-	if mappings.keycount.last_pos ~= nil then
-		local last_pos = mappings.keycount.last_pos
-		if last_pos.line ~= line or last_pos.col ~= col then
-			clear_keycounts()
-		end
+	local cursor_moved = mappings.keycount.last_pos
+		and (mappings.keycount.last_pos.line ~= line or mappings.keycount.last_pos.col ~= col)
+	local time_passed = mappings.keycount.last_time and time > mappings.keycount.last_time + allowtime
+	local first_line_up = line == first_line and keypressed == "k"
+	local last_line_down = line == last_line and keypressed == "j"
+
+	if cursor_moved or time_passed or first_line_up or last_line_down then
+		clear_keycounts()
 	end
 
 	if count == 0 and buftype ~= "nofile" then
-		if mappings.keycount.keys[keypressed].count > 4 then
+		if mappings.keycount.keys[keypressed].count > allowrepeats then
 			vim.api.nvim_err_writeln("too many keystrokes for " .. keypressed .. ". Use Lightspeed!")
-			local orig_line = mappings.keycount.keys[keypressed].origin_line
-			local orig_col = mappings.keycount.keys[keypressed].origin_col
-			vim.fn.cursor(orig_line, orig_col)
-			mappings.keycount.keys[keypressed].count = 0
-			mappings.keycount.keys[keypressed].origin_line = nil
-			mappings.keycount.keys[keypressed].origin_col = nil
 			return
-		end
-
-		if mappings.keycount.keys[keypressed].count == 0 then
-			mappings.keycount.keys[keypressed].origin_line = line
-			mappings.keycount.keys[keypressed].origin_col = col
 		end
 
 		for key, value in pairs(mappings.keycount.keys) do
@@ -84,18 +79,22 @@ function mappings.limitKeystroke(keypressed)
 				mappings.keycount.keys[key].count = 0
 			end
 		end
+		count = 1
 	end
+	count = (count < 1) and 1 or count
 
 	if keypressed == "k" then
-		line = line - (count + 1)
+		line = line - count
+		line = line >= 1 and line or 1
 	elseif keypressed == "j" then
-		line = line + (count + 1)
+		line = line + count
 	end
 
 	mappings.keycount.last_pos = {
 		line = line,
 		col = col,
 	}
+	mappings.keycount.last_time = time
 	vim.api.nvim_echo({}, false, {})
 	vim.fn.cursor(line, col)
 end
@@ -434,7 +433,7 @@ function mappings.lsp(bufnr)
 	-- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 	-- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>s", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+	-- vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>s", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>wl", "<cmd>lua vim.lsp.buf.list_workspace_folders()<CR>", opts)
@@ -513,6 +512,19 @@ end
 
 function mappings.maximizer()
 	map("n", "<leader>m", ":MaximizerToggle!<CR>")
+end
+
+function mappings.copilot()
+	map("i", "<C-a>", "<Plug>(copilot-previous)", { noremap = false })
+	map("i", "<C-s>", "<Plug>(copilot-next)", { noremap = false })
+	map("i", "<C-x>", "<Plug>(copilot-dismiss)", { noremap = false })
+	-- map("i", "<C-a>", "copilot#Previous()", { expr = true })
+	-- map("i", "<C-s>", "copilot#Next()", { expr = true })
+	-- map("i", "<C-x>", "copilot#Dismiss()", { expr = true })
+	-- map("i", "<F3>", "<Plug>(copilot-previous)", { noremap = false })
+	-- map("i", "<F4>", "<Plug>(copilot-next)", { noremap = false })
+	-- map("i", "<F1>", "<C-o>:echo 'hallo a'<CR>")
+	-- map("i", "<F2>", "<C-o>:echo 'hallo s'<CR>")
 end
 
 return mappings
