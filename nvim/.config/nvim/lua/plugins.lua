@@ -219,6 +219,13 @@ local function install()
 
 		-- language specific things
 		use({
+			"github/copilot.vim",
+			config = function()
+				require("mappings").copilot()
+			end,
+		})
+
+		use({
 			-- 'jens1205/rest.nvim',
 			-- branch = 'highlight-request',
 			"NTBBloodbath/rest.nvim",
