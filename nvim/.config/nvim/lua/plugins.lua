@@ -102,7 +102,23 @@ local function install()
 			run = ":TSUpdate",
 			config = function()
 				require("nvim-treesitter.configs").setup({
-					ensure_installed = "maintained",
+					ensure_installed = {
+						"bash",
+						"css",
+						"go",
+						"html",
+						"http",
+						"java",
+						"javascript",
+						"json",
+						"lua",
+						"markdown",
+						"python",
+						"rust",
+						"toml",
+						"typescript",
+						"yaml",
+					},
 					indent = { enable = true },
 					highlight = { enable = true },
 					rainbow = {
