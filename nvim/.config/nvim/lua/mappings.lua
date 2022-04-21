@@ -472,6 +472,16 @@ function mappings.fugitive()
 	map("n", "<leader>ga", ":diffget //2<CR>")
 	map("n", "<leader>g;", ":diffget //3<CR>")
 	map("n", "<leader>gc", ":0Gclog<CR>") -- commit history of current file into quickfix list
+	map("n", "<leader>rr", "<cmd>lua require'mappings'.git_review()<CR>")
+	vim.api.nvim_create_user_command("Review", ":lua require('mappings').git_review(<q-args>)", { nargs = "?" })
+end
+
+function mappings.git_review(branch)
+	if branch == nil or branch == "" then
+		branch = vim.fn.input("Enter branch name to diff against: ", "master")
+	end
+	require("gitsigns").change_base(branch, true)
+	vim.cmd("Git difftool " .. branch)
 end
 
 function mappings.gitsigns(bufnr)
@@ -503,7 +513,6 @@ function mappings.gitsigns(bufnr)
 	map("n", "<leader>tb", "<cmd>Gitsigns toggle_current_line_blame<CR>")
 	map("n", "<leader>hd", "<cmd>Gitsigns diffthis<CR>")
 	map("n", "<leader>hD", '<cmd>lua require"gitsigns".diffthis("~")<CR>')
-	-- map("n", "<leader>td", "<cmd>Gitsigns toggle_deleted<CR>")
 end
 
 function mappings.neogit()
