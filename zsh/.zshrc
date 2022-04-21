@@ -2,9 +2,10 @@
 
 # without this tmux is not workding. Don't know why
 #export TERM="xterm-256color"
-export GOPRIVATE="gitlab.devops.telekom.de/asf/*"
+# export GOPRIVATE="gitlab.devops.telekom.de/asf/*"
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/sdk/go1.16.5/bin:$HOME/go/bin
+export PATH=$HOME/sdk/go1.17.6/bin:$HOME/bin:/usr/local/bin:$PATH:$HOME/go/bin
+# export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/go/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -21,9 +22,12 @@ export MANWIDTH=999
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 # ZSH_THEME="powerlevel9k/powerlevel9k"
 # ZSH_THEME="powerlevel10k/powerlevel10k"
-ZSH_THEME="spaceship"
-SPACESHIP_GOLANG_SYMBOL=" "
-SPACESHIP_GCLOUD_SHOW=false
+#
+# ZSH_THEME="spaceship"
+# SPACESHIP_GOLANG_SYMBOL=" "
+# SPACESHIP_GCLOUD_SHOW=false
+#
+eval "$(starship init zsh)"
 # ZSH_THEME="robbyrussell"
 
 # Set list of themes to pick from when loading at random
