@@ -40,5 +40,6 @@ stow -t ~ tmux
 stow -t ~ vim
 stow -t ~ zsh
 stow -t ~ git
+stow -t ~ starship
 
 git config --global core.hooksPath '~/.git-templates/hooks'

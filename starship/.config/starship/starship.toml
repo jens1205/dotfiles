@@ -1,0 +1,9 @@
+[gcloud]
+disabled = true
+
+[git_commit]
+tag_disabled = false
+
+
+[golang]
+symbol = ""

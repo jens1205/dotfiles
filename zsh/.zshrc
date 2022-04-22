@@ -27,6 +27,7 @@ export MANWIDTH=999
 # SPACESHIP_GOLANG_SYMBOL=" "
 # SPACESHIP_GCLOUD_SHOW=false
 #
+export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 eval "$(starship init zsh)"
 # ZSH_THEME="robbyrussell"
 
