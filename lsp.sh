@@ -1,10 +1,17 @@
 #!/bin/bash
 
+# golang
 go install golang.org/x/tools/gopls@latest
-
-brew upgrade rust-analyzer
 brew upgrade golangci-lint
 go install github.com/nametake/golangci-lint-langserver
 
+# rust
+brew upgrade rust-analyzer
+
+# typescript
 npm install --save typescript
 npm install -g typescript-language-server
+
+# HTML/CSS/JSON language servers extracted from vscode.
+# https://github.com/hrsh7th/vscode-langservers-extracted
+npm i -g vscode-langservers-extracted

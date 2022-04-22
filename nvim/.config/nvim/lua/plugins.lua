@@ -219,7 +219,7 @@ local function install()
 			config = function()
 				vim.api.nvim_command([[
                          augroup neoformatSave
-                            autocmd BufWritePre *.html,*.lua,*.json Neoformat
+                            autocmd BufWritePre *.html,*.lua Neoformat
                          augroup END
                     ]])
 			end,

@@ -33,6 +33,11 @@ require("lspconfig").tsserver.setup({
 })
 vim.api.nvim_command("autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 1000)")
 
+require("lspconfig").jsonls.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+
 -- rust
 -- nvim_lsp.rust_analyzer.setup({
 -- 	on_attach = on_attach,
