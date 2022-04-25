@@ -135,19 +135,23 @@ function goimports(timeout_ms)
 	-- should be executed first.
 	if action.edit or type(action.command) == "table" then
 		if action.edit then
-			vim.lsp.util.apply_workspace_edit(action.edit)
+			if action.kind == "source.organizeImports" then
+				vim.lsp.util.apply_workspace_edit(action.edit, "utf-16")
+			end
 		end
 		if type(action.command) == "table" then
 			if action.command.arguments[1].Fix == "fill_struct" then
 				return
 			end
-			vim.lsp.buf.execute_command(action.command)
+			print(vim.inspect(action))
+			-- vim.lsp.buf.execute_command(action.command)
 		end
 	else
 		if action.arguments[1].Fix == "fill_struct" then
 			return
 		end
-		vim.lsp.buf.execute_command(action)
+		print(vim.inspect(action))
+		-- vim.lsp.buf.execute_command(action)
 	end
 end
 
