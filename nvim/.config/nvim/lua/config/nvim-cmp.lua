@@ -6,10 +6,10 @@ require("luasnip.loaders.from_vscode").lazy_load()
 -- local function T(str)
 -- 	return vim.api.nvim_replace_termcodes(str, true, true, true)
 -- end
-local has_words_before = function()
-	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-end
+-- local has_words_before = function()
+-- 	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+-- 	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+-- end
 local select_next = cmp.mapping(function(fallback)
 	if cmp.visible() then
 		cmp.select_next_item()
@@ -92,10 +92,10 @@ cmp.setup({
 			select = true,
 		}),
 	},
-	experimental = {
-		native_menu = false,
-		ghost_text = false,
-	},
+	-- experimental = {
+	-- 	native_menu = false,
+	-- 	ghost_text = false,
+	-- },
 })
 
 -- local cmp_autopairs = require("nvim-autopairs.completion.cmp")

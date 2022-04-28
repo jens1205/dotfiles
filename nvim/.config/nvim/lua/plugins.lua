@@ -193,9 +193,9 @@ local function install()
 		}) -- should be after cmp.setup
 		use({
 			"ray-x/lsp_signature.nvim",
-			config = function()
-				require("lsp_signature").setup({ floating_window = false })
-			end,
+			-- config = function()
+			-- require("lsp_signature").setup({ floating_window = false })
+			-- end,
 		})
 
 		use({
@@ -269,7 +269,7 @@ local function install()
 		-- })
 		use({
 			"simrat39/rust-tools.nvim",
-			-- ft = "rs",
+			ft = "rs",
 			requires = {
 				"nvim-lua/popup.nvim",
 				"nvim-lua/plenary.nvim",
