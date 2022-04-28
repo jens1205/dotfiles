@@ -80,7 +80,6 @@ local function install()
 			end,
 		})
 		use({ "nvim-telescope/telescope-fzy-native.nvim" })
-		use({ "nvim-telescope/telescope-project.nvim" })
 
 		use({
 			"itchyny/lightline.vim", -- Fancier statusline
