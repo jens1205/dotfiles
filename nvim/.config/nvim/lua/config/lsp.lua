@@ -85,12 +85,12 @@ nvim_lsp.gopls.setup({
 		codelenses = {
 			test = true,
 		},
-		buildFlags = { "-tags=systemtest" },
+		buildFlags = { "-tags=systemtest,integrationtest" },
 	},
 	settings = {
 		gopls = {
 			buildFlags = {
-				"-tags=systemtest",
+				"-tags=systemtest,integrationtest",
 			},
 			usePlaceholders = true,
 			allowImplicitNetworkAccess = true,
