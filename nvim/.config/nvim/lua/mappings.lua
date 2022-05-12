@@ -472,7 +472,6 @@ function mappings.fugitive()
 	map("n", "<leader>ga", ":diffget //2<CR>")
 	map("n", "<leader>g;", ":diffget //3<CR>")
 	map("n", "<leader>gc", ":0Gclog<CR>") -- commit history of current file into quickfix list
-	map("n", "<leader>rr", "<cmd>lua require'mappings'.git_review()<CR>")
 	vim.api.nvim_create_user_command("Review", ":lua require('mappings').git_review(<q-args>)", { nargs = "?" })
 end
 
@@ -521,6 +520,11 @@ end
 
 function mappings.maximizer()
 	map("n", "<leader>m", ":MaximizerToggle!<CR>")
+end
+
+function mappings.rusttools()
+	map("n", "<leader>rex", ":RustExpandMacro<CR>")
+	map("n", "<leader>rr", ":RustRunnables<CR>")
 end
 
 function mappings.copilot()

@@ -74,7 +74,11 @@ local function install()
 		-- Telescope
 		use({
 			"nvim-telescope/telescope.nvim",
-			requires = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } },
+			requires = {
+				{ "nvim-lua/popup.nvim" },
+				{ "nvim-lua/plenary.nvim" },
+				{ "nvim-telescope/telescope-ui-select.nvim" },
+			},
 			config = function()
 				require("config.telescope")
 			end,
@@ -269,11 +273,11 @@ local function install()
 		-- })
 		use({
 			"simrat39/rust-tools.nvim",
-			ft = "rs",
+			-- ft = "rs",
 			requires = {
 				"nvim-lua/popup.nvim",
 				"nvim-lua/plenary.nvim",
-				"nvim-telescope/telescope.nvim",
+				-- "nvim-telescope/telescope.nvim",
 			},
 			config = function()
 				local on_attach = function(_client, bufnr)
@@ -287,6 +291,7 @@ local function install()
 					},
 				}
 				require("rust-tools").setup(opts)
+				require("mappings").rusttools()
 				vim.api.nvim_command("autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)")
 			end,
 		})
