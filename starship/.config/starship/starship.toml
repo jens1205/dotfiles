@@ -1,11 +1,17 @@
 command_timeout = 750
 
+[aws]
+disabled = true
+
+[jobs]
+number_threshold = 1
+symbol_threshold = 1
+
 [gcloud]
 disabled = true
 
 [git_commit]
 tag_disabled = false
-
 
 [golang]
 symbol = ""
