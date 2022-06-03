@@ -89,7 +89,7 @@ cmp.setup({
 		}),
 		["<S-CR>"] = cmp.mapping.confirm({
 			behavior = cmp.ConfirmBehavior.Replace,
-			select = true,
+			select = false,
 		}),
 	},
 	-- experimental = {
