@@ -4,8 +4,9 @@
 #export TERM="xterm-256color"
 # export GOPRIVATE="gitlab.devops.telekom.de/asf/*"
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/sdk/go1.17.6/bin:$HOME/bin:/usr/local/bin:$PATH:$HOME/go/bin
-# export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/go/bin
+# export PATH=$HOME/sdk/go1.18.3/bin:$HOME/bin:/usr/local/bin:$PATH:$HOME/go/bin
+# export PATH=$HOME/sdk/go1.17.6/bin:$HOME/bin:/usr/local/bin:$PATH:$HOME/go/bin
+export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/go/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -22,6 +23,17 @@ export MANWIDTH=999
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 # ZSH_THEME="powerlevel9k/powerlevel9k"
 # ZSH_THEME="powerlevel10k/powerlevel10k"
+# POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir rbenv vcs)
+# POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
+# POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+# # Add a space in the first prompt
+# POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="%f"
+# # Visual customisation of the second prompt line
+# local user_symbol="$"
+# if [[ $(print -P "%#") =~ "#" ]]; then
+#     user_symbol = "#"
+# fi
+# POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%{%B%F{black}%K{yellow}%} $user_symbol%{%b%f%k%F{yellow}%} %{%f%}"
 #
 # ZSH_THEME="spaceship"
 # SPACESHIP_GOLANG_SYMBOL=" "
@@ -80,20 +92,26 @@ function cmd_last_job {
 }
 
 function set_terminal_title() {
+  # echo "set_terminal_title($@)"
   echo -en "\e]2;$@\a"
+  # echo -en "\033]0;$@\007"
 }
 
 
 function precmd () {
+  # date
+  # echo "precmd()"
   # window_title="\033]0;${PWD##*/}\007"
   current_dir=$(print -P %~)
   base=$(basename $current_dir)
   current_dir=$(echo $current_dir | sed -E "s/asf.*$base/asf\/..\/$base/g")
-  window_title="\033]0;${current_dir}\007"
-  echo -ne "$window_title"
+  set_terminal_title "$current_dir"
+  # window_title="\033]0;${current_dir}\007"
+  # echo -ne "$window_title"
 }
 
 function preexec () {
+  # echo "preexec()"
   current_cmd=$1
   current_cmd=${current_cmd%% *}
   if [[ $current_cmd = "nvim" ]]; then
@@ -111,8 +129,11 @@ function preexec () {
         title="$current_cmd"
       fi
   fi
+  # date
+  # echo "title = $title"
   # window_title="\033]0;$title\007"
   # echo -n "$window_title"
+  
   set_terminal_title $title
 
 }
@@ -198,17 +219,6 @@ alias nvimdev='nvim --cmd "set rtp+=$(pwd)"'
 # ekstoken is a function now, see .oh-my-zsh/custom/function.zsh
 
 
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir rbenv vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
-POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-# Add a space in the first prompt
-POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="%f"
-# Visual customisation of the second prompt line
-local user_symbol="$"
-if [[ $(print -P "%#") =~ "#" ]]; then
-    user_symbol = "#"
-fi
-POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%{%B%F{black}%K{yellow}%} $user_symbol%{%b%f%k%F{yellow}%} %{%f%}"
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/terraform terraform
@@ -229,3 +239,7 @@ export SDKMAN_DIR="/Users/a1167272/.sdkman"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/a1167272/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
