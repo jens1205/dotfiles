@@ -81,6 +81,8 @@ nvim_lsp.gopls.setup({
 	on_attach = go_on_attach(on_attach),
 	capabilities = capabilities,
 	--cmd = {"gopls", "serve" },
+	-- cmd = { "gopls", "-vv", "-logfile=/tmp/gopls.log" },
+	-- cmd = { "gopls", "-logfile=/tmp/gopls.log", "-vv", "-rpc.trace", "--debug=localhost:6060" },
 	init_options = {
 		codelenses = {
 			test = true,
@@ -107,6 +109,18 @@ nvim_lsp.gopls.setup({
 				generate = true,
 				test = true,
 			},
+			-- inlay hints are now supported by gopls, but we would need to write some infrastructure code to issue the correct
+			-- requests. Sample could be seen in rust-tools.nvim
+			-- Either wait for nvim go plugins to do this and try them, or write it myself...
+			-- hints = {
+			-- 	assignVariableTypes = true,
+			-- 	compositeLiteralFields = true,
+			-- 	compositeLiteralTypes = true,
+			-- 	constantValues = true,
+			-- 	functionTypeParameters = true,
+			-- 	parameterNames = true,
+			-- 	rangeVariableTypes = true,
+			-- },
 		},
 	},
 })
