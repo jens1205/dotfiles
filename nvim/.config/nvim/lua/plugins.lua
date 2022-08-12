@@ -137,9 +137,9 @@ local function install()
 			"kyazdani42/nvim-tree.lua",
 			requires = { "kyazdani42/nvim-web-devicons" },
 			config = function()
-				vim.g.nvim_tree_respect_buf_cwd = 1
 				require("mappings").nvimtree()
 				require("nvim-tree").setup({
+					respect_buf_cwd = true,
 					disable_netrw = false,
 					diagnostics = {
 						enable = true,
@@ -187,6 +187,26 @@ local function install()
 				"hrsh7th/cmp-emoji",
 				"onsails/lspkind-nvim",
 			},
+		})
+		use({
+			"tzachar/cmp-tabnine",
+			run = "./install.sh",
+			config = function()
+				local tabnine = require("cmp_tabnine.config")
+				tabnine:setup({
+					max_lines = 1000,
+					max_num_results = 20,
+					sort = true,
+					run_on_every_keystroke = true,
+					snippet_placeholder = "..",
+					ignored_file_types = { -- default is not to ignore
+						-- uncomment to ignore in lua:
+						-- lua = true
+					},
+					show_prediction_strength = false,
+				})
+			end,
+			requires = "hrsh7th/nvim-cmp",
 		})
 
 		use({
@@ -237,12 +257,12 @@ local function install()
 		use({ "jbyuki/one-small-step-for-vimkind" })
 
 		-- language specific things
-		use({
-			"github/copilot.vim",
-			config = function()
-				require("mappings").copilot()
-			end,
-		})
+		-- use({
+		-- 	"github/copilot.vim",
+		-- 	config = function()
+		-- 		require("mappings").copilot()
+		-- 	end,
+		-- })
 
 		use({
 			-- 'jens1205/rest.nvim',
