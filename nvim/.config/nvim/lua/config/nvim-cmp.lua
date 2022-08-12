@@ -68,6 +68,7 @@ cmp.setup({
 		{ name = "nvim_lua" },
 		{ name = "buffer", keyword_length = 5 },
 		{ name = "emoji" },
+		{ name = "cmp_tabnine" },
 		-- { name = "treesitter" },
 		-- { name = "crates" },
 	},
