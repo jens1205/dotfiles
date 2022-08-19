@@ -263,6 +263,12 @@ function mappings.telescope()
 	)
 	vim.api.nvim_set_keymap(
 		"n",
+		"<leader>fr",
+		[[<cmd>lua require('telescope.builtin').resume()<cr>]],
+		{ noremap = true, silent = true }
+	)
+	vim.api.nvim_set_keymap(
+		"n",
 		"<leader>fT",
 		[[<cmd>lua require('telescope.builtin').search_history()<cr>]],
 		{ noremap = true, silent = true }
@@ -279,13 +285,6 @@ function mappings.telescope()
 		[[<cmd>lua require('telescope.builtin').grep_string()<cr>]],
 		{ noremap = true, silent = true }
 	)
-	vim.api.nvim_set_keymap(
-		"n",
-		"<leader>fp",
-		[[<cmd>lua require('telescope').extensions.project.project{}<cr>]],
-		{ noremap = true, silent = true }
-	)
-
 	vim.api.nvim_set_keymap(
 		"n",
 		"<leader>fk",
