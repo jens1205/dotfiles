@@ -22,6 +22,7 @@ local function install()
 	local use = require("packer").use
 	require("packer").startup(function()
 		use("wbthomason/packer.nvim") -- Package manager
+		use("lewis6991/impatient.nvim")
 
 		use({
 			"tpope/vim-fugitive",
@@ -142,6 +143,7 @@ local function install()
 				})
 			end,
 		})
+		use("nvim-treesitter/nvim-treesitter-context")
 
 		use({
 			"kyazdani42/nvim-tree.lua",
@@ -238,15 +240,34 @@ local function install()
 				require("mappings").trouble()
 			end,
 		})
-		-- use {'vim-test/vim-test', config = function() require('config.vim-test') end}
-		-- use { "rcarriga/vim-ultest",
-		--        config = "require('config.ultest')",
-		--        run = ":UpdateRemotePlugins",
-		--        requires = {"vim-test/vim-test"},
-		--        opt = true,
-		--        cmd = {'Ultest'},
-		-- }
-		--
+		use({
+			"nvim-neotest/neotest",
+			requires = {
+				"nvim-lua/plenary.nvim",
+				"nvim-treesitter/nvim-treesitter",
+				"antoinemadec/FixCursorHold.nvim",
+				"nvim-neotest/neotest-go",
+				"nvim-neotest/neotest-python",
+				"rouge8/neotest-rust",
+			},
+			config = function()
+				-- get neotest namespace (create creates or returns namespace)
+				local neotest_ns = vim.api.nvim_create_namespace("neotest")
+				vim.diagnostic.config({
+					virtual_text = true,
+				}, neotest_ns)
+				require("neotest").setup({
+					adapters = {
+						require("neotest-python"),
+						require("neotest-go"),
+						require("neotest-rust"),
+					},
+					diagnostic = {
+						enabled = true,
+					},
+				})
+			end,
+		})
 		use({
 			"sbdchd/neoformat",
 			config = function()
@@ -302,6 +323,9 @@ local function install()
 		-- 	end,
 		-- })
 		use({
+			"folke/lua-dev.nvim",
+		})
+		use({
 			"simrat39/rust-tools.nvim",
 			-- ft = "rs",
 			requires = {
@@ -329,6 +353,7 @@ local function install()
 
 		-- Themes
 		use({ "navarasu/onedark.nvim" })
+		use("folke/tokyonight.nvim")
 	end)
 end
 

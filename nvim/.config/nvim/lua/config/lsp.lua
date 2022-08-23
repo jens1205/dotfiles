@@ -183,32 +183,14 @@ require("lspconfig").golangci_lint_ls.setup({
 	on_attach = on_attach,
 })
 
--- local sumneko_root_path = vim.fn.getenv("HOME").."/.local/bin/sumneko_lua" -- Change to your sumneko root installation
-local sumneko_root_path = vim.fn.getenv("HOME") .. "/bin/lua-language-server" -- Change to your sumneko root installation
--- local sumneko_binary_path = vim.fn.getenv("HOME").."/bin/lua-language-server" -- Change to your OS specific output folder
-local sumneko_binary = "/bin/lua-language-server" -- Change to your OS specific output folder
-nvim_lsp.sumneko_lua.setup({
-	-- cmd = {sumneko_root_path .. sumneko_binary_path, "-E", sumneko_root_path.."/main.lua" };
-	cmd = { sumneko_root_path .. sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
-	on_attach = on_attach,
-	settings = {
-		Lua = {
-			runtime = {
-				version = "LuaJIT",
-				path = vim.split(package.path, ";"),
-			},
-			diagnostics = {
-				globals = { "vim" },
-			},
-			workspace = {
-				library = {
-					[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-					[vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-				},
-			},
-		},
+-- lua language server
+local luadev = require("lua-dev").setup({
+	lspconfig = {
+		on_attach = on_attach,
 	},
 })
+local lspconfig = require("lspconfig")
+lspconfig.sumneko_lua.setup(luadev)
 
 -- Map :Format to vim.lsp.buf.formatting()
 vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting_sync(nil, 1000)' ]])

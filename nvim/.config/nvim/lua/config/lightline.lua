@@ -11,7 +11,8 @@ function! LightlineFilename()
 endfunction
 ]])
 vim.g.lightline = {
-	colorscheme = "one",
+	-- colorscheme = "one",
+	colorscheme = "tokyonight",
 	active = { left = { { "mode", "paste" }, { "gitbranch", "readonly", "filename", "modified" } } },
 	component_function = {
 		gitbranch = "FugitiveHead",

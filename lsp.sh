@@ -8,6 +8,9 @@ go install github.com/nametake/golangci-lint-langserver
 # rust
 brew upgrade rust-analyzer
 
+# lua
+brew upgrade lua-language-server
+
 # typescript
 npm install --save typescript
 npm install -g typescript-language-server
