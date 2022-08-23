@@ -197,6 +197,7 @@ local function install()
 				"hrsh7th/cmp-path",
 				"hrsh7th/cmp-nvim-lua",
 				"hrsh7th/cmp-emoji",
+				"hrsh7th/cmp-nvim-lsp-signature-help",
 				"onsails/lspkind-nvim",
 			},
 		})
@@ -226,12 +227,6 @@ local function install()
 			config = function()
 				require("config.nvim-autopairs")
 			end,
-		}) -- should be after cmp.setup
-		use({
-			"ray-x/lsp_signature.nvim",
-			-- config = function()
-			-- require("lsp_signature").setup({ floating_window = false })
-			-- end,
 		})
 
 		use({

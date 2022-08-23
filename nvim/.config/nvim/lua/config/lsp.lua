@@ -1,11 +1,9 @@
 -- LSP settings
 local nvim_lsp = require("lspconfig")
-local lsp_signature_config = { floating_window = false }
 local on_attach = function(_client, bufnr)
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
 	require("mappings").lsp(bufnr)
-	require("lsp_signature").on_attach(lsp_signature_config, bufnr)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
