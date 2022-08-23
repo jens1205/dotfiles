@@ -37,6 +37,26 @@ end, {
 	"i",
 	"s",
 })
+local jump = cmp.mapping(function(fallback)
+	if luasnip.expand_or_jumpable() then
+		luasnip.expand_or_jump()
+	else
+		fallback()
+	end
+end, {
+	"i",
+	"s",
+})
+local jump_back = cmp.mapping(function(fallback)
+	if luasnip.jumpable(-1) then
+		luasnip.jump(-1)
+	else
+		fallback()
+	end
+end, {
+	"i",
+	"s",
+})
 
 cmp.setup({
 	formatting = {
@@ -69,6 +89,7 @@ cmp.setup({
 		{ name = "buffer", keyword_length = 5 },
 		{ name = "emoji" },
 		{ name = "cmp_tabnine" },
+		{ name = "nvim_lsp_signature_help" },
 		-- { name = "treesitter" },
 		-- { name = "crates" },
 	},
@@ -82,6 +103,8 @@ cmp.setup({
 		["<S-Tab>"] = cmp.config.disable,
 		["<C-j>"] = select_next,
 		["<C-k>"] = select_prev,
+		["<C-l>"] = jump,
+		["<C-h>"] = jump_back,
 		["<C-e>"] = cmp.mapping.close(),
 		["<CR>"] = cmp.mapping.confirm({
 			behavior = cmp.ConfirmBehavior.Insert,
