@@ -241,9 +241,10 @@ local function install()
 				"nvim-lua/plenary.nvim",
 				"nvim-treesitter/nvim-treesitter",
 				"antoinemadec/FixCursorHold.nvim",
-				"nvim-neotest/neotest-go",
+				-- "nvim-neotest/neotest-go",
 				"nvim-neotest/neotest-python",
 				"rouge8/neotest-rust",
+				{ "jens1205/neotest-go", branch = "test" },
 			},
 			config = function()
 				-- get neotest namespace (create creates or returns namespace)
@@ -319,6 +320,12 @@ local function install()
 		-- })
 		use({
 			"folke/lua-dev.nvim",
+		})
+		use({
+			"bfredl/nvim-luadev",
+			config = function()
+				require("mappings").nvim_luadev()
+			end,
 		})
 		use({
 			"simrat39/rust-tools.nvim",
