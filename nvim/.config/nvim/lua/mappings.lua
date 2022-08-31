@@ -263,6 +263,12 @@ function mappings.telescope()
 	)
 	vim.api.nvim_set_keymap(
 		"n",
+		"<leader>fat",
+		[[<cmd>lua require('telescope.builtin').live_grep({vimgrep_arguments = { "rg", "--color=never", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case", "-uu"}})<cr>]],
+		{ noremap = true, silent = true }
+	)
+	vim.api.nvim_set_keymap(
+		"n",
 		"<leader>fr",
 		[[<cmd>lua require('telescope.builtin').resume()<cr>]],
 		{ noremap = true, silent = true }
