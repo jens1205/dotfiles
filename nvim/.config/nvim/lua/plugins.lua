@@ -47,16 +47,16 @@ local function install()
 				})
 			end,
 		})
-		use({
-			"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-			config = function()
-				-- Disable virtual_text since it's redundant due to lsp_lines.
-				vim.diagnostic.config({
-					virtual_text = false,
-				})
-				require("lsp_lines").setup()
-			end,
-		})
+		-- use({
+		-- 	"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+		-- 	config = function()
+		-- 		-- Disable virtual_text since it's redundant due to lsp_lines.
+		-- 		vim.diagnostic.config({
+		-- 			virtual_text = false,
+		-- 		})
+		-- 		require("lsp_lines").setup()
+		-- 	end,
+		-- })
 		use("ggandor/lightspeed.nvim")
 		-- use({
 		-- 	"TimUntersberger/neogit",
@@ -236,30 +236,62 @@ local function install()
 			end,
 		})
 		use({
-			"nvim-neotest/neotest",
+			"jens1205/neotest",
+			branch = "output_open_win",
+			-- "nvim-neotest/neotest",
 			requires = {
 				"nvim-lua/plenary.nvim",
 				"nvim-treesitter/nvim-treesitter",
 				"antoinemadec/FixCursorHold.nvim",
-				-- "nvim-neotest/neotest-go",
+				"nvim-neotest/neotest-go",
 				"nvim-neotest/neotest-python",
 				"rouge8/neotest-rust",
-				{ "jens1205/neotest-go", branch = "test" },
+				-- { "jens1205/neotest-go", branch = "error-lines" },
 			},
 			config = function()
 				-- get neotest namespace (create creates or returns namespace)
 				local neotest_ns = vim.api.nvim_create_namespace("neotest")
 				vim.diagnostic.config({
-					virtual_text = true,
+					virtual_text = {
+						source = true,
+						format = function(diagnostic)
+							local message = diagnostic.message
+								:gsub("\n", " ")
+								:gsub("\t", " ")
+								:gsub("%s+", " ")
+								:gsub("^%s+", "")
+							return message
+						end,
+					},
 				}, neotest_ns)
 				require("neotest").setup({
+					consumers = {
+						splitoutput = require("splitoutput"),
+					},
 					adapters = {
 						require("neotest-python"),
-						require("neotest-go"),
+						require("neotest-go")({
+							experimental = {
+								test_table = true,
+							},
+							args = { "-count=1", "-timeout=60s" },
+						}),
 						require("neotest-rust"),
 					},
 					diagnostic = {
 						enabled = true,
+					},
+					output = {
+						enabled = false,
+						-- open_win = function()
+						-- 	vim.notify("in open_win wrapper func")
+						-- 	return Neotest_open_win()
+						-- end,
+					},
+					splitoutput = {
+						enabled = true,
+						open_on_run = "short",
+						-- open_on_run = "long",
 					},
 				})
 			end,
