@@ -5,10 +5,8 @@ if [ -z "$BRANCHES_TO_SKIP" ]; then
 fi
 # Get the current branch name
 BRANCH_NAME=$(git symbolic-ref --short HEAD)
-echo "Current branch: $BRANCH_NAME"
 # Ticket name is retrieved as a string between the first slash and the second hyphen
 TICKET_NAME=$(echo $BRANCH_NAME | sed -e 's/^[^\/]*\/\([^-]*-[^-]*\).*/\1/' -e 's/\//-/g' | tr "[:lower:]" "[:upper:]")
-echo $TICKET_NAME
 
 BRANCH_EXCLUDED=$(printf "%s\n" "${BRANCHES_TO_SKIP[@]}" | grep -c "^$BRANCH_NAME$")
 ALREADY_IN_MSG=$(grep -c "$TICKET_NAME" $1)
