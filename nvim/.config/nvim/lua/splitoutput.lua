@@ -62,15 +62,12 @@ local function create_buffer(cur_name, cur_win, output)
 	return new_buf
 end
 
-local function open_output(result, opts)
-	opts.short = opts.short or false
+local function open_output(output, opts)
 	local cur_win = vim.api.nvim_get_current_win()
 	local cur_name = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
-	local cur_dir = extract_dir(cur_name)
-	local output = opts.short and result.short or (result.output and lib.files.read(result.output))
 	if not output then
 		if not opts.quiet then
-			lib.notify("Output not found for position", "warn")
+			lib.notify("no output", "warn")
 		end
 		return
 	end
@@ -107,30 +104,66 @@ local client
 local init = function()
 	if config.splitoutput.open_on_run then
 		client.listeners.results = function(_, results)
-			local cur_pos = async.fn.getpos(".")
-			local line = cur_pos[2] - 1
-			local buf_path = vim.fn.expand("%:p", _, _)
-			local positions = client:get_position(buf_path)
-			if not positions then
-				return
-			end
-			for _, pos in positions:iter() do
-				if
-					pos.type == "test"
-					and results[pos.id]
-					-- and results[pos.id].status == "failed"
-					and pos.range[1] <= line
-					and pos.range[3] >= line
-				then
-					open_output(results[pos.id], {
-						short = config.splitoutput.open_on_run == "short",
-						enter = false,
-						quiet = true,
-					})
-				end
-			end
+			lib.notify("listeners.results()")
+			-- lib.notify(vim.inspect(results))
+			-- local cur_pos = async.fn.getpos(".")
+			-- local line = cur_pos[2] - 1
+			-- local buf_path = vim.fn.expand("%:p", _, _)
+			-- local positions = client:get_position(buf_path)
+			-- if not positions then
+			-- 	return
+			-- end
+			-- for _, pos in positions:iter() do
+			-- 	if
+			-- 		pos.type == "test"
+			-- 		and results[pos.id]
+			-- 		-- and results[pos.id].status == "failed"
+			-- 		and pos.range[1] <= line
+			-- 		and pos.range[3] >= line
+			-- 	then
+			-- 		open_output(results[pos.id], {
+			-- 			short = config.splitoutput.open_on_run == "short",
+			-- 			enter = false,
+			-- 			quiet = true,
+			-- 		})
+			-- 	end
+			-- end
+			-- local output_file = results["root"].output
+			-- if not output_file then
+			-- 	lib.notify("no output file")
+			-- 	return
+			-- end
+			-- lib.notify("output file: " .. output_file)
+
+			-- local output = vim.fn.readfile(output_file)
+			-- lib.notify(vim.inspect(output))
+
+			-- local success, output = pcall(lib.files.read, output_file)
+			-- if not success then
+			-- 	lib.notify("could not read output file " .. output_file .. ": " .. output)
+			-- 	return
+			-- end
+			open_output(results["root"].short, { enter = false, quiet = true })
 		end
 	end
+end
+
+local function open_under_cursor(adapter_id, tree, opts)
+	local result = client:get_results(adapter_id)[tree:data().id]
+	if not result then
+		lib.notify("No output for " .. tree:data().name)
+		return
+	end
+	open_output(result.short, opts)
+end
+
+local function open_all_output(adapter_id, opts)
+	local results = client:get_results(adapter_id)
+	local all_outputs = ""
+	for _, result in pairs(results) do
+		all_outputs = all_outputs .. result.short
+	end
+	open_output(all_outputs, opts)
 end
 
 --- Open the output of a test result
@@ -149,16 +182,6 @@ end
 ---@field adapter string Adapter ID, defaults to first found with matching position
 function neotest.splitoutput.open(opts)
 	opts = opts or {}
-	-- if win then
-	-- 	if opts.short ~= short_opened then
-	-- 		pcall(vim.api.nvim_win_close, win, true)
-	-- 	else
-	-- 		if pcall(vim.api.nvim_set_current_win, win) then
-	-- 			return
-	-- 		end
-	-- 		opts.enter = true
-	-- 	end
-	-- end
 	async.run(function()
 		local tree, adapter_id
 		if not opts.position_id then
@@ -172,12 +195,8 @@ function neotest.splitoutput.open(opts)
 			lib.notify("No tests found in file", "warn")
 			return
 		end
-		local result = client:get_results(adapter_id)[tree:data().id]
-		if not result then
-			lib.notify("No output for " .. tree:data().name)
-			return
-		end
-		open_output(result, opts)
+		-- open_all_output(adapter_id, opts)
+		open_under_cursor(adapter_id, tree, opts)
 	end)
 end
 
