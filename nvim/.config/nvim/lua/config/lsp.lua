@@ -1,9 +1,31 @@
 -- LSP settings
 local nvim_lsp = require("lspconfig")
-local on_attach = function(_client, bufnr)
+local on_attach = function(client, bufnr)
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
 	require("mappings").lsp(bufnr)
+
+	if client and client.supports_method("textDocument/formatting") then
+		local format_enabled = true
+		vim.api.nvim_buf_create_user_command(0, "FormatDisable", function()
+			format_enabled = false
+		end, {})
+		vim.api.nvim_buf_create_user_command(0, "FormatEnable", function()
+			format_enabled = true
+		end, {})
+		local lsp_augroup = "custom_lsp_augroup" .. bufnr
+		vim.api.nvim_create_augroup(lsp_augroup, { clear = true })
+		vim.api.nvim_create_autocmd("BufWritePre", {
+			group = lsp_augroup,
+			buffer = bufnr,
+			callback = function()
+				print("formatting", format_enabled)
+				if format_enabled then
+					vim.lsp.buf.format({ timeout_ms = 3000 })
+				end
+			end,
+		})
+	end
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -24,14 +46,12 @@ require("lspconfig").html.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
--- vim.api.nvim_command("autocmd BufWritePre *.html lua vim.lsp.buf.formatting_sync(nil, 1000)")
 
 -- javascript & typescript
 require("lspconfig").tsserver.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
-vim.api.nvim_command("autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 1000)")
 
 require("lspconfig").jsonls.setup({
 	on_attach = on_attach,
@@ -65,7 +85,6 @@ require("lspconfig").jsonls.setup({
 -- 		},
 -- 	},
 -- })
--- vim.api.nvim_command("autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)")
 
 -- gopls
 local go_on_attach = function(default_attach_func)
@@ -170,10 +189,9 @@ function goimports(timeout_ms)
 end
 
 vim.api.nvim_command("autocmd BufWritePre *.go lua goimports(1000)")
-vim.api.nvim_command("autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync(nil, 1000)")
-vim.api.nvim_command("autocmd BufWritePre go.mod lua vim.lsp.buf.formatting_sync(nil, 1000)")
 vim.api.nvim_command("autocmd BufWritePost *.go lua vim.lsp.codelens.refresh()")
 -- gopls end
+--
 
 -- golangci_lint_ls
 require("lspconfig").golangci_lint_ls.setup({
@@ -191,7 +209,7 @@ local lspconfig = require("lspconfig")
 lspconfig.sumneko_lua.setup(luadev)
 
 -- Map :Format to vim.lsp.buf.formatting()
-vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting_sync(nil, 1000)' ]])
+vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format()' ]])
 
 -- put LSP diagnostics into location list - START
 -- WARnING! Does open a non closable window on the bottom with neovim v0.6
