@@ -59,6 +59,7 @@ end, {
 })
 
 cmp.setup({
+	-- preselect = cmp.PreselectMode.None,
 	formatting = {
 		format = function(entry, vim_item)
 			-- fancy icons and a name of kind

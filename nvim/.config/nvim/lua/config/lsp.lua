@@ -58,6 +58,12 @@ require("lspconfig").jsonls.setup({
 	capabilities = capabilities,
 })
 
+-- terraform
+require("lspconfig").terraformls.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+
 -- rust
 -- nvim_lsp.rust_analyzer.setup({
 -- 	on_attach = on_attach,
@@ -200,13 +206,17 @@ require("lspconfig").golangci_lint_ls.setup({
 })
 
 -- lua language server
-local luadev = require("lua-dev").setup({
-	lspconfig = {
-		on_attach = on_attach,
+require("neodev").setup({})
+local lspconfig = require("lspconfig")
+lspconfig.lua_ls.setup({
+	settings = {
+		Lua = {
+			completion = {
+				callSnippet = "Replace",
+			},
+		},
 	},
 })
-local lspconfig = require("lspconfig")
-lspconfig.sumneko_lua.setup(luadev)
 
 -- Map :Format to vim.lsp.buf.formatting()
 vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format()' ]])

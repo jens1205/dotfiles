@@ -11,6 +11,8 @@ brew upgrade rust-analyzer
 # lua
 brew upgrade lua-language-server
 
+brew upgrade terraform-ls
+
 # typescript
 npm install --save typescript
 npm install -g typescript-language-server
