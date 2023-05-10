@@ -325,12 +325,12 @@ local function install()
 		use({ "jbyuki/one-small-step-for-vimkind" })
 
 		-- language specific things
-		-- use({
-		-- 	"github/copilot.vim",
-		-- 	config = function()
-		-- 		require("mappings").copilot()
-		-- 	end,
-		-- })
+		use({
+			"github/copilot.vim",
+			config = function()
+				require("mappings").copilot()
+			end,
+		})
 
 		use({
 			-- 'jens1205/rest.nvim',
