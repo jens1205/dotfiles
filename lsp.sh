@@ -20,3 +20,5 @@ npm install -g typescript-language-server
 # HTML/CSS/JSON language servers extracted from vscode.
 # https://github.com/hrsh7th/vscode-langservers-extracted
 npm i -g vscode-langservers-extracted
+
+npm i -g yaml-language-server

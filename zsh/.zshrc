@@ -212,6 +212,7 @@ alias set-proxy-lup='export https_proxy=socks5://localhost:1081'
 alias ll='ls -l'
 alias go_vsehop='ssh -p 56022 jensgersdorf@217.170.177.100'
 alias git='LANG=en_GB git'
+alias gowasi='GOOS=wasip1 GOARCH=wasm go'
 alias firefox="open -a firefox"
 #alias adfs="ssh amk-agent01 -t 'cd /home/coinop/adfs-login-amk-agent && ./adfs-login.sh'"
 alias adfs="source /Users/a1167272/asf/teams/team-42/tools/adfs.sh -k"
@@ -244,3 +245,10 @@ export NVM_DIR="$HOME/.nvm"
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/a1167272/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
+export WASMTIME_HOME="$HOME/.wasmtime"
+
+export PATH="$WASMTIME_HOME/bin:$PATH"
+# Wasmer
+export WASMER_DIR="/Users/a1167272/.wasmer"
+[ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"

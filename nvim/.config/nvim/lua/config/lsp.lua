@@ -93,19 +93,42 @@ require("lspconfig").terraformls.setup({
 -- })
 
 -- gopls
-local go_on_attach = function(default_attach_func)
-	return function(_client, bufnr)
-		default_attach_func(_client, bufnr)
-		vim.lsp.codelens.refresh()
-	end
+local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
+-- for Go files we are using functionality provided by https://github.com/ray-x/go.nvim
+-- instead of automatically directly using the lsp itself. go.nvim internally is first calling the organizeImports
+-- codeAction, and is doing the formating after this (both also via the gopls lsp)
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*.go",
+	callback = function()
+		require("go.format").goimport()
+	end,
+	group = format_sync_grp,
+})
+vim.api.nvim_command("autocmd BufWritePost *.go lua vim.lsp.codelens.refresh()")
+
+-- go_on_attach is different from on attach, as it is not doing the code formating. See above for the code-formatting
+-- autocmd for all go files.
+local go_on_attach = function(_client, bufnr)
+	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+	require("mappings").lsp(bufnr)
+
+	vim.lsp.codelens.refresh()
 end
 
 nvim_lsp.gopls.setup({
-	on_attach = go_on_attach(on_attach),
+	on_attach = go_on_attach,
 	capabilities = capabilities,
 	--cmd = {"gopls", "serve" },
 	-- cmd = { "gopls", "-vv", "-logfile=/tmp/gopls.log" },
 	-- cmd = { "gopls", "-logfile=/tmp/gopls.log", "-vv", "-rpc.trace", "--debug=localhost:6060" },
+	root_dir = function(fname)
+		local has_lsp, lspconfig = pcall(require, "lspconfig")
+		if has_lsp then
+			local util = lspconfig.util
+			return util.root_pattern("go.mod", ".git")(fname) or util.path.dirname(fname)
+		end
+	end,
+	filetypes = { "go", "gomod", "gosum", "gotmpl", "gohtmltmpl", "gotexttmpl" },
 	init_options = {
 		codelenses = {
 			test = true,
@@ -117,12 +140,21 @@ nvim_lsp.gopls.setup({
 			buildFlags = {
 				"-tags=systemtest,integrationtest",
 			},
+			-- templateExtensions = { "gotmpl" },
 			usePlaceholders = true,
 			allowImplicitNetworkAccess = true,
 			allowModfileModifications = true,
 			analyses = {
+				unreachable = true,
 				unusedparams = true,
-				fieldalignment = true,
+				useany = true,
+				unusedwrite = true,
+				ST1003 = true,
+				undeclaredname = true,
+				fillreturns = true,
+				nonewvars = true,
+				fieldalignment = false,
+				shadow = true,
 			},
 			staticcheck = true,
 			codelenses = {
@@ -148,61 +180,50 @@ nvim_lsp.gopls.setup({
 	},
 })
 
--- taken from https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-config
-function goimports(timeout_ms)
-	local context = { source = { organizeImports = true } }
-	vim.validate({ context = { context, "t", true } })
-
-	local params = vim.lsp.util.make_range_params()
-	params.context = context
-
-	-- See the implementation of the textDocument/codeAction callback
-	-- (lua/vim/lsp/handler.lua) for how to do this properly.
-	local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
-	if result == nil or result[1] == nil or not result or next(result) == nil then
-		return
-	end
-	local actions = result[1].result
-	if not actions then
-		return
-	end
-	local action = actions[1]
-	-- print(vim.inspect(action))
-
-	-- textDocument/codeAction can return either Command[] or CodeAction[]. If it
-	-- is a CodeAction, it can have either an edit, a command or both. Edits
-	-- should be executed first.
-	if action.edit or type(action.command) == "table" then
-		if action.edit then
-			if action.kind == "source.organizeImports" then
-				vim.lsp.util.apply_workspace_edit(action.edit, "utf-16")
-			end
-		end
-		if type(action.command) == "table" then
-			if action.command.arguments[1].Fix == "fill_struct" then
-				return
-			end
-			print(vim.inspect(action))
-			-- vim.lsp.buf.execute_command(action.command)
-		end
-	else
-		if action.arguments[1].Fix == "fill_struct" then
-			return
-		end
-		print(vim.inspect(action))
-		-- vim.lsp.buf.execute_command(action)
-	end
-end
-
-vim.api.nvim_command("autocmd BufWritePre *.go lua goimports(1000)")
-vim.api.nvim_command("autocmd BufWritePost *.go lua vim.lsp.codelens.refresh()")
 -- gopls end
 --
 
+-- https://github.com/someone-stole-my-name/yaml-companion.nvim
+-- yaml companion, using the yaml-language-server and has autodetection for kubernetes yaml files
+local cfg = require("yaml-companion").setup({
+	-- Add any options here, or leave empty to use the default settings
+	-- lspconfig = {
+	--   cmd = {"yaml-language-server"}
+	-- },
+})
+nvim_lsp.yamlls.setup(cfg)
+
 -- golangci_lint_ls
+--
+-- check if there is a .golangci.yml file in the cicd-scripts subdirectory
+-- if so, use it as config file for golangci-lint, otherwise use the default (local dir if present)
+local golangci_lint_command = {
+	"golangci-lint",
+	"run",
+	"--out-format",
+	"json",
+	"--skip-dirs",
+	"^generated",
+	"--issues-exit-code=1",
+}
+
+local golangci_lint_config = vim.fn.getcwd() .. "/cicd-scripts/.golangci.yml"
+if vim.fn.filereadable(golangci_lint_config) == 1 then
+	table.insert(golangci_lint_command, "--config")
+	table.insert(golangci_lint_command, golangci_lint_config)
+
+	-- write message to statusline
+	-- vim.api.nvim_command("echomsg 'Using golangci-lint config " .. golangci_lint_config .. "'")
+	-- else
+	-- vim.api.nvim_command("echomsg 'Using golangci-lint config from local dir'")
+end
 require("lspconfig").golangci_lint_ls.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
+	filetypes = { "go", "gomod" },
+	init_options = {
+		command = golangci_lint_command,
+	},
 })
 
 -- lua language server

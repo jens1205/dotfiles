@@ -447,13 +447,7 @@ function mappings.lsp(bufnr)
 	-- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cl", "<cmd>lua vim.lsp.codelens.run()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(
-		bufnr,
-		"n",
-		"<leader>d",
-		"<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>",
-		opts
-	)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>d", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "ß", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "´", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "-", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)

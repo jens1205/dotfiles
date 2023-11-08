@@ -139,6 +139,10 @@ local function install()
 						"typescript",
 						"yaml",
 					},
+					modules = {},
+					ignore_install = {},
+					sync_install = false,
+					auto_install = false,
 					indent = { enable = true },
 					highlight = { enable = true },
 					rainbow = {
@@ -149,10 +153,83 @@ local function install()
 					autotag = {
 						enable = true,
 					},
+					textobjects = {
+						-- syntax-aware textobjects
+						enable = true,
+						lsp_interop = {
+							enable = true,
+							peek_definition_code = {
+								["<leader>Df"] = "@function.outer",
+								["<leader>Dc"] = "@class.outer",
+							},
+						},
+						keymaps = {
+							["af"] = "@function.outer",
+							["if"] = "@function.inner",
+							["aC"] = "@class.outer",
+							["iC"] = "@class.inner",
+							["ac"] = "@conditional.outer",
+							["ic"] = "@conditional.inner",
+							["ae"] = "@block.outer",
+							["ie"] = "@block.inner",
+							["al"] = "@loop.outer",
+							["il"] = "@loop.inner",
+							["is"] = "@statement.inner",
+							["as"] = "@statement.outer",
+							["ad"] = "@comment.outer",
+							["am"] = "@call.outer",
+							["im"] = "@call.inner",
+						},
+						move = {
+							enable = true,
+							set_jumps = true, -- whether to set jumps in the jumplist
+							goto_next_start = {
+								["]m"] = "@function.outer",
+								["]]"] = "@class.outer",
+							},
+							goto_next_end = {
+								["]M"] = "@function.outer",
+								["]["] = "@class.outer",
+							},
+							goto_previous_start = {
+								["[m"] = "@function.outer",
+								["[["] = "@class.outer",
+							},
+							goto_previous_end = {
+								["[M"] = "@function.outer",
+								["[]"] = "@class.outer",
+							},
+						},
+						select = {
+							enable = true,
+							-- Automatically jump forward to textobj, similar to targets.vim
+							lookahead = true,
+							keymaps = {
+								["af"] = "@function.outer",
+								["if"] = "@function.inner",
+								["ac"] = "@class.outer",
+								["ic"] = "@class.inner",
+							},
+						},
+						swap = {
+							enable = true,
+							swap_next = {
+								["<leader>a"] = "@parameter.inner",
+							},
+							swap_previous = {
+								["<leader>A"] = "@parameter.inner",
+							},
+						},
+					},
 				})
 			end,
 		})
 		use("nvim-treesitter/nvim-treesitter-context")
+		use({
+			"nvim-treesitter/nvim-treesitter-textobjects",
+			after = "nvim-treesitter",
+			requires = "nvim-treesitter/nvim-treesitter",
+		})
 
 		use({
 			"kyazdani42/nvim-tree.lua",
@@ -346,22 +423,30 @@ local function install()
 		use({
 			"hashivim/vim-terraform",
 		})
-		use({
-			"fatih/vim-go",
-			ft = "go",
-			run = ":GoInstallBinaries",
-			config = function()
-				require("config.vim-go")
-			end,
-		}) -- golang
 
-		-- use({
-		-- 	"ray-x/go.nvim",
-		-- 	ft = "go",
-		-- 	config = function()
-		-- 		require("go").setup()
-		-- 	end,
-		-- })
+		use({
+			"ray-x/go.nvim",
+			ft = { "go", "gomod" },
+			run = ":GoUpdateBinaries",
+			config = function()
+				require("go").setup()
+				require("config.go-nvim")
+			end,
+		})
+		use("ray-x/guihua.lua")
+
+		use({
+			"someone-stole-my-name/yaml-companion.nvim",
+			requires = {
+				{ "neovim/nvim-lspconfig" },
+				{ "nvim-lua/plenary.nvim" },
+				{ "nvim-telescope/telescope.nvim" },
+			},
+			config = function()
+				require("telescope").load_extension("yaml_schema")
+			end,
+		})
+
 		use({
 			"folke/neodev.nvim",
 		})
@@ -374,10 +459,33 @@ local function install()
 				-- "nvim-telescope/telescope.nvim",
 			},
 			config = function()
-				local on_attach = function(_client, bufnr)
+				-- this is currently a copy from config/lsp.lua
+				local on_attach = function(client, bufnr)
 					vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
 					require("mappings").lsp(bufnr)
+
+					if client and client.supports_method("textDocument/formatting") then
+						local format_enabled = true
+						vim.api.nvim_buf_create_user_command(0, "FormatDisable", function()
+							format_enabled = false
+						end, {})
+						vim.api.nvim_buf_create_user_command(0, "FormatEnable", function()
+							format_enabled = true
+						end, {})
+						local lsp_augroup = "custom_lsp_augroup" .. bufnr
+						vim.api.nvim_create_augroup(lsp_augroup, { clear = true })
+						vim.api.nvim_create_autocmd("BufWritePre", {
+							group = lsp_augroup,
+							buffer = bufnr,
+							callback = function()
+								print("formatting", format_enabled)
+								if format_enabled then
+									vim.lsp.buf.format({ timeout_ms = 3000 })
+								end
+							end,
+						})
+					end
 				end
 				local opts = {
 					server = {
@@ -386,7 +494,6 @@ local function install()
 				}
 				require("rust-tools").setup(opts)
 				require("mappings").rusttools()
-				vim.api.nvim_command("autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)")
 			end,
 		})
 		use("mfussenegger/nvim-jdtls")
