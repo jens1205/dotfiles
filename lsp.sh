@@ -22,3 +22,6 @@ npm install -g typescript-language-server
 npm i -g vscode-langservers-extracted
 
 npm i -g yaml-language-server
+
+# java
+brew upgrade jdtls

@@ -429,7 +429,14 @@ local function install()
 			ft = { "go", "gomod" },
 			run = ":GoUpdateBinaries",
 			config = function()
-				require("go").setup()
+				require("go").setup({
+					lsp_codelens = false,
+					lsp_keymaps = false,
+					lsp_inlay_hints = {
+						enable = false,
+					},
+				})
+				-- require("go").setup()
 				require("config.go-nvim")
 			end,
 		})

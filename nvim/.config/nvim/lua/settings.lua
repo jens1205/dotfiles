@@ -78,7 +78,7 @@ vim.bo.spelllang = "en_us"
 vim.api.nvim_set_option("clipboard", "unnamed")
 
 --Remap escape to leave terminal mode
-vim.api.nvim_exec(
+vim.api.nvim_exec2(
 	[[
   augroup Terminal
     autocmd!
@@ -86,21 +86,21 @@ vim.api.nvim_exec(
     au TermOpen * set nonu
   augroup end
 ]],
-	false
+	{ output = false }
 )
 
 -- Highlight on yank
-vim.api.nvim_exec(
+vim.api.nvim_exec2(
 	[[
   augroup YankHighlight
     autocmd!
     autocmd TextYankPost * silent! lua vim.highlight.on_yank()
   augroup end
 ]],
-	false
+	{ output = false }
 )
 
-vim.api.nvim_exec(
+vim.api.nvim_exec2(
 	[[
   augroup Autoreload
     autocmd!
@@ -108,5 +108,33 @@ vim.api.nvim_exec(
     autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
   augroup end
 ]],
-	false
+	{ output = false }
+)
+
+-- set marks on last insert mode / modification
+-- from https://stackoverflow.com/questions/28014665/how-to-go-to-the-last-edit-location-across-all-buffers-in-vim
+vim.api.nvim_exec2(
+	[[
+    let g:detect_mod_reg_state = -1
+    function! DetectRegChangeAndUpdateMark()
+        let current_small_register = getreg('"-')
+        let current_mod_register = getreg('""')
+        if g:detect_mod_reg_state != current_small_register || 
+                    \ g:detect_mod_reg_state != current_mod_register
+            normal! mM
+            let g:detect_mod_reg_state = current_small_register
+        endif
+    endfunction
+
+    augroup LastEdits
+    autocmd!
+      " Mark I at the position where the last Insert mode occured across the buffer
+      autocmd InsertLeave * execute 'normal! mI'
+      
+      " Mark M at the position when any modification happened in the Normal or Insert mode
+      autocmd CursorMoved * call DetectRegChangeAndUpdateMark()
+      autocmd InsertLeave * execute 'normal! mM'
+    augroup end
+    ]],
+	{ output = false }
 )
