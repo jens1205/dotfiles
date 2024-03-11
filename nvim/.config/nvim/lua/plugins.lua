@@ -429,6 +429,9 @@ local function install()
 			ft = { "go", "gomod" },
 			run = ":GoUpdateBinaries",
 			config = function()
+				-- had to disable the following, as otherwise every go to definition to an external dependency
+				-- showed an error once
+				-- see https://github.com/ray-x/go.nvim/issues/434 for details
 				require("go").setup({
 					lsp_codelens = false,
 					lsp_keymaps = false,
@@ -436,7 +439,6 @@ local function install()
 						enable = false,
 					},
 				})
-				-- require("go").setup()
 				require("config.go-nvim")
 			end,
 		})
