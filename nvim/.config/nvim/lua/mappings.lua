@@ -115,18 +115,18 @@ function mappings.general()
 	-- )
 
 	-- limit usage of j and k
-	vim.api.nvim_set_keymap(
-		"n",
-		"k",
-		":lua require('mappings').limitKeystroke('k')<CR>",
-		{ noremap = true, silent = true }
-	)
-	vim.api.nvim_set_keymap(
-		"n",
-		"j",
-		":lua require('mappings').limitKeystroke('j')<CR>",
-		{ noremap = true, silent = true }
-	)
+	-- vim.api.nvim_set_keymap(
+	-- 	"n",
+	-- 	"k",
+	-- 	":lua require('mappings').limitKeystroke('k')<CR>",
+	-- 	{ noremap = true, silent = true }
+	-- )
+	-- vim.api.nvim_set_keymap(
+	-- 	"n",
+	-- 	"j",
+	-- 	":lua require('mappings').limitKeystroke('j')<CR>",
+	-- 	{ noremap = true, silent = true }
+	-- )
 
 	-- Y yank until the end of line
 	vim.api.nvim_set_keymap("n", "Y", "y$", { noremap = true })

@@ -33,9 +33,6 @@ vim.o.smartcase = true
 --Decrease update time
 vim.o.updatetime = 250
 
---Add map to enter paste mode
-vim.o.pastetoggle = "<F3>"
-
 vim.o.clipboard = "unnamedplus" -- Copy paste between vim and everything else
 vim.o.showmode = false -- We don't need to see things like -- INSERT -- anymore
 
@@ -55,6 +52,10 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 
 vim.wo.signcolumn = "yes"
+
+-- enable experimantal lua module loader (https://neovim.io/doc/user/lua.html#vim.loader)
+-- replacement for https://github.com/lewis6991/impatient.nvim
+vim.loader.enable()
 
 vim.wo.cursorline = true
 -- lua seems to have no support for autocmd, so we use nvim_command

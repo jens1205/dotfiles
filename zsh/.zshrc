@@ -252,4 +252,4 @@ export PATH="$WASMTIME_HOME/bin:$PATH"
 # Wasmer
 export WASMER_DIR="/Users/a1167272/.wasmer"
 [ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"
-export PATH="/usr/local/opt/go@1.21/bin:$PATH"
+# export PATH="/usr/local/opt/go@1.21/bin:$PATH"

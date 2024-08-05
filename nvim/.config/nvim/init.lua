@@ -8,7 +8,6 @@ _G.__luacache_config = {
 		path = vim.fn.stdpath("cache") .. "/luacache_modpaths",
 	},
 }
-require("impatient")
 require("plugins")
 
 require("settings")

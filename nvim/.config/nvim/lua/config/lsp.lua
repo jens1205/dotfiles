@@ -100,7 +100,9 @@ local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*.go",
 	callback = function()
+		-- goimport stopped working formating (see https://github.com/ray-x/go.nvim/issues/439), so for now we are using gofmt()
 		require("go.format").goimport()
+		-- require("go.format").gofmt()
 	end,
 	group = format_sync_grp,
 })
@@ -142,7 +144,6 @@ nvim_lsp.gopls.setup({
 			},
 			-- templateExtensions = { "gotmpl" },
 			usePlaceholders = true,
-			allowImplicitNetworkAccess = true,
 			analyses = {
 				unreachable = true,
 				unusedparams = true,

@@ -22,7 +22,6 @@ local function install()
 	local use = require("packer").use
 	require("packer").startup(function()
 		use("wbthomason/packer.nvim") -- Package manager
-		use("lewis6991/impatient.nvim")
 
 		use({
 			"tpope/vim-fugitive",
@@ -321,67 +320,66 @@ local function install()
 				require("mappings").trouble()
 			end,
 		})
-		use({
-			"jens1205/neotest",
-			branch = "output_open_win",
-			-- "nvim-neotest/neotest",
-			requires = {
-				"nvim-lua/plenary.nvim",
-				"nvim-treesitter/nvim-treesitter",
-				"antoinemadec/FixCursorHold.nvim",
-				-- "nvim-neotest/neotest-go",
-				"nvim-neotest/neotest-python",
-				"rouge8/neotest-rust",
-				{ "jens1205/neotest-go", branch = "root_output" },
-			},
-			config = function()
-				-- get neotest namespace (create creates or returns namespace)
-				local neotest_ns = vim.api.nvim_create_namespace("neotest")
-				vim.diagnostic.config({
-					virtual_text = {
-						source = true,
-						format = function(diagnostic)
-							local message = diagnostic.message
-								:gsub("\n", " ")
-								:gsub("\t", " ")
-								:gsub("%s+", " ")
-								:gsub("^%s+", "")
-							return message
-						end,
-					},
-				}, neotest_ns)
-				require("neotest").setup({
-					consumers = {
-						splitoutput = require("splitoutput"),
-					},
-					adapters = {
-						require("neotest-python"),
-						require("neotest-go")({
-							experimental = {
-								test_table = true,
-							},
-							args = { "-count=1", "-timeout=60s" },
-						}),
-						require("neotest-rust"),
-					},
-					diagnostic = {
-						enabled = true,
-					},
-					output = {
-						enabled = false,
-						-- open_win = function()
-						-- 	vim.notify("in open_win wrapper func")
-						-- 	return Neotest_open_win()
-						-- end,
-					},
-					splitoutput = {
-						enabled = true,
-						open_on_run = "short",
-						-- open_on_run = "long",
-					},
-				})
-			end,
-		})
+		-- use({
+		-- 	"jens1205/neotest",
+		-- 	branch = "output_open_win",
+		-- 	-- "nvim-neotest/neotest",
+		-- 	requires = {
+		-- 		"nvim-lua/plenary.nvim",
+		-- 		"nvim-treesitter/nvim-treesitter",
+		-- 		-- "nvim-neotest/neotest-go",
+		-- 		"nvim-neotest/neotest-python",
+		-- 		"rouge8/neotest-rust",
+		-- 		{ "jens1205/neotest-go", branch = "root_output" },
+		-- 	},
+		-- 	config = function()
+		-- 		-- get neotest namespace (create creates or returns namespace)
+		-- 		local neotest_ns = vim.api.nvim_create_namespace("neotest")
+		-- 		vim.diagnostic.config({
+		-- 			virtual_text = {
+		-- 				source = true,
+		-- 				format = function(diagnostic)
+		-- 					local message = diagnostic.message
+		-- 						:gsub("\n", " ")
+		-- 						:gsub("\t", " ")
+		-- 						:gsub("%s+", " ")
+		-- 						:gsub("^%s+", "")
+		-- 					return message
+		-- 				end,
+		-- 			},
+		-- 		}, neotest_ns)
+		-- 		require("neotest").setup({
+		-- 			consumers = {
+		-- 				splitoutput = require("splitoutput"),
+		-- 			},
+		-- 			adapters = {
+		-- 				require("neotest-python"),
+		-- 				require("neotest-go")({
+		-- 					experimental = {
+		-- 						test_table = true,
+		-- 					},
+		-- 					args = { "-count=1", "-timeout=60s" },
+		-- 				}),
+		-- 				require("neotest-rust"),
+		-- 			},
+		-- 			diagnostic = {
+		-- 				enabled = true,
+		-- 			},
+		-- 			output = {
+		-- 				enabled = false,
+		-- 				-- open_win = function()
+		-- 				-- 	vim.notify("in open_win wrapper func")
+		-- 				-- 	return Neotest_open_win()
+		-- 				-- end,
+		-- 			},
+		-- 			splitoutput = {
+		-- 				enabled = true,
+		-- 				open_on_run = "short",
+		-- 				-- open_on_run = "long",
+		-- 			},
+		-- 		})
+		-- 	end,
+		-- })
 		use({
 			"sbdchd/neoformat",
 			config = function()
@@ -397,7 +395,7 @@ local function install()
 		use({ "mfussenegger/nvim-dap" })
 		use({ "nvim-telescope/telescope-dap.nvim" })
 		use({ "theHamsta/nvim-dap-virtual-text" })
-		use({ "rcarriga/nvim-dap-ui" })
+		use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } })
 		-- use {'Pocco81/DAPInstall.nvim'}
 		use({ "jbyuki/one-small-step-for-vimkind" })
 
@@ -432,7 +430,11 @@ local function install()
 				-- had to disable the following, as otherwise every go to definition to an external dependency
 				-- showed an error once
 				-- see https://github.com/ray-x/go.nvim/issues/434 for details
+				-- require("go").setup()
 				require("go").setup({
+					-- default is gofumpt, but this changes to much to our codebase and is sometimes also annoying
+					-- especially when dealing with long lines in an interface
+					gofmt = "gopls",
 					lsp_codelens = false,
 					lsp_keymaps = false,
 					lsp_inlay_hints = {
@@ -456,9 +458,10 @@ local function install()
 			end,
 		})
 
-		use({
-			"folke/neodev.nvim",
-		})
+		-- neodev.nvim is deprecated. Should switch to https://github.com/folke/lazydev.nvim if needed
+		-- use({
+		-- 	"folke/neodev.nvim",
+		-- })
 		use({
 			"simrat39/rust-tools.nvim",
 			-- ft = "rs",
