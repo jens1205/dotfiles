@@ -230,7 +230,6 @@ require("lspconfig").golangci_lint_ls.setup({
 })
 
 -- lua language server
-require("neodev").setup({})
 local lspconfig = require("lspconfig")
 lspconfig.lua_ls.setup({
 	settings = {

@@ -8,13 +8,12 @@ _G.__luacache_config = {
 		path = vim.fn.stdpath("cache") .. "/luacache_modpaths",
 	},
 }
-require("plugins")
-
 require("settings")
+require("config.lazy")
 
 require("mappings").general()
 require("dbg")
--- require'mappings'.restnvim()
+
 vim.cmd([[
     command FormatJson :%!jq .
 ]])

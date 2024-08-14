@@ -417,20 +417,20 @@ function mappings.dap()
 	map("n", "<leader>fdb", '<cmd>lua require"telescope".extensions.dap.list_breakpoints{}<CR>')
 end
 
-function mappings.restnvim()
-	vim.api.nvim_set_keymap(
-		"n",
-		"<Leader>e",
-		[[<cmd>lua require'rest-nvim'.run()<cr>]],
-		{ noremap = true, silent = true }
-	)
-	vim.api.nvim_set_keymap(
-		"n",
-		"<Leader>E",
-		[[<cmd>lua require'rest-nvim'.run(true)<cr>]],
-		{ noremap = true, silent = true }
-	)
-end
+-- function mappings.restnvim()
+-- 	vim.api.nvim_set_keymap(
+-- 		"n",
+-- 		"<Leader>e",
+-- 		[[<cmd>lua require'rest-nvim'.run()<cr>]],
+-- 		{ noremap = true, silent = true }
+-- 	)
+-- 	vim.api.nvim_set_keymap(
+-- 		"n",
+-- 		"<Leader>E",
+-- 		[[<cmd>lua require'rest-nvim'.run(true)<cr>]],
+-- 		{ noremap = true, silent = true }
+-- 	)
+-- end
 
 function mappings.lsp(bufnr)
 	local opts = { noremap = true, silent = true }
@@ -538,14 +538,5 @@ function mappings.copilot()
 	-- map("i", "<F1>", "<C-o>:echo 'hallo a'<CR>")
 	-- map("i", "<F2>", "<C-o>:echo 'hallo s'<CR>")
 end
-
--- luadev is deprected, neodev took over. But there are no Commands?
--- function mappings.nvim_luadev()
--- 	map("n", "<leader>ell", "<Plug>(Luadev-RunLine)", { noremap = false })
--- 	map("n", "<leader>elr", "<Plug>(Luadev-Run)", { noremap = false })
--- 	map("v", "<leader>elr", "<Plug>(Luadev-Run)", { noremap = false })
--- 	map("n", "<leader>elw", "<Plug>(Luadev-RunWord)", { noremap = false })
--- 	map("i", "<C-c>", "<Plug>(Luadev-Complete)", { noremap = false })
--- end
 
 return mappings
