@@ -122,7 +122,7 @@ nvim_lsp.gopls.setup({
 	capabilities = capabilities,
 	--cmd = {"gopls", "serve" },
 	-- cmd = { "gopls", "-vv", "-logfile=/tmp/gopls.log" },
-	-- cmd = { "gopls", "-logfile=/tmp/gopls.log", "-vv", "-rpc.trace", "--debug=localhost:6060" },
+	cmd = { "gopls", "-logfile=/tmp/gopls.log", "-vv", "-rpc.trace", "--debug=localhost:6060" },
 	root_dir = function(fname)
 		local has_lsp, lspconfig = pcall(require, "lspconfig")
 		if has_lsp then
@@ -205,24 +205,17 @@ local golangci_lint_command = {
 	"run",
 	"--out-format",
 	"json",
-	"--skip-dirs",
-	"^generated",
-	"--issues-exit-code=1",
 }
 
-local golangci_lint_config = vim.fn.getcwd() .. "/cicd-scripts/.golangci.yml"
-if vim.fn.filereadable(golangci_lint_config) == 1 then
-	table.insert(golangci_lint_command, "--config")
-	table.insert(golangci_lint_command, golangci_lint_config)
-
-	-- write message to statusline
-	-- vim.api.nvim_command("echomsg 'Using golangci-lint config " .. golangci_lint_config .. "'")
-	-- else
-	-- vim.api.nvim_command("echomsg 'Using golangci-lint config from local dir'")
-end
+-- local golangci_lint_config = vim.fn.getcwd() .. "/cicd-scripts/.golangci.yml"
+-- if vim.fn.filereadable(golangci_lint_config) == 1 then
+-- 	table.insert(golangci_lint_command, "--config")
+-- 	table.insert(golangci_lint_command, golangci_lint_config)
+-- end
 require("lspconfig").golangci_lint_ls.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
+	cmd = { "golangci-lint-langserver", "-debug", "true" },
 	filetypes = { "go", "gomod" },
 	init_options = {
 		command = golangci_lint_command,
