@@ -205,6 +205,8 @@ local golangci_lint_command = {
 	"run",
 	"--out-format",
 	"json",
+	"--config",
+	"/Users/a1167272/go/golangci.yml",
 }
 
 -- local golangci_lint_config = vim.fn.getcwd() .. "/cicd-scripts/.golangci.yml"
