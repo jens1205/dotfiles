@@ -90,7 +90,6 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		dependencies = {
-			"p00f/nvim-ts-rainbow",
 			"windwp/nvim-ts-autotag",
 		},
 		build = ":TSUpdate",
@@ -119,11 +118,6 @@ return {
 				auto_install = false,
 				indent = { enable = true },
 				highlight = { enable = true },
-				rainbow = {
-					enable = true,
-					extended_mode = true, -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
-					max_file_lines = 1000, -- Do not enable for files with more than 1000 lines, int
-				},
 				autotag = {
 					enable = true,
 				},
@@ -368,6 +362,6 @@ return {
 	{ "mfussenegger/nvim-jdtls" },
 
 	-- Themes
-	{ "navarasu/onedark.nvim" },
+	-- { "navarasu/onedark.nvim" },
 	{ "folke/tokyonight.nvim" },
 }
