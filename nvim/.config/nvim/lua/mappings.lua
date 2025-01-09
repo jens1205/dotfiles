@@ -539,4 +539,21 @@ function mappings.copilot()
 	-- map("i", "<F2>", "<C-o>:echo 'hallo s'<CR>")
 end
 
+function mappings.GoToFunctionStart()
+	local ts_utils = require("nvim-treesitter.ts_utils")
+	local node = ts_utils.get_node_at_cursor()
+
+	while node do
+		if node:type() == "method_declaration" or node:type() == "function_declaration" then
+			ts_utils.goto_node(node)
+			return
+		end
+		node = node:parent()
+	end
+end
+
+function mappings.treesitter()
+	map("n", "gaf", ":lua require('mappings').GoToFunctionStart()<CR>", { noremap = false })
+end
+
 return mappings

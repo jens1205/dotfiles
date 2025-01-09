@@ -48,15 +48,15 @@ require("lspconfig").html.setup({
 })
 
 -- javascript & typescript
-require("lspconfig").tsserver.setup({
+require("lspconfig").ts_ls.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
 
-require("lspconfig").jsonls.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
-})
+-- require("lspconfig").jsonls.setup({
+-- 	on_attach = on_attach,
+-- 	capabilities = capabilities,
+-- })
 
 -- terraform
 require("lspconfig").terraformls.setup({
@@ -120,14 +120,14 @@ end
 nvim_lsp.gopls.setup({
 	on_attach = go_on_attach,
 	capabilities = capabilities,
-	--cmd = {"gopls", "serve" },
+	cmd = { "gopls", "serve" },
 	-- cmd = { "gopls", "-vv", "-logfile=/tmp/gopls.log" },
-	cmd = { "gopls", "-logfile=/tmp/gopls.log", "-vv", "-rpc.trace", "--debug=localhost:6060" },
+	-- cmd = { "gopls", "-logfile=/tmp/gopls.log", "-vv", "-rpc.trace", "--debug=localhost:6060" },
 	root_dir = function(fname)
 		local has_lsp, lspconfig = pcall(require, "lspconfig")
 		if has_lsp then
 			local util = lspconfig.util
-			return util.root_pattern("go.mod", ".git")(fname) or util.path.dirname(fname)
+			return util.root_pattern("go.work", "go.mod", ".git")(fname) or util.path.dirname(fname)
 		end
 	end,
 	filetypes = { "go", "gomod", "gosum", "gotmpl", "gohtmltmpl", "gotexttmpl" },

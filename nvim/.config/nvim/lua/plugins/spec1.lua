@@ -56,6 +56,7 @@ return {
 		config = function()
 			vim.api.nvim_command("autocmd FileType toml setlocal commentstring=#\\ %s")
 			vim.api.nvim_command("autocmd FileType http setlocal commentstring=#\\ %s")
+			vim.api.nvim_command("autocmd FileType sql setlocal commentstring=--\\ %s")
 		end,
 	},
 
@@ -190,6 +191,7 @@ return {
 					},
 				},
 			})
+			require("mappings").treesitter()
 		end,
 	},
 	{ "nvim-treesitter/nvim-treesitter-context", lazy = false },

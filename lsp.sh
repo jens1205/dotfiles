@@ -14,8 +14,7 @@ brew upgrade lua-language-server
 brew upgrade terraform-ls
 
 # typescript
-npm install --save typescript
-npm install -g typescript-language-server
+npm install -g typescript-language-server typescript
 
 # HTML/CSS/JSON language servers extracted from vscode.
 # https://github.com/hrsh7th/vscode-langservers-extracted
