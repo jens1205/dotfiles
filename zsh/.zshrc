@@ -19,6 +19,7 @@ export MANWIDTH=999
 
 # make (at least lazygit) use $HOME/.config for the config variables (instead of $HOME/Library/Application Support/)
 export XDG_CONFIG_HOME="$HOME/.config"
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -246,7 +247,7 @@ export NVM_DIR="$HOME/.nvm"
 
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/a1167272/.rd/bin:$PATH"
+export PATH="/Users/A1167272/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 export WASMTIME_HOME="$HOME/.wasmtime"
