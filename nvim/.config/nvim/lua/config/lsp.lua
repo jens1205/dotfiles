@@ -41,6 +41,9 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 -- Language Server  --
 ----------------------
 
+-- python
+require'lspconfig'.pylsp.setup{}
+
 -- html
 require("lspconfig").html.setup({
 	capabilities = capabilities,
