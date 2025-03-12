@@ -116,12 +116,13 @@ function preexec () {
   # echo "preexec()"
   current_cmd=$1
   current_cmd=${current_cmd%% *}
-  if [[ $current_cmd = "nvim" ]]; then
+  if [[ $current_cmd = "nvim" || $current_cmd = "hx" ]]; then
       title="#${PWD##*/}#"
   else 
       if [[ $current_cmd = "fg" ]]; then
         job_cmd=$(cmd_last_job)
-        if [[ $job_cmd = "nvim" ]]; then
+        # for some reason, hx job in background is "(signal) hx"
+        if [[ $job_cmd = "nvim" || $job_cmd = "(signal)" ]]; then
             job_pwd=$(pwd_last_job)
             title="#${job_pwd##*/}#"
         else 
