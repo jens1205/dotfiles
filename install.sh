@@ -41,5 +41,7 @@ stow -t ~ vim
 stow -t ~ zsh
 stow -t ~ git
 stow -t ~ starship
+stow -t ~ helix
+stow -t ~ lazygit
 
 git config --global core.hooksPath '~/.git-templates/hooks'

@@ -1,0 +1,35 @@
+theme = "OneDark"
+
+[editor.cursor-shape]
+insert = "bar"
+
+[editor]
+# Minimum severity to show a diagnostic after the end of a line:
+end-of-line-diagnostics = "hint"
+
+[editor.file-picker]
+hidden = false
+git-ignore = false
+
+[editor.inline-diagnostics]
+# Minimum severity to show a diagnostic on the primary cursor's line.
+# Note that `cursor-line` diagnostics are hidden in insert mode.
+cursor-line = "error"
+# Minimum severity to show a diagnostic on other lines:
+# other-lines = "error"
+
+
+[keys.normal]
+C = ["ensure_selections_forward", "extend_to_line_end", "change_selection"]
+D = ["ensure_selections_forward", "extend_to_line_end", "delete_selection"]
+Y = ["ensure_selections_forward", "extend_to_line_end", "yank"]
+# D = "kill_to_line_end"
+
+# default hx has this mapping bound to "C", which we redefined to change until end of line
+C-c = "copy_selection_on_next_line"
+
+
+[keys.normal.space.v]
+l = ":sh kitty @ launch --no-response --cwd=current --type=overlay --copy-env lazygit"
+d = ":sh kitty @ launch --no-response --cwd=current --type=overlay --copy-env git -c delta.paging=always diff"
+t = [":sh go mod tidy", ":reload-all", ":lsp-restart"]

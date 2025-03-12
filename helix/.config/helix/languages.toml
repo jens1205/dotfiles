@@ -1,0 +1,54 @@
+# Go
+[[language]]
+name = "go"
+auto-format = true
+language-servers = ["gopls"]
+# language-servers = [ "gopls", "golangci-lint-lsp" ]
+formatter = { command = "goimports", args = [
+  "-local",
+  "gitlab.devops.telekom.de",
+] }
+# formatter = { command = "goimports", args = ["-local", "mydomain.com"] }
+
+[language-server.gopls]
+command = "gopls"
+
+[language-server.gopls.config]
+buildFlags = [ "-tags=systemtest,integrationtest" ]
+usePlaceholders = true
+ 
+[language-server.gopls.config.analyses]
+unusedparams = true
+unreachable = true
+useany = true
+unusedwrite = true
+ST1003 = true
+ST1016 = true
+ST1020 = true
+ST1021 = true
+undeclaredname = true
+fillreturns = true
+nonewvars = true
+fieldalignment = false
+shadow = true
+
+[language-server.golangci-lint-lsp]
+command = "golangci-lint-langserver"
+
+[language-server.golangci-lint-lsp.config]
+command = [
+  "golangci-lint",
+  "run",
+  "--out-format",
+  "json",
+  "--issues-exit-code=1",
+]
+
+# TOML
+[[language]]
+name = "toml"
+language-servers = ["taplo"]
+formatter = { command = "taplo", args = ["fmt", "-"] }
+
+[language-server.taplo]
+command = "taplo"
