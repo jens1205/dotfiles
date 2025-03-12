@@ -24,3 +24,5 @@ npm i -g yaml-language-server
 
 # java
 brew upgrade jdtls
+
+brew upgrade python-lsp-server
